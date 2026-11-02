@@ -1,0 +1,6 @@
+risk_id,evidence_type,evidence_record_id,evidence_role,evidence_description
+RISK-2026-001,PURCHASE_ORDER,PO-2026-001,DIRECT_CAUSE,Supplier SUP-001 delivery slipped from 2026-11-02 to 2026-11-16 (14-day delay).
+RISK-2026-001,INVENTORY_LOT,LOT-API-2026-01,CONTRIBUTING_FACTOR,"Plant on-hand eligible API stock is 80 kg, insufficient to cover 127.5 kg requirement."
+RISK-2026-001,PRODUCTION_ORDER,PROD-2026-001,IMPACTED_OBJECT,"Production of 20,000 packs of Augmentin T10 cannot commence on 2026-11-09."
+RISK-2026-002,PRODUCTION_ORDER,PROD-2026-001,DIRECT_CAUSE,"Delayed batch output from Plant Alpha leaves DC Nagpur without planned 20,000 pack replenishment."
+RISK-2026-002,INVENTORY_LOT,LOT-FG-AUG-T10-26A,CONTRIBUTING_FACTOR,"DC unreserved stock of 16,000 packs is depleted by baseline customer demand across Weeks 1-3."

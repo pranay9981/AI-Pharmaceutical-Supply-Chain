@@ -1,0 +1,3 @@
+scenario_id,scenario_name,scenario_type,scenario_description,assumptions,baseline_flag,synthetic_data_flag
+SCN-BASE,Baseline Plan (Unconstrained),BASELINE,"Standard baseline operational plan with on-time supplier delivery, scheduled production, and nominal demand.","{""supplier_delay_days"": 0, ""qa_hold_days"": 0, ""demand_multiplier"": 1.0}",True,True
+SCN-A-API-DELAY,Scenario A: 14-Day Critical API Supplier Delay,SUPPLIER_DELAY,"Supplier SUP-001 experiences raw material synthesis bottleneck, delaying API receipt MAT-API-001 by 14 days. Causes plant line stoppage and Week 4 finished goods stockout.","{""impacted_po"": ""PO-2026-001"", ""supplier_id"": ""SUP-001"", ""material_sku_id"": ""MAT-API-001"", ""slip_days"": 14}",False,True

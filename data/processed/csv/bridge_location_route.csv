@@ -1,0 +1,4 @@
+route_id,origin_location_id,destination_location_id,transport_mode,standard_transit_days,transport_cost_per_unit,cold_chain_required_flag,route_status
+RT-PLANT1-DC01,LOC-PLANT-01,LOC-DC-01,Road,2,0.35,False,Active
+RT-DC01-MKTHYD,LOC-DC-01,LOC-MKT-HYD,Road,1,0.2,False,Active
+RT-DC01-MKTPUN,LOC-DC-01,LOC-MKT-PUN,Road,2,0.25,False,Active

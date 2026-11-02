@@ -1,0 +1,5 @@
+requirement_id,production_order_id,material_sku_id,required_quantity,required_date,eligible_available_quantity,expected_receipt_quantity,shortage_quantity,scenario_id
+REQ-2026-001-API,PROD-2026-001,MAT-API-001,127.5,2026-11-09,80.0,150.0,0.0,SCN-BASE
+REQ-2026-001-EXC,PROD-2026-001,MAT-EXC-001,40.6,2026-11-09,250.0,0.0,0.0,SCN-BASE
+REQ-2026-001-BLIST,PROD-2026-001,MAT-PKG-BLIST,20200.0,2026-11-09,45000.0,0.0,0.0,SCN-BASE
+REQ-2026-001-CART,PROD-2026-001,MAT-PKG-CART,20200.0,2026-11-09,35000.0,0.0,0.0,SCN-BASE

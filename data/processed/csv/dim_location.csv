@@ -1,0 +1,7 @@
+location_id,location_name,location_type,city,state,country,capacity,cold_chain_capable,synthetic_entity_flag
+LOC-SUP-01,Deccan API Synthesis Plant,SUPPLIER,Ahmedabad,Gujarat,India,100000.0,False,True
+LOC-SUP-02,Western Packaging Converting Facility,SUPPLIER,Pune,Maharashtra,India,500000.0,False,True
+LOC-PLANT-01,Plant Alpha Hyderabad Pharma Campus,MANUFACTURING_PLANT,Hyderabad,Telangana,India,60000.0,False,True
+LOC-DC-01,Central India Logistics Distribution Centre,DISTRIBUTION_CENTRE,Nagpur,Maharashtra,India,250000.0,False,True
+LOC-MKT-HYD,Hyderabad Metro Regional Hub,MARKET,Hyderabad,Telangana,India,0.0,False,True
+LOC-MKT-PUN,Pune Urban Regional Hub,MARKET,Pune,Maharashtra,India,0.0,False,True

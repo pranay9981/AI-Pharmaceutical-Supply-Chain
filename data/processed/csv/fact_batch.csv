@@ -1,0 +1,4 @@
+batch_id,production_order_id,finished_sku_id,location_id,manufacture_date,quality_submission_date,expected_release_date,actual_release_date,batch_quantity,batch_status,rejection_reason
+BATCH-AUG-2026-08,PROD-2026-HIST-08,SKU-AUG-500-T10,LOC-PLANT-01,2026-08-20,2026-08-21,2026-08-26,2026-08-26,20000.0,Released,
+BATCH-AUG-2026-09,PROD-2026-HIST-09,SKU-AUG-500-T30,LOC-PLANT-01,2026-09-10,2026-09-11,2026-09-16,2026-09-16,12000.0,Released,
+BATCH-AUG-2026-10,PROD-2026-HIST-10,SKU-AUG-500-T10,LOC-PLANT-01,2026-10-23,2026-10-24,2026-10-30,,15000.0,In_Testing,
