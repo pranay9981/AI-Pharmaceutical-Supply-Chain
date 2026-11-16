@@ -341,10 +341,10 @@ def generate_3tab_executive_schedule(filepath):
         # Week 4
         (15, "Core Analytics", "Lot-Level Inventory Eligibility & FEFO Allocator", 
          "Develop `src/engine/inventory.py`. Implement multi-factor eligibility filter (quarantine, blocked, expired, remaining shelf life) and strictly sort eligible lots by earliest expiry date.",
-         "FEFO allocation engine, lot eligibility unit test suite.", "Active"),
+         "FEFO allocation engine, lot eligibility unit test suite.", "Completed"),
         (16, "Core Analytics", "Multi-Echelon Weekly Inventory Projection Engine", 
          "Implement recursive inventory balance calculation ($I_t = I_{t-1} + R_t + P_t - D_t$). Track projected stockouts, safety stock breaches, and unmet customer demand.",
-         "Weekly inventory projection engine, multi-echelon stock trajectory module.", "Planned"),
+         "Weekly inventory projection engine, multi-echelon stock trajectory module.", "Active"),
         (17, "Core Analytics", "BOM Explosion & Material Netting Engine (MRP)", 
          "Develop `src/engine/mrp.py` converting planned finished SKU production into gross component requirements. Net against eligible material stock and confirmed incoming POs.",
          "Material requirement planning engine, component shortage detector.", "Planned"),
