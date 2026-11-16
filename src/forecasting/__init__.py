@@ -31,6 +31,17 @@ from src.forecasting.baseline import (
     generate_series_forecast,
     run_baseline_benchmark_evaluation
 )
+from src.forecasting.ml_models import (
+    PredictionInterval,
+    MLForecastResult,
+    MLBenchmarkScorecard,
+    RidgeDemandForecaster,
+    GradientBoostingDemandForecaster,
+    calculate_prediction_intervals,
+    generate_recursive_multi_step_forecast,
+    evaluate_ml_against_baseline,
+    generate_production_26_week_forecast
+)
 
 __all__ = [
     "TimeSeriesSplit",
@@ -52,5 +63,14 @@ __all__ = [
     "MovingAverageModel",
     "ExponentialSmoothingModel",
     "generate_series_forecast",
-    "run_baseline_benchmark_evaluation"
+    "run_baseline_benchmark_evaluation",
+    "PredictionInterval",
+    "MLForecastResult",
+    "MLBenchmarkScorecard",
+    "RidgeDemandForecaster",
+    "GradientBoostingDemandForecaster",
+    "calculate_prediction_intervals",
+    "generate_recursive_multi_step_forecast",
+    "evaluate_ml_against_baseline",
+    "generate_production_26_week_forecast"
 ]
