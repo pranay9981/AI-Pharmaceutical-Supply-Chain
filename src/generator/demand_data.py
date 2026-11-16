@@ -101,14 +101,18 @@ def generate_demand_history(
                     lost_sales = total_demand - fulfilled
                     event_type = "Historical_Packaging_Bottleneck"
 
+                rounded_total = round(total_demand, 0)
+                rounded_fulfilled = round(fulfilled, 0)
+                rounded_lost_sales = rounded_total - rounded_fulfilled
+
                 demand_history.append(
                     FactDemandHistory(
                         week_start_date=week_date,
                         finished_sku_id=sku,
                         market_id=market,
-                        demand_quantity=round(total_demand, 0),
-                        fulfilled_quantity=round(fulfilled, 0),
-                        lost_sales_quantity=round(lost_sales, 0),
+                        demand_quantity=rounded_total,
+                        fulfilled_quantity=rounded_fulfilled,
+                        lost_sales_quantity=rounded_lost_sales,
                         event_type=event_type,
                         scenario_id="SCN-BASE",
                         synthetic_data_flag=config.synthetic_flag

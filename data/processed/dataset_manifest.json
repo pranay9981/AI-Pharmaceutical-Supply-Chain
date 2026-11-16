@@ -1,6 +1,6 @@
 {
   "dataset_version": "v1.0.0-phase1-aug",
-  "generation_timestamp": "2026-11-16T11:00:42.581041",
+  "generation_timestamp": "2026-11-16T11:06:21.644993",
   "random_seed": 20261014,
   "record_counts": {
     "dim_product": 1,

@@ -186,10 +186,10 @@ def generate_3tab_executive_schedule(filepath):
          "Each table has documented grain, primary/foreign keys, types, and referential validation rules.", "Completed"),
         ("Week 3", "09-Nov-2026 to 13-Nov-2026", "Synthetic Data Generation Engine (Phase 1 Slice)", "Phase 1: Foundation (Gate 1)",
          "Seeded Python generator (`seed: 20261014`), 104-week demand history, Phase 1 dataset (691 rows across 30 tables), Manifest, Pytest suite",
-         "100% referential integrity; date logic verified; zero PK collisions; reproducible output confirmed.", "Active"),
+         "100% referential integrity; date logic verified; zero PK collisions; reproducible output confirmed.", "Completed"),
         ("Week 4", "16-Nov-2026 to 20-Nov-2026", "Deterministic KPI & Inventory Projection Layer", "Phase 2: Core Engine",
          "Lot-level FEFO inventory engine, Weekly projection calculator ($I_t = I_{t-1} + R_t + P_t - D_t$), BOM explosion & MRP module, Capacity/OTIF metrics",
-         "Mathematical conservation: 0.0% unexplained inventory drift across all echelons; unit tests pass.", "Planned"),
+         "Mathematical conservation: 0.0% unexplained inventory drift across all echelons; unit tests pass.", "Active"),
         ("Week 5", "23-Nov-2026 to 27-Nov-2026", "Demand Forecasting & Model Evaluation Layer", "Phase 2: Core Engine",
          "Baseline models (Seasonal Naive, Exp Smoothing), ML forecasting model with P10/P90 intervals, WAPE/Bias metrics, Forecast Model Card",
          "Unseen-period test passes; zero target leakage; forecast bounds valid; limitations documented.", "Planned"),
@@ -335,13 +335,13 @@ def generate_3tab_executive_schedule(filepath):
          "Disruption injection logic, ground-truth scenario registry in `dim_scenario`.", "Completed"),
         (14, "Data Engineering", "Data Integrity Test Suite & Phase 1 Parquet Export", 
          "Write automated pytest suite (`tests/test_data_integrity.py`) verifying referential integrity, date logic, non-negative stock balances. Export clean CSV, Parquet, and SQLite datasets.",
-         "Phase 1 Synthetic Dataset (691 rows, 30 tables), `dataset_manifest.json`. Gate 1 Sign-off.", "Gate 1 Sign-Off"),
+         "Phase 1 Synthetic Dataset (691 rows, 30 tables), `dataset_manifest.json`. Gate 1 Sign-off.", "Completed"),
 
         # PHASE 2: DETERMINISTIC ANALYTICS & CORE ENGINES (Days 15 - 34)
         # Week 4
         (15, "Core Analytics", "Lot-Level Inventory Eligibility & FEFO Allocator", 
          "Develop `src/engine/inventory.py`. Implement multi-factor eligibility filter (quarantine, blocked, expired, remaining shelf life) and strictly sort eligible lots by earliest expiry date.",
-         "FEFO allocation engine, lot eligibility unit test suite.", "Planned"),
+         "FEFO allocation engine, lot eligibility unit test suite.", "Active"),
         (16, "Core Analytics", "Multi-Echelon Weekly Inventory Projection Engine", 
          "Implement recursive inventory balance calculation ($I_t = I_{t-1} + R_t + P_t - D_t$). Track projected stockouts, safety stock breaches, and unmet customer demand.",
          "Weekly inventory projection engine, multi-echelon stock trajectory module.", "Planned"),
