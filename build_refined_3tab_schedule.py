@@ -358,10 +358,10 @@ def generate_3tab_executive_schedule(filepath):
         # Week 5
         (20, "Forecasting Layer", "Demand Time-Series Preprocessing & Splitting", 
          "Develop `src/forecasting/prep.py`. Build time-based train/validation/test splits (104 historical weeks). Enforce strict controls against future target leakage.",
-         "Time-series split pipeline, data leakage audit script.", "Active"),
+         "Time-series split pipeline, data leakage audit script.", "Completed"),
         (21, "Forecasting Layer", "Baseline Statistical Forecasting Models", 
          "Implement Seasonal Naive, Moving Average, and Exponential Smoothing (Holt-Winters) models generating 26-week horizon point forecasts.",
-         "Baseline forecasting module, benchmark accuracy evaluation report.", "Planned"),
+         "Baseline forecasting module, benchmark accuracy evaluation report.", "Active"),
         (22, "Forecasting Layer", "ML Forecasting Models & Confidence Intervals", 
          "Implement lightweight ML forecasting model (e.g. Ridge/LightGBM) with lag features, seasonal indicators, and P10/P90 prediction interval estimation.",
          "Candidate ML forecast module, probabilistic prediction interval generator.", "Planned"),
