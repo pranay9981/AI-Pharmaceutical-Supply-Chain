@@ -1,20 +1,53 @@
+"""
+Master Data & Network Bridge Synthesizer.
+Synthetic Data Generation Engine — Week 03, Day 10 Deliverable.
+
+Generates validated Pydantic v2 master dimension records and network bridge tables
+modeling an Indian pharmaceutical multi-echelon supply network for Augmentin 625mg.
+Enforces deterministic reproducibility via a fixed random seed (default: 20261014).
+"""
+
 import datetime
-from typing import List, Dict, Tuple
+import random
+from typing import Dict, List, Optional
+import numpy as np
+
 from src.generator.config import GeneratorConfig
 from src.models.master import (
-    DimProduct, DimFinishedSKU, DimMaterial, DimSupplier,
-    DimLocation, DimCustomer, DimMarket, DimProductionLine
+    DimProduct,
+    DimFinishedSKU,
+    DimMaterial,
+    DimSupplier,
+    DimLocation,
+    DimCustomer,
+    DimMarket,
+    DimProductionLine,
+    LocationType,
+    SupplierRiskTier,
+    CustomerType,
+    ServicePriority,
+    StorageCondition
 )
 from src.models.bridges import (
-    BridgeBillOfMaterial, BridgeSupplierMaterial, BridgeSKUMarket, BridgeLocationRoute
+    BridgeBillOfMaterial,
+    BridgeSupplierMaterial,
+    BridgeSKUMarket,
+    BridgeLocationRoute,
+    TransportMode,
+    RouteStatus
 )
 from src.models.control_tower import DimScenario
 
-def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
-    """Generates all Phase 1 Master, Bridge, and Scenario records."""
-    
-    # 1. dim_product
-    products = [
+
+def init_random_seed(seed: int = 20261014) -> None:
+    """Sets deterministic random seed across Python random and NumPy."""
+    random.seed(seed)
+    np.random.seed(seed)
+
+
+def generate_products(config: GeneratorConfig) -> List[DimProduct]:
+    """Generates DimProduct master entities."""
+    return [
         DimProduct(
             product_id="PRD-AUG",
             product_name="Augmentin",
@@ -24,9 +57,14 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             synthetic_data_flag=config.synthetic_flag
         )
     ]
-    
-    # 2. dim_finished_sku (2 configurations: 10-tablet strip and 30-tablet bottle)
-    skus = [
+
+
+def generate_finished_skus(config: GeneratorConfig) -> List[DimFinishedSKU]:
+    """
+    Generates DimFinishedSKU master entities.
+    Two presentations: 10-tablet blister strip and 30-tablet HDPE bottle.
+    """
+    return [
         DimFinishedSKU(
             finished_sku_id="SKU-AUG-500-T10",
             product_id="PRD-AUG",
@@ -54,9 +92,14 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             synthetic_data_flag=config.synthetic_flag
         )
     ]
-    
-    # 3. dim_material (API, Excipient, Blister, Bottle, Carton)
-    materials = [
+
+
+def generate_materials(config: GeneratorConfig) -> List[DimMaterial]:
+    """
+    Generates DimMaterial raw materials and packaging components.
+    Includes active pharmaceutical ingredients (APIs), excipients, and primary/secondary packaging.
+    """
+    return [
         DimMaterial(
             material_sku_id="MAT-API-001",
             material_name="Synthetic Amoxicillin / Clavulanate API Blend",
@@ -74,7 +117,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             material_name="Microcrystalline Cellulose & Excipient Granules",
             material_type="Excipient",
             unit_of_measure="kg",
-            shelf_life_days=720,
+            shelf_life_days=720,  # 24 months
             retest_interval_days=365,
             release_time_days=3,
             critical_material_flag=False,
@@ -86,7 +129,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             material_name="Printed Aluminum Blister Foil Strip (T10)",
             material_type="Blister Foil",
             unit_of_measure="units",
-            shelf_life_days=1095,
+            shelf_life_days=1095,  # 36 months
             retest_interval_days=None,
             release_time_days=2,
             critical_material_flag=False,
@@ -98,7 +141,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             material_name="HDPE Pharmaceutical Bottle & Closure 100cc (T30)",
             material_type="Bottle",
             unit_of_measure="units",
-            shelf_life_days=1095,
+            shelf_life_days=1095,  # 36 months
             retest_interval_days=None,
             release_time_days=2,
             critical_material_flag=False,
@@ -110,7 +153,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             material_name="Printed Outer Carton Packaging Box",
             material_type="Carton",
             unit_of_measure="units",
-            shelf_life_days=730,
+            shelf_life_days=730,  # 24 months
             retest_interval_days=None,
             release_time_days=2,
             critical_material_flag=True,
@@ -118,9 +161,13 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             synthetic_data_flag=config.synthetic_flag
         )
     ]
-    
-    # 4. dim_supplier
-    suppliers = [
+
+
+def generate_suppliers(config: GeneratorConfig) -> List[DimSupplier]:
+    """
+    Generates DimSupplier qualified chemical and packaging vendors.
+    """
+    return [
         DimSupplier(
             supplier_id="SUP-001",
             supplier_name="Deccan Active Pharma Chem Pvt Ltd",
@@ -146,15 +193,23 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             synthetic_data_flag=config.synthetic_flag
         )
     ]
-    
-    # 5. dim_location (Nodes)
-    locations = [
+
+
+def generate_locations(config: GeneratorConfig) -> List[DimLocation]:
+    """
+    Generates DimLocation network topology nodes across Indian geography:
+    - Gujarat: API chemical synthesis
+    - Maharashtra: Packaging conversion & central distribution (Nagpur, Pune)
+    - Telangana: Manufacturing formulation & regional commercial hub (Hyderabad)
+    """
+    return [
         DimLocation(
             location_id="LOC-SUP-01",
             location_name="Deccan API Synthesis Plant",
             location_type="SUPPLIER",
             city="Ahmedabad",
             state="Gujarat",
+            country="India",
             capacity=100000.0,
             cold_chain_capable=False,
             synthetic_entity_flag=config.synthetic_flag
@@ -165,6 +220,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             location_type="SUPPLIER",
             city="Pune",
             state="Maharashtra",
+            country="India",
             capacity=500000.0,
             cold_chain_capable=False,
             synthetic_entity_flag=config.synthetic_flag
@@ -175,6 +231,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             location_type="MANUFACTURING_PLANT",
             city="Hyderabad",
             state="Telangana",
+            country="India",
             capacity=60000.0,  # packs per week
             cold_chain_capable=False,
             synthetic_entity_flag=config.synthetic_flag
@@ -185,6 +242,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             location_type="DISTRIBUTION_CENTRE",
             city="Nagpur",
             state="Maharashtra",
+            country="India",
             capacity=250000.0,  # warehouse capacity packs
             cold_chain_capable=False,
             synthetic_entity_flag=config.synthetic_flag
@@ -195,6 +253,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             location_type="MARKET",
             city="Hyderabad",
             state="Telangana",
+            country="India",
             capacity=0.0,
             cold_chain_capable=False,
             synthetic_entity_flag=config.synthetic_flag
@@ -205,14 +264,17 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             location_type="MARKET",
             city="Pune",
             state="Maharashtra",
+            country="India",
             capacity=0.0,
             cold_chain_capable=False,
             synthetic_entity_flag=config.synthetic_flag
         )
     ]
-    
-    # 6. dim_market
-    markets = [
+
+
+def generate_markets(config: GeneratorConfig) -> List[DimMarket]:
+    """Generates DimMarket commercial demand zones."""
+    return [
         DimMarket(
             market_id="MKT-IN-HYD",
             market_name="Hyderabad Metro & Telangana Zone",
@@ -230,9 +292,11 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             synthetic_data_flag=config.synthetic_flag
         )
     ]
-    
-    # 7. dim_customer
-    customers = [
+
+
+def generate_customers(config: GeneratorConfig) -> List[DimCustomer]:
+    """Generates DimCustomer hospital networks, wholesalers, and pharmacy chains."""
+    return [
         DimCustomer(
             customer_id="CUST-001",
             customer_name="Telangana State Health Wholesalers Ltd",
@@ -266,9 +330,11 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             synthetic_data_flag=config.synthetic_flag
         )
     ]
-    
-    # 8. dim_production_line
-    production_lines = [
+
+
+def generate_production_lines(config: GeneratorConfig) -> List[DimProductionLine]:
+    """Generates DimProductionLine formulation and packaging machinery."""
+    return [
         DimProductionLine(
             production_line_id="LINE-PLANT1-01",
             location_id="LOC-PLANT-01",
@@ -288,17 +354,29 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             maintenance_constraints="4 hours line changeover and visual inspection check on Sunday"
         )
     ]
-    
-    # 9. bridge_bill_of_material (BOM)
-    # Note: 1 pack of T10 contains 10 tablets = 6.25g API (0.00625 kg) + 0.002 kg excipient + 1 blister + 1 carton
-    # 1 pack of T30 contains 30 tablets = 18.75g API (0.01875 kg) + 0.006 kg excipient + 1 bottle + 1 carton
-    bom_records = [
+
+
+def generate_bill_of_materials(config: GeneratorConfig) -> List[BridgeBillOfMaterial]:
+    """
+    Generates BridgeBillOfMaterial formulation records.
+    - 1 pack of T10 (10 tablets) requires:
+      - 0.00625 kg API (6.25g) + 2.0% scrap
+      - 0.00200 kg Excipient (2.0g) + 1.5% scrap
+      - 1 Blister foil strip + 1.0% scrap
+      - 1 Outer carton + 1.0% scrap
+    - 1 pack of T30 (30 tablets) requires:
+      - 0.01875 kg API (18.75g) + 2.0% scrap
+      - 0.00600 kg Excipient (6.0g) + 1.5% scrap
+      - 1 HDPE bottle + 1.0% scrap
+      - 1 Outer carton (shared component!) + 1.0% scrap
+    """
+    return [
         # SKU-AUG-500-T10
         BridgeBillOfMaterial(
             bom_id="BOM-AUG-T10-01",
             finished_sku_id="SKU-AUG-500-T10",
             material_sku_id="MAT-API-001",
-            quantity_per_finished_unit=0.00625,  # 6.25g API per 10-tablet pack
+            quantity_per_finished_unit=0.00625,
             scrap_factor_pct=2.0,
             effective_start_date=datetime.date(2023, 1, 1),
             bom_version="V1",
@@ -308,7 +386,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             bom_id="BOM-AUG-T10-02",
             finished_sku_id="SKU-AUG-500-T10",
             material_sku_id="MAT-EXC-001",
-            quantity_per_finished_unit=0.00200,  # 2.0g excipient per pack
+            quantity_per_finished_unit=0.00200,
             scrap_factor_pct=1.5,
             effective_start_date=datetime.date(2023, 1, 1),
             bom_version="V1",
@@ -318,7 +396,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             bom_id="BOM-AUG-T10-03",
             finished_sku_id="SKU-AUG-500-T10",
             material_sku_id="MAT-PKG-BLIST",
-            quantity_per_finished_unit=1.0,  # 1 blister strip
+            quantity_per_finished_unit=1.0,
             scrap_factor_pct=1.0,
             effective_start_date=datetime.date(2023, 1, 1),
             bom_version="V1",
@@ -328,19 +406,18 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             bom_id="BOM-AUG-T10-04",
             finished_sku_id="SKU-AUG-500-T10",
             material_sku_id="MAT-PKG-CART",
-            quantity_per_finished_unit=1.0,  # 1 outer carton
+            quantity_per_finished_unit=1.0,
             scrap_factor_pct=1.0,
             effective_start_date=datetime.date(2023, 1, 1),
             bom_version="V1",
             synthetic_data_flag=config.synthetic_flag
         ),
-        
         # SKU-AUG-500-T30
         BridgeBillOfMaterial(
             bom_id="BOM-AUG-T30-01",
             finished_sku_id="SKU-AUG-500-T30",
             material_sku_id="MAT-API-001",
-            quantity_per_finished_unit=0.01875,  # 18.75g API per 30-tablet pack
+            quantity_per_finished_unit=0.01875,
             scrap_factor_pct=2.0,
             effective_start_date=datetime.date(2023, 6, 1),
             bom_version="V1",
@@ -350,7 +427,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             bom_id="BOM-AUG-T30-02",
             finished_sku_id="SKU-AUG-500-T30",
             material_sku_id="MAT-EXC-001",
-            quantity_per_finished_unit=0.00600,  # 6.0g excipient per pack
+            quantity_per_finished_unit=0.00600,
             scrap_factor_pct=1.5,
             effective_start_date=datetime.date(2023, 6, 1),
             bom_version="V1",
@@ -360,7 +437,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             bom_id="BOM-AUG-T30-03",
             finished_sku_id="SKU-AUG-500-T30",
             material_sku_id="MAT-PKG-BOTT",
-            quantity_per_finished_unit=1.0,  # 1 HDPE bottle
+            quantity_per_finished_unit=1.0,
             scrap_factor_pct=1.0,
             effective_start_date=datetime.date(2023, 6, 1),
             bom_version="V1",
@@ -370,21 +447,24 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             bom_id="BOM-AUG-T30-04",
             finished_sku_id="SKU-AUG-500-T30",
             material_sku_id="MAT-PKG-CART",
-            quantity_per_finished_unit=1.0,  # 1 outer carton (shared material!)
+            quantity_per_finished_unit=1.0,
             scrap_factor_pct=1.0,
             effective_start_date=datetime.date(2023, 6, 1),
             bom_version="V1",
             synthetic_data_flag=config.synthetic_flag
         )
     ]
-    
-    # 10. bridge_supplier_material
-    supplier_materials = [
+
+
+def generate_supplier_materials(config: GeneratorConfig) -> List[BridgeSupplierMaterial]:
+    """Generates BridgeSupplierMaterial approved vendor catalog records."""
+    return [
         BridgeSupplierMaterial(
             supplier_id="SUP-001",
             material_sku_id="MAT-API-001",
             supplier_lead_time_days=21,
             minimum_order_quantity=100.0,
+            order_multiple=50.0,
             approved_supplier_flag=True,
             supplier_priority=1,
             effective_start_date=datetime.date(2023, 1, 1)
@@ -394,6 +474,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             material_sku_id="MAT-EXC-001",
             supplier_lead_time_days=14,
             minimum_order_quantity=200.0,
+            order_multiple=50.0,
             approved_supplier_flag=True,
             supplier_priority=1,
             effective_start_date=datetime.date(2023, 1, 1)
@@ -403,6 +484,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             material_sku_id="MAT-PKG-BLIST",
             supplier_lead_time_days=14,
             minimum_order_quantity=5000.0,
+            order_multiple=1000.0,
             approved_supplier_flag=True,
             supplier_priority=1,
             effective_start_date=datetime.date(2023, 1, 1)
@@ -412,6 +494,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             material_sku_id="MAT-PKG-BOTT",
             supplier_lead_time_days=14,
             minimum_order_quantity=5000.0,
+            order_multiple=1000.0,
             approved_supplier_flag=True,
             supplier_priority=1,
             effective_start_date=datetime.date(2023, 1, 1)
@@ -421,19 +504,27 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             material_sku_id="MAT-PKG-CART",
             supplier_lead_time_days=14,
             minimum_order_quantity=5000.0,
+            order_multiple=1000.0,
             approved_supplier_flag=True,
             supplier_priority=1,
             effective_start_date=datetime.date(2023, 1, 1)
         )
     ]
-    
-    # 11. bridge_sku_market
-    sku_markets = [
+
+
+def generate_sku_markets(config: GeneratorConfig) -> List[BridgeSKUMarket]:
+    """
+    Generates BridgeSKUMarket market authorization and MARSL constraints.
+    - Hyderabad Metro: Institutional hospital tender market with strict MARSL = 180 days.
+    - Pune Urban: Commercial retail distribution with standard MARSL = 90 days.
+    """
+    return [
         BridgeSKUMarket(
             finished_sku_id="SKU-AUG-500-T10",
             market_id="MKT-IN-HYD",
             market_priority=1,
             service_level_target=98.0,
+            min_acceptable_rsl_days=180,
             effective_start_date=datetime.date(2023, 1, 15)
         ),
         BridgeSKUMarket(
@@ -441,6 +532,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             market_id="MKT-IN-PUN",
             market_priority=1,
             service_level_target=98.0,
+            min_acceptable_rsl_days=90,
             effective_start_date=datetime.date(2023, 1, 15)
         ),
         BridgeSKUMarket(
@@ -448,6 +540,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             market_id="MKT-IN-HYD",
             market_priority=1,
             service_level_target=95.0,
+            min_acceptable_rsl_days=180,
             effective_start_date=datetime.date(2023, 6, 1)
         ),
         BridgeSKUMarket(
@@ -455,13 +548,16 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             market_id="MKT-IN-PUN",
             market_priority=1,
             service_level_target=95.0,
+            min_acceptable_rsl_days=90,
             effective_start_date=datetime.date(2023, 6, 1)
         )
     ]
-    
-    # 12. bridge_location_route
-    routes = [
-        # Plant Alpha -> Central DC Nagpur
+
+
+def generate_location_routes(config: GeneratorConfig) -> List[BridgeLocationRoute]:
+    """Generates BridgeLocationRoute physical logistics transport corridors."""
+    return [
+        # Plant Alpha Hyderabad -> Central DC Nagpur
         BridgeLocationRoute(
             route_id="RT-PLANT1-DC01",
             origin_location_id="LOC-PLANT-01",
@@ -472,7 +568,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             cold_chain_required_flag=False,
             route_status="Active"
         ),
-        # Central DC Nagpur -> Market Hyderabad
+        # Central DC Nagpur -> Market Hub Hyderabad
         BridgeLocationRoute(
             route_id="RT-DC01-MKTHYD",
             origin_location_id="LOC-DC-01",
@@ -483,7 +579,7 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             cold_chain_required_flag=False,
             route_status="Active"
         ),
-        # Central DC Nagpur -> Market Pune
+        # Central DC Nagpur -> Market Hub Pune
         BridgeLocationRoute(
             route_id="RT-DC01-MKTPUN",
             origin_location_id="LOC-DC-01",
@@ -495,9 +591,15 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             route_status="Active"
         )
     ]
-    
-    # 13. dim_scenario
-    scenarios = [
+
+
+def generate_scenarios(config: GeneratorConfig, include_all_benchmarks: bool = False) -> List[DimScenario]:
+    """
+    Generates DimScenario disruption scenario catalog records.
+    By default generates SCN-BASE and SCN-A-API-DELAY matching Phase 1 baseline.
+    If include_all_benchmarks is True, generates all 5 disruption scenarios (A-E) + baseline.
+    """
+    base_scenarios = [
         DimScenario(
             scenario_id="SCN-BASE",
             scenario_name="Baseline Plan (Unconstrained)",
@@ -517,20 +619,74 @@ def generate_master_and_bridge_data(config: GeneratorConfig) -> Dict[str, list]:
             synthetic_data_flag=config.synthetic_flag
         )
     ]
-    
-    return {
-        "dim_product": products,
-        "dim_finished_sku": skus,
-        "dim_material": materials,
-        "dim_supplier": suppliers,
-        "dim_location": locations,
-        "dim_customer": customers,
-        "dim_market": markets,
-        "dim_production_line": production_lines,
-        "bridge_bill_of_material": bom_records,
-        "bridge_supplier_material": supplier_materials,
-        "bridge_sku_market": sku_markets,
-        "bridge_location_route": routes,
-        "dim_scenario": scenarios
-    }
 
+    if not include_all_benchmarks:
+        return base_scenarios
+
+    benchmarks = [
+        DimScenario(
+            scenario_id="SCN-B-BATCH-HOLD",
+            scenario_name="Scenario B: 10-Day Finished Batch QA Release Hold",
+            scenario_type="QA_HOLD",
+            scenario_description="Batch BATCH-AUG-2026-01 triggers OOS investigation and Sterility Retest deviation QEV-2026-001, delaying release by 10 days.",
+            assumptions='{"batch_id": "BATCH-AUG-2026-01", "hold_days": 10, "reason": "Sterility_Retest"}',
+            baseline_flag=False,
+            synthetic_data_flag=config.synthetic_flag
+        ),
+        DimScenario(
+            scenario_id="SCN-C-CARTON-SHORTAGE",
+            scenario_name="Scenario C: Shared Packaging Component Shortage",
+            scenario_type="MATERIAL_SHORTAGE",
+            scenario_description="Supplier SUP-002 carton converting shortage impacts MAT-PKG-CART, simultaneously halting production of both T10 strip and T30 bottle SKUs.",
+            assumptions='{"material_sku_id": "MAT-PKG-CART", "impacted_skus": ["SKU-AUG-500-T10", "SKU-AUG-500-T30"]}',
+            baseline_flag=False,
+            synthetic_data_flag=config.synthetic_flag
+        ),
+        DimScenario(
+            scenario_id="SCN-D-FEFO-EXPOSURE",
+            scenario_name="Scenario D: Sub-MARSL Lot Expiry Exposure",
+            scenario_type="EXPIRY_RISK",
+            scenario_description="Finished inventory lot has RSL < 90 days, breaching customer MARSL acceptance threshold and becoming dead inventory.",
+            assumptions='{"lot_id": "LOT-AUG-EXP-01", "rsl_days": 85, "market_marsl": 90}',
+            baseline_flag=False,
+            synthetic_data_flag=config.synthetic_flag
+        ),
+        DimScenario(
+            scenario_id="SCN-E-CAPACITY-CONFLICT",
+            scenario_name="Scenario E: Feasibility Conflict / Plant Line Overload",
+            scenario_type="CAPACITY_CONFLICT",
+            scenario_description="Proposed PO expediting mitigation requires additional packaging hours, but packaging line is already at 116% utilization.",
+            assumptions='{"line_id": "LINE-PLANT1-01", "utilization_pct": 116.0, "status": "INFEASIBLE_CAPACITY"}',
+            baseline_flag=False,
+            synthetic_data_flag=config.synthetic_flag
+        )
+    ]
+    return base_scenarios + benchmarks
+
+
+def generate_master_and_bridge_data(config: Optional[GeneratorConfig] = None) -> Dict[str, list]:
+    """
+    Main generator entry point for Week 03, Day 10.
+    Initializes fixed random seed and produces all validated master dimension, bridge,
+    and scenario Pydantic v2 records.
+    """
+    if config is None:
+        config = GeneratorConfig()
+
+    init_random_seed(config.random_seed)
+
+    return {
+        "dim_product": generate_products(config),
+        "dim_finished_sku": generate_finished_skus(config),
+        "dim_material": generate_materials(config),
+        "dim_supplier": generate_suppliers(config),
+        "dim_location": generate_locations(config),
+        "dim_customer": generate_customers(config),
+        "dim_market": generate_markets(config),
+        "dim_production_line": generate_production_lines(config),
+        "bridge_bill_of_material": generate_bill_of_materials(config),
+        "bridge_supplier_material": generate_supplier_materials(config),
+        "bridge_sku_market": generate_sku_markets(config),
+        "bridge_location_route": generate_location_routes(config),
+        "dim_scenario": generate_scenarios(config)
+    }

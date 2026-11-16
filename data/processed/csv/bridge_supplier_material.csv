@@ -1,6 +1,6 @@
-supplier_id,material_sku_id,supplier_lead_time_days,minimum_order_quantity,approved_supplier_flag,supplier_priority,effective_start_date,effective_end_date
-SUP-001,MAT-API-001,21,100.0,True,1,2023-01-01,
-SUP-001,MAT-EXC-001,14,200.0,True,1,2023-01-01,
-SUP-002,MAT-PKG-BLIST,14,5000.0,True,1,2023-01-01,
-SUP-002,MAT-PKG-BOTT,14,5000.0,True,1,2023-01-01,
-SUP-002,MAT-PKG-CART,14,5000.0,True,1,2023-01-01,
+supplier_id,material_sku_id,supplier_lead_time_days,minimum_order_quantity,order_multiple,approved_supplier_flag,supplier_priority,effective_start_date,effective_end_date
+SUP-001,MAT-API-001,21,100.0,50.0,True,1,2023-01-01,
+SUP-001,MAT-EXC-001,14,200.0,50.0,True,1,2023-01-01,
+SUP-002,MAT-PKG-BLIST,14,5000.0,1000.0,True,1,2023-01-01,
+SUP-002,MAT-PKG-BOTT,14,5000.0,1000.0,True,1,2023-01-01,
+SUP-002,MAT-PKG-CART,14,5000.0,1000.0,True,1,2023-01-01,

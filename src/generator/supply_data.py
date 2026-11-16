@@ -144,8 +144,8 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             reserved_quantity=2000.0,  # Allocated to open orders
             blocked_quantity=0.0,
             quality_status="Released",
-            receipt_date=datetime.date(2026, 8, 28),
-            release_date=datetime.date(2026, 8, 26),
+            receipt_date=datetime.date(2026, 8, 26),
+            release_date=datetime.date(2026, 8, 28),
             recall_status="None",
             synthetic_data_flag=config.synthetic_flag
         ),
@@ -163,7 +163,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             reserved_quantity=0.0,
             blocked_quantity=0.0,
             quality_status="Released",
-            receipt_date=datetime.date(2024, 11, 10),
+            receipt_date=datetime.date(2024, 11, 6),
             release_date=datetime.date(2024, 11, 8),
             recall_status="None",
             synthetic_data_flag=config.synthetic_flag
@@ -182,8 +182,8 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             reserved_quantity=1500.0,
             blocked_quantity=0.0,
             quality_status="Released",
-            receipt_date=datetime.date(2026, 9, 18),
-            release_date=datetime.date(2026, 9, 16),
+            receipt_date=datetime.date(2026, 9, 16),
+            release_date=datetime.date(2026, 9, 18),
             recall_status="None",
             synthetic_data_flag=config.synthetic_flag
         )

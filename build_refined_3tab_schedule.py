@@ -323,10 +323,10 @@ def generate_3tab_executive_schedule(filepath):
         # Week 3
         (10, "Data Engineering", "Generator Architecture & Master Record Synthesizer", 
          "Implement `src/generator/master_data.py` with seeded random generator (`seed: 20261014`). Generate real Indian geography nodes with fictional company/supplier/plant entities.",
-         "Master data generation module, reproducible seed configuration.", "Active"),
+         "Master data generation module, reproducible seed configuration.", "Completed"),
         (11, "Data Engineering", "104-Week Historical Demand Generator", 
          "Implement `src/generator/demand_data.py` modeling weekly customer demand: baseline volume, trend, annual/quarterly seasonality, holiday event spikes, and controlled Gaussian noise.",
-         "Historical demand dataset (104 weeks), demand variance profile report.", "Planned"),
+         "Historical demand dataset (104 weeks), demand variance profile report.", "Active"),
         (12, "Data Engineering", "Supply Chain Transactions Synthesizer", 
          "Implement `src/generator/supply_data.py` generating purchase orders, inventory lots with QC status/expiry, production orders, batch genealogy, and inter-city shipments.",
          "Synthetic operational transaction generator, lot-level inventory tables.", "Planned"),
@@ -639,8 +639,13 @@ def generate_3tab_executive_schedule(filepath):
     ws2.freeze_panes = 'A6'
     ws3.freeze_panes = 'A6'
 
-    wb.save(filepath)
-    print(f"Refined 3-Tab Workbook successfully generated and saved at: {filepath}")
+    try:
+        wb.save(filepath)
+        print(f"Refined 3-Tab Workbook successfully generated and saved at: {filepath}")
+    except PermissionError:
+        fallback = filepath.replace(".xlsx", "_updated.xlsx")
+        wb.save(fallback)
+        print(f"Notice: Main workbook is locked by another program. Saved to: {fallback}")
 
 if __name__ == "__main__":
     out_file = r"d:\AI Pharmaceutical Supply Chain\AI_Supply_Chain_Control_Tower_12_Week_Executive_Schedule.xlsx"

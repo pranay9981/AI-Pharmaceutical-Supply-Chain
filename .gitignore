@@ -28,3 +28,7 @@ desktop.ini
 *.swo
 *~
 
+# Microsoft Office temporary lock files & generated fallback files
+~$*
+*_updated.xlsx
+
