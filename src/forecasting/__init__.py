@@ -55,6 +55,20 @@ from src.forecasting.evaluation import (
     analyze_forecast_version_variance,
     ForecastRegistry
 )
+from src.forecasting.anomaly import (
+    AnomalyType,
+    AnomalySeverity,
+    DownstreamSupplyImpact,
+    DemandAnomalyRecord,
+    AnomalySummaryByDimension,
+    AnomalyDetectionReport,
+    assess_downstream_impact,
+    evaluate_point_anomaly,
+    detect_structural_shift,
+    detect_series_anomalies,
+    detect_network_demand_anomalies,
+    DemandAnomalyDetector
+)
 
 __all__ = [
     "TimeSeriesSplit",
@@ -96,5 +110,17 @@ __all__ = [
     "evaluate_forecast_slices",
     "evaluate_tracking_signal_drift",
     "analyze_forecast_version_variance",
-    "ForecastRegistry"
+    "ForecastRegistry",
+    "AnomalyType",
+    "AnomalySeverity",
+    "DownstreamSupplyImpact",
+    "DemandAnomalyRecord",
+    "AnomalySummaryByDimension",
+    "AnomalyDetectionReport",
+    "assess_downstream_impact",
+    "evaluate_point_anomaly",
+    "detect_structural_shift",
+    "detect_series_anomalies",
+    "detect_network_demand_anomalies",
+    "DemandAnomalyDetector"
 ]
