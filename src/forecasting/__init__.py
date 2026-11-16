@@ -20,6 +20,17 @@ from src.forecasting.prep import (
     audit_time_series_leakage,
     load_demand_history_from_db
 )
+from src.forecasting.baseline import (
+    ForecastEvaluationMetrics,
+    SeriesForecastResult,
+    BaselineBenchmarkReport,
+    calculate_forecast_metrics,
+    SeasonalNaiveModel,
+    MovingAverageModel,
+    ExponentialSmoothingModel,
+    generate_series_forecast,
+    run_baseline_benchmark_evaluation
+)
 
 __all__ = [
     "TimeSeriesSplit",
@@ -32,5 +43,14 @@ __all__ = [
     "create_demand_feature_pipeline",
     "partition_feature_matrix",
     "audit_time_series_leakage",
-    "load_demand_history_from_db"
+    "load_demand_history_from_db",
+    "ForecastEvaluationMetrics",
+    "SeriesForecastResult",
+    "BaselineBenchmarkReport",
+    "calculate_forecast_metrics",
+    "SeasonalNaiveModel",
+    "MovingAverageModel",
+    "ExponentialSmoothingModel",
+    "generate_series_forecast",
+    "run_baseline_benchmark_evaluation"
 ]
