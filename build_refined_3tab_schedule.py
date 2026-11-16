@@ -350,10 +350,10 @@ def generate_3tab_executive_schedule(filepath):
          "Material requirement planning engine, component shortage detector.", "Completed"),
         (18, "Core Analytics", "Supplier OTIF & Plant Line Capacity Analytics", 
          "Develop `src/engine/analytics.py` calculating supplier on-time in-full %, lead time variance, and manufacturing line capacity utilisation % (net available vs committed hours).",
-         "Supplier OTIF calculator, line capacity utilisation analytics module.", "Active"),
+         "Supplier OTIF calculator, line capacity utilisation analytics module.", "Completed"),
         (19, "Core Analytics", "Analytics Reconciliation & Mathematical Test Suite", 
          "Build reconciliation test suite proving inventory conservation across all nodes. Ensure zero unexplained stock gains or losses across historical and future horizons.",
-         "Reconciliation report, automated core calculation test suite (Integration Buffer).", "Sprint Review"),
+         "Reconciliation report, automated core calculation test suite (Integration Buffer).", "Active"),
 
         # Week 5
         (20, "Forecasting Layer", "Demand Time-Series Preprocessing & Splitting", 
