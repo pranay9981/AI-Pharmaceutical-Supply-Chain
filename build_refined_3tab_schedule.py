@@ -332,7 +332,7 @@ def generate_3tab_executive_schedule(filepath):
          "Synthetic operational transaction generator, lot-level inventory tables.", "Completed"),
         (13, "Data Engineering", "Disruption Scenario Injection Engine", 
          "Implement `src/generator/disruption_injector.py` injecting 5 benchmark disruptions: Supplier Delay (A), Batch QA Hold (B), Shared Material Shortage (C), Expiry Exposure (D), Mitigation Feasibility (E).",
-         "Disruption injection logic, ground-truth scenario registry in `dim_scenario`.", "Active"),
+         "Disruption injection logic, ground-truth scenario registry in `dim_scenario`.", "Completed"),
         (14, "Data Engineering", "Data Integrity Test Suite & Phase 1 Parquet Export", 
          "Write automated pytest suite (`tests/test_data_integrity.py`) verifying referential integrity, date logic, non-negative stock balances. Export clean CSV, Parquet, and SQLite datasets.",
          "Phase 1 Synthetic Dataset (691 rows, 30 tables), `dataset_manifest.json`. Gate 1 Sign-off.", "Gate 1 Sign-Off"),
