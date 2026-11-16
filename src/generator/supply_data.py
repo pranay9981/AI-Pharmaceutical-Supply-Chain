@@ -1,19 +1,41 @@
+"""
+Supply Chain Operational Transactions Synthesizer.
+Synthetic Data Generation Engine — Week 03, Day 12 Deliverable.
+
+Generates:
+1. Physical inventory lots across plants and distribution centers (fact_inventory_lot, 9 rows).
+   Includes raw materials (API, excipient, packaging) and finished SKU lots (released, quarantined, near-expiry).
+2. Upstream supplier purchase orders (fact_purchase_order, 4 rows).
+3. Plant manufacturing work orders (fact_production_order, 2 rows).
+4. Gross-to-net MRP material requirements (fact_material_requirement, 4 rows).
+5. Batch manufacturing records & QA testing genealogy (fact_batch, 3 rows).
+6. Quality events, sterility retests, and deviations (fact_quality_event, 2 rows).
+7. Machine capacity utilization tracking over 26 planning weeks (fact_capacity, 52 rows).
+8. Inter-facility freight shipments in transit and delivered (fact_shipment, 2 rows).
+9. DC replenishment supply plans (fact_supply_plan, 2 rows).
+"""
+
 import datetime
-from typing import List, Dict
+from typing import Dict, List, Optional
+import numpy as np
+
 from src.generator.config import GeneratorConfig
-from src.models.procurement_inventory import FactPurchaseOrder, FactInventoryLot, FactMaterialConsumption
+from src.models.procurement_inventory import FactPurchaseOrder, FactInventoryLot
 from src.models.manufacturing_quality import FactProductionOrder, FactBatch, FactQualityEvent
 from src.models.capacity_logistics import FactCapacity, FactShipment
 from src.models.planning import FactSupplyPlan, FactMaterialRequirement
 
-def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, list]:
-    """Generates inventory lots, purchase orders, production plans, batches, capacity, and shipments."""
-    
-    as_of = config.planning_as_of_date  # 2026-10-26
-    
-    # --- 1. FACT_INVENTORY_LOT (Lot-Level Inventory Position) ---
-    inventory_lots = [
-        # RAW MATERIALS AT PLANT ALPHA (LOC-PLANT-01)
+
+def generate_inventory_lots(config: GeneratorConfig) -> List[FactInventoryLot]:
+    """
+    Generates fact_inventory_lot physical inventory records across network nodes:
+    - Plant Alpha (LOC-PLANT-01): Raw materials (API, excipients, primary blister foil, bottles, cartons).
+      Includes a 20 kg Quarantined API lot (OOS investigation) to test eligibility filtering.
+    - Central DC Nagpur (LOC-DC-01): Finished goods lots (T10 strips, T30 bottles).
+      Includes a near-expiry lot (LOT-FG-AUG-T10-24X) with ~3 weeks RSL to test FEFO rules.
+    """
+    return [
+        # RAW MATERIALS AT MANUFACTURING PLANT ALPHA (LOC-PLANT-01)
         # API MAT-API-001: 80 kg eligible released lot
         FactInventoryLot(
             lot_id="LOT-API-2026-01",
@@ -22,7 +44,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             location_id="LOC-PLANT-01",
             batch_id=None,
             manufacture_date=datetime.date(2026, 4, 15),
-            expiry_date=datetime.date(2027, 10, 15),  # 12 months left
+            expiry_date=datetime.date(2027, 10, 15),  # 12 months shelf life remaining
             retest_date=datetime.date(2027, 4, 15),
             quantity_on_hand=80.0,
             reserved_quantity=0.0,
@@ -33,7 +55,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             recall_status="None",
             synthetic_data_flag=config.synthetic_flag
         ),
-        # API MAT-API-001: 20 kg quarantined lot (OOS investigation, unusable!)
+        # API MAT-API-001: 20 kg quarantined lot (OOS particle count investigation, unusable!)
         FactInventoryLot(
             lot_id="LOT-API-2026-02-QUAR",
             item_type="RAW_MATERIAL",
@@ -45,7 +67,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             retest_date=datetime.date(2027, 6, 1),
             quantity_on_hand=20.0,
             reserved_quantity=0.0,
-            blocked_quantity=20.0,  # Blocked!
+            blocked_quantity=20.0,  # 100% blocked
             quality_status="Quarantined",
             receipt_date=datetime.date(2026, 6, 20),
             release_date=None,
@@ -109,7 +131,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             recall_status="None",
             synthetic_data_flag=config.synthetic_flag
         ),
-        # Packaging Cartons MAT-PKG-CART: 35,000 units eligible released lot
+        # Packaging Cartons MAT-PKG-CART: 35,000 units eligible released lot (Shared component)
         FactInventoryLot(
             lot_id="LOT-CART-2026-01",
             item_type="RAW_MATERIAL",
@@ -129,7 +151,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             synthetic_data_flag=config.synthetic_flag
         ),
 
-        # FINISHED GOODS AT CENTRAL DC NAGPUR (LOC-DC-01)
+        # FINISHED GOODS AT CENTRAL DISTRIBUTION CENTRE NAGPUR (LOC-DC-01)
         # SKU-AUG-500-T10: Lot 1 - 18,000 packs eligible released
         FactInventoryLot(
             lot_id="LOT-FG-AUG-T10-26A",
@@ -141,7 +163,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             expiry_date=datetime.date(2028, 8, 19),
             retest_date=None,
             quantity_on_hand=18000.0,
-            reserved_quantity=2000.0,  # Allocated to open orders
+            reserved_quantity=2000.0,  # Reserved for open hospital orders
             blocked_quantity=0.0,
             quality_status="Released",
             receipt_date=datetime.date(2026, 8, 26),
@@ -149,7 +171,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             recall_status="None",
             synthetic_data_flag=config.synthetic_flag
         ),
-        # SKU-AUG-500-T10: Lot 2 - 3,000 packs approaching expiry (test FEFO!)
+        # SKU-AUG-500-T10: Lot 2 - 3,000 packs approaching expiry (tests FEFO prioritization)
         FactInventoryLot(
             lot_id="LOT-FG-AUG-T10-24X",
             item_type="FINISHED_SKU",
@@ -157,7 +179,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             location_id="LOC-DC-01",
             batch_id="BATCH-AUG-2024-11",
             manufacture_date=datetime.date(2024, 11, 1),
-            expiry_date=datetime.date(2026, 11, 20),  # Expiring in ~3 weeks!
+            expiry_date=datetime.date(2026, 11, 20),  # Expiring in ~3 weeks
             retest_date=None,
             quantity_on_hand=3000.0,
             reserved_quantity=0.0,
@@ -189,9 +211,14 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
         )
     ]
 
-    # --- 2. FACT_PURCHASE_ORDER (Inbound Material Supply) ---
-    purchase_orders = [
-        # Crucial API PO: 150 kg from SUP-001, promised for Nov 02, 2026
+
+def generate_purchase_orders(config: GeneratorConfig) -> List[FactPurchaseOrder]:
+    """
+    Generates fact_purchase_order inbound replenishment orders.
+    Anchors Scenario A: PO-2026-001 (150 kg API from SUP-001 promised for Nov 02, 2026).
+    """
+    return [
+        # Critical API PO: 150 kg from SUP-001, promised for Nov 02, 2026 (Baseline: on time)
         FactPurchaseOrder(
             purchase_order_id="PO-2026-001",
             supplier_id="SUP-001",
@@ -199,7 +226,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             order_date=datetime.date(2026, 10, 5),
             requested_delivery_date=datetime.date(2026, 11, 2),
             confirmed_delivery_date=datetime.date(2026, 11, 2),
-            actual_receipt_date=None,  # Pending receipt!
+            actual_receipt_date=None,  # In transit / pending receipt
             ordered_quantity=150.0,
             received_quantity=0.0,
             purchase_order_status="Open",
@@ -253,8 +280,10 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
         )
     ]
 
-    # --- 3. FACT_PRODUCTION_ORDER (Manufacturing Plan) ---
-    production_orders = [
+
+def generate_production_orders(config: GeneratorConfig) -> List[FactProductionOrder]:
+    """Generates fact_production_order plant manufacturing work orders."""
+    return [
         # Planned production run of 20,000 packs of T10 starting Nov 09
         FactProductionOrder(
             production_order_id="PROD-2026-001",
@@ -295,30 +324,32 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
         )
     ]
 
-    # --- 4. FACT_MATERIAL_REQUIREMENT (Calculated BOM Explosion for Production Orders) ---
-    # PROD-2026-001 for 20,000 packs T10:
-    # Requires: 20,000 * 0.00625 * 1.02 = 127.5 kg API
-    # Required date: 2026-11-09
-    # Current eligible API stock on hand: 80 kg
-    # Shortage before incoming PO: 47.5 kg!
-    # Expected PO-2026-001 delivers: 150 kg on 2026-11-02 + 5 days release = available 2026-11-07! (Tight buffer of 2 days!)
-    material_requirements = [
+
+def generate_material_requirements(config: GeneratorConfig) -> List[FactMaterialRequirement]:
+    """
+    Generates fact_material_requirement BOM exploded component netting records for PROD-2026-001.
+    Formula: Shortage = max(0, Required - Available - ExpectedReceipts)
+    - API: 20,000 * 0.00625 * 1.02 = 127.5 kg needed.
+      On hand: 80.0 kg. Net before PO: 47.5 kg shortage.
+      Baseline PO receipt: 150.0 kg on Nov 02 -> Shortage = 0.0 kg.
+    """
+    return [
         FactMaterialRequirement(
             requirement_id="REQ-2026-001-API",
             production_order_id="PROD-2026-001",
             material_sku_id="MAT-API-001",
-            required_quantity=127.5,  # kg
+            required_quantity=127.5,
             required_date=datetime.date(2026, 11, 9),
             eligible_available_quantity=80.0,
             expected_receipt_quantity=150.0,
-            shortage_quantity=0.0,  # Baseline: covered by PO-2026-001!
+            shortage_quantity=0.0,
             scenario_id="SCN-BASE"
         ),
         FactMaterialRequirement(
             requirement_id="REQ-2026-001-EXC",
             production_order_id="PROD-2026-001",
             material_sku_id="MAT-EXC-001",
-            required_quantity=40.6,  # 20000 * 0.002 * 1.015
+            required_quantity=40.6,
             required_date=datetime.date(2026, 11, 9),
             eligible_available_quantity=250.0,
             expected_receipt_quantity=0.0,
@@ -329,7 +360,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             requirement_id="REQ-2026-001-BLIST",
             production_order_id="PROD-2026-001",
             material_sku_id="MAT-PKG-BLIST",
-            required_quantity=20200.0,  # 20000 * 1 * 1.01
+            required_quantity=20200.0,
             required_date=datetime.date(2026, 11, 9),
             eligible_available_quantity=45000.0,
             expected_receipt_quantity=0.0,
@@ -349,9 +380,14 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
         )
     ]
 
-    # --- 5. FACT_BATCH (Batch Genealogy & QA Release Status) ---
-    batches = [
-        # Batch 08: Released and distributed
+
+def generate_batches(config: GeneratorConfig) -> List[FactBatch]:
+    """
+    Generates fact_batch manufacturing batch genealogy records.
+    Enforces milestone ordering: manufacture_date <= quality_submission_date <= expected_release_date.
+    """
+    return [
+        # Batch 08: Manufactured, released, and distributed in August 2026
         FactBatch(
             batch_id="BATCH-AUG-2026-08",
             production_order_id="PROD-2026-HIST-08",
@@ -365,7 +401,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             batch_status="Released",
             rejection_reason=None
         ),
-        # Batch 09: Released and distributed
+        # Batch 09: Manufactured, released, and distributed in September 2026
         FactBatch(
             batch_id="BATCH-AUG-2026-09",
             production_order_id="PROD-2026-HIST-09",
@@ -379,7 +415,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             batch_status="Released",
             rejection_reason=None
         ),
-        # Batch 10: Just finished on line, currently awaiting QA release!
+        # Batch 10: Just packaged on line, currently undergoing QC sterility & dissolution testing
         FactBatch(
             batch_id="BATCH-AUG-2026-10",
             production_order_id="PROD-2026-HIST-10",
@@ -395,8 +431,10 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
         )
     ]
 
-    # --- 6. FACT_QUALITY_EVENT ---
-    quality_events = [
+
+def generate_quality_events(config: GeneratorConfig) -> List[FactQualityEvent]:
+    """Generates fact_quality_event deviations, release tests, and holds."""
+    return [
         FactQualityEvent(
             quality_event_id="QEV-2026-001",
             entity_type="BATCH",
@@ -423,9 +461,18 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
         )
     ]
 
-    # --- 7. FACT_CAPACITY (Line Operating Hours & Commitments) ---
-    capacity_records = []
+
+def generate_line_capacity(config: GeneratorConfig) -> List[FactCapacity]:
+    """
+    Generates fact_capacity weekly operating hour utilization for production lines over 26 planning weeks.
+    Total records = 26 weeks * 2 lines = 52 records.
+    - LINE-PLANT1-01: 40 hours booked in Week 2 (Nov 09) for PROD-2026-001 (utilization = 33.3%).
+    - LINE-PLANT1-02: 30 hours booked in Week 3 (Nov 16) for PROD-2026-002 (utilization = 25.0%).
+    """
+    capacity_records: List[FactCapacity] = []
     lines = ["LINE-PLANT1-01", "LINE-PLANT1-02"]
+    as_of = config.planning_as_of_date
+
     for w_idx in range(config.future_weeks):
         period_date = as_of + datetime.timedelta(weeks=w_idx)
         for line in lines:
@@ -435,7 +482,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
                 committed = 40.0
             elif line == "LINE-PLANT1-02" and w_idx == 3:  # Week of Nov 16 (PROD-2026-002)
                 committed = 30.0
-                
+
             capacity_records.append(
                 FactCapacity(
                     capacity_record_id=rec_id,
@@ -450,8 +497,12 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
                 )
             )
 
-    # --- 8. FACT_SHIPMENT (Inter-Facility Distribution) ---
-    shipments = [
+    return capacity_records
+
+
+def generate_shipments(config: GeneratorConfig) -> List[FactShipment]:
+    """Generates fact_shipment logistics consignments."""
+    return [
         # Dispatched shipment of 10,000 packs T10 moving from Plant Alpha to Central DC Nagpur
         FactShipment(
             shipment_id="SHIP-2026-042",
@@ -469,7 +520,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             delay_reason=None,
             temperature_excursion_flag=False
         ),
-        # Planned replenishment shipment from DC Nagpur to Market Hyderabad for next week
+        # Planned replenishment shipment from Central DC Nagpur to Hyderabad Hub
         FactShipment(
             shipment_id="SHIP-2026-043",
             origin_location_id="LOC-DC-01",
@@ -488,17 +539,19 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
         )
     ]
 
-    # --- 9. FACT_SUPPLY_PLAN (Planned Supply Receipts at DC Nagpur) ---
-    supply_plans = [
+
+def generate_supply_plans(config: GeneratorConfig) -> List[FactSupplyPlan]:
+    """Generates fact_supply_plan planned supply receipts at distribution centers."""
+    return [
         FactSupplyPlan(
             supply_plan_id="SPL-2026-001",
             finished_sku_id="SKU-AUG-500-T10",
             location_id="LOC-DC-01",
-            planned_week=datetime.date(2026, 11, 16),  # Week 3
+            planned_week=datetime.date(2026, 11, 16),
             planned_quantity=20000.0,
             source_type="MANUFACTURING",
             source_order_id="PROD-2026-001",
-            expected_availability_date=datetime.date(2026, 11, 18),  # Plant completes 11/13 + release & transit 11/18
+            expected_availability_date=datetime.date(2026, 11, 18),
             scenario_id="SCN-BASE",
             plan_status="Committed"
         ),
@@ -506,7 +559,7 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
             supply_plan_id="SPL-2026-002",
             finished_sku_id="SKU-AUG-500-T30",
             location_id="LOC-DC-01",
-            planned_week=datetime.date(2026, 11, 23),  # Week 4
+            planned_week=datetime.date(2026, 11, 23),
             planned_quantity=10000.0,
             source_type="MANUFACTURING",
             source_order_id="PROD-2026-002",
@@ -516,15 +569,26 @@ def generate_supply_and_operations_data(config: GeneratorConfig) -> Dict[str, li
         )
     ]
 
-    return {
-        "fact_inventory_lot": inventory_lots,
-        "fact_purchase_order": purchase_orders,
-        "fact_production_order": production_orders,
-        "fact_material_requirement": material_requirements,
-        "fact_batch": batches,
-        "fact_quality_event": quality_events,
-        "fact_capacity": capacity_records,
-        "fact_shipment": shipments,
-        "fact_supply_plan": supply_plans
-    }
 
+def generate_supply_and_operations_data(
+    config: Optional[GeneratorConfig] = None
+) -> Dict[str, list]:
+    """
+    Main supply & operations generator entry point for Week 03, Day 12.
+    Produces validated Pydantic v2 records across inventory, procurement, manufacturing,
+    quality, capacity, logistics, and planning.
+    """
+    if config is None:
+        config = GeneratorConfig()
+
+    return {
+        "fact_inventory_lot": generate_inventory_lots(config),
+        "fact_purchase_order": generate_purchase_orders(config),
+        "fact_production_order": generate_production_orders(config),
+        "fact_material_requirement": generate_material_requirements(config),
+        "fact_batch": generate_batches(config),
+        "fact_quality_event": generate_quality_events(config),
+        "fact_capacity": generate_line_capacity(config),
+        "fact_shipment": generate_shipments(config),
+        "fact_supply_plan": generate_supply_plans(config)
+    }
