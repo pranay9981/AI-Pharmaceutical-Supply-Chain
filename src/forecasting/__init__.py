@@ -42,6 +42,19 @@ from src.forecasting.ml_models import (
     evaluate_ml_against_baseline,
     generate_production_26_week_forecast
 )
+from src.forecasting.evaluation import (
+    DriftAlarmSeverity,
+    TrackingSignalPoint,
+    TrackingSignalAuditResult,
+    ForecastSliceMetrics,
+    ForecastSliceReport,
+    VersionVarianceItem,
+    ForecastVersionComparisonReport,
+    evaluate_forecast_slices,
+    evaluate_tracking_signal_drift,
+    analyze_forecast_version_variance,
+    ForecastRegistry
+)
 
 __all__ = [
     "TimeSeriesSplit",
@@ -72,5 +85,16 @@ __all__ = [
     "calculate_prediction_intervals",
     "generate_recursive_multi_step_forecast",
     "evaluate_ml_against_baseline",
-    "generate_production_26_week_forecast"
+    "generate_production_26_week_forecast",
+    "DriftAlarmSeverity",
+    "TrackingSignalPoint",
+    "TrackingSignalAuditResult",
+    "ForecastSliceMetrics",
+    "ForecastSliceReport",
+    "VersionVarianceItem",
+    "ForecastVersionComparisonReport",
+    "evaluate_forecast_slices",
+    "evaluate_tracking_signal_drift",
+    "analyze_forecast_version_variance",
+    "ForecastRegistry"
 ]
