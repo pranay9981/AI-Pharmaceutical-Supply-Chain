@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pharmaceutical Supply Chain Control Tower — Interactive Master Guide</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --bg-hover: #334155;
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --accent-purple: #a855f7;
+            --accent-amber: #fbbf24;
+            --accent-rose: #fb7185;
+            --badge-bg: rgba(56, 189, 248, 0.15);
+            --badge-border: rgba(56, 189, 248, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Top Header Navbar */
+        header {
+            background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #38bdf8, #3b82f6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: #0f172a;
+        }
+
+        .header-text h1 {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        .header-text p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .metrics-banner {
+            display: flex;
+            gap: 12px;
+        }
+
+        .metric-pill {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .metric-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .dot.green { background: #10b981; box-shadow: 0 0 8px #10b981; }
+        .dot.blue { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
+        .dot.amber { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+
+        /* Main Layout */
+        .layout-container {
+            display: flex;
+            height: calc(100vh - 65px);
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background: #090d16;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 16px 20px 8px 20px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-blue);
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        .nav-item .icon {
+            font-size: 16px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            background: #070a10;
+        }
+
+        .quick-actions-btn {
+            width: 100%;
+            padding: 9px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            border: 1px solid #3b82f6;
+            border-radius: 6px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+        .quick-actions-btn:hover { opacity: 0.9; }
+
+        /* Content Area */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            background: #0b1120;
+            padding: 24px 32px 60px 32px;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Common Elements */
+        .page-header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+        .page-header h2 { font-size: 24px; font-weight: 700; color: #fff; }
+        .page-header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            background: var(--badge-bg);
+            border: 1px solid var(--badge-border);
+            color: var(--accent-blue);
+        }
+        .badge.green { background: rgba(52, 211, 153, 0.15); border-color: rgba(52, 211, 153, 0.3); color: var(--accent-green); }
+        .badge.amber { background: rgba(251, 191, 36, 0.15); border-color: rgba(251, 191, 36, 0.3); color: var(--accent-amber); }
+        .badge.purple { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); color: var(--accent-purple); }
+
+        /* Search & Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            background: #141e33;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .filter-bar input {
+            flex: 1;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 6px;
+            color: white;
+            font-size: 13px;
+        }
+        .filter-bar input:focus { outline: none; border-color: var(--accent-blue); }
+
+        .filter-chip {
+            padding: 6px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .filter-chip.active {
+            background: var(--accent-blue);
+            color: #0f172a;
+            font-weight: 600;
+            border-color: var(--accent-blue);
+        }
+
+        /* Detail Split View for DB & Code */
+        .split-view {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+            height: calc(100vh - 210px);
+        }
+
+        .item-list {
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: #111827;
+        }
+
+        .list-row {
+            padding: 12px 16px;
+            border-bottom: 1px solid #1f2937;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .list-row:hover { background: #1f2937; }
+        .list-row.active {
+            background: #1e3a8a;
+            border-left: 4px solid var(--accent-blue);
+        }
+        .list-row-title { font-size: 13px; font-weight: 600; color: #fff; }
+        .list-row-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+        .item-detail {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-card);
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        /* Code & Pre Styling */
+        pre {
+            background: #090d16;
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        code.inline {
+            background: rgba(255,255,255,0.08);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 12px;
+            color: var(--accent-blue);
+        }
+
+        /* Math Display Cards */
+        .formula-box {
+            background: #090d16;
+            border-left: 4px solid var(--accent-purple);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            font-family: "Cambria Math", "Times New Roman", serif;
+            font-size: 16px;
+            color: #f1f5f9;
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+
+        /* Accordion for Q&A */
+        .accordion-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 14px 18px;
+            background: #172033;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .accordion-header:hover { background: #1e293b; }
+
+        .accordion-body {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: #cbd5e1;
+            display: none;
+            line-height: 1.6;
+        }
+        .accordion-item.open .accordion-body { display: block; }
+        .accordion-item.open .accordion-header { color: var(--accent-blue); }
+
+        /* Calculator Widget */
+        .calc-widget {
+            background: #111827;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 14px;
+        }
+        .calc-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .calc-row label { width: 140px; font-size: 12px; color: var(--text-secondary); }
+        .calc-row input { flex: 1; background: #1f2937; border: 1px solid #374151; padding: 6px 10px; border-radius: 6px; color: white; font-size: 12px; }
+        .calc-result { padding: 10px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 6px; font-weight: 700; color: var(--accent-blue); font-size: 14px; text-align: center; margin-top: 10px; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .layout-container { flex-direction: column; height: auto; }
+            aside { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .split-view { grid-template-columns: 1fr; height: auto; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <div class="header-logo">CT</div>
+            <div class="header-text">
+                <h1>AI Pharmaceutical Supply Chain Control Tower</h1>
+                <p>Weeks 01–05 (Days 01–24) Master Engineering Guide & Meeting Defense Dossier</p>
+            </div>
+        </div>
+        <div class="metrics-banner">
+            <div class="metric-pill"><span class="dot green"></span> Tests: 189/189 Passed</div>
+            <div class="metric-pill"><span class="dot blue"></span> Drift: 0.000000%</div>
+            <div class="metric-pill"><span class="dot green"></span> WAPE: 7.76% (Ridge)</div>
+            <div class="metric-pill"><span class="dot amber"></span> Gate 1 & W04/05 Signed Off</div>
+        </div>
+    </header>
+
+    <div class="layout-container">
+        <!-- Sidebar Navigation -->
+        <aside>
+            <div class="nav-section-title">Control Tower Modules</div>
+            <ul class="nav-menu">
+                <li class="nav-item active" onclick="switchTab('pitch')"><span class="icon">🎙️</span> 1. Executive Pitch & 3 Laws</li>
+                <li class="nav-item" onclick="switchTab('database')"><span class="icon">🗄️</span> 2. 33-Entity Database</li>
+                <li class="nav-item" onclick="switchTab('code')"><span class="icon">💻</span> 3. 27 Code Files Walkthrough</li>
+                <li class="nav-item" onclick="switchTab('math')"><span class="icon">📐</span> 4. 18 Formulas & Math Lab</li>
+                <li class="nav-item" onclick="switchTab('disruptions')"><span class="icon">⚠️</span> 5. Scenarios A–E Stress Tests</li>
+                <li class="nav-item" onclick="switchTab('demo')"><span class="icon">🎯</span> 6. Meeting Defense & Demo</li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="quick-actions-btn" onclick="copyPitch()">📋 Copy 2-Min Pitch</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main>
+
+            <!-- TAB 1: EXECUTIVE PITCH & 3 LAWS -->
+            <div id="tab-pitch" class="tab-content active">
+                <div class="page-header">
+                    <h2>Executive Overview & The 3 Immutable Laws</h2>
+                    <p>The strategic foundation, clinical product selection, and regulatory governance architecture.</p>
+                </div>
+
+                <div class="grid-3" style="margin-bottom: 24px;">
+                    <div class="card" style="border-top: 4px solid var(--accent-blue);">
+                        <div class="card-header">
+                            <span class="card-title">Law 1: Zero LLM Math</span>
+                            <span class="badge">Rule 1</span>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-secondary);">Large Language Models are probabilistic and cannot calculate stock balances or WAPE. 100% of calculations run deterministically in Python/NumPy.</p>
+                    </div>
+
+                    <div class="card" style="border-top: 4px solid var(--accent-green);">
+                        <div class="card-header">
+                            <span class="card-title">Law 2: Evidence Grounding</span>
+                            <span class="badge green">bridge_risk_evidence</span>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-secondary);">The AI agent cannot cite a risk or recommendation without linking it directly to relational database primary keys (<code>po_id</code>, <code>batch_id</code>, <code>lot_id</code>).</p>
+                    </div>
+
+                    <div class="card" style="border-top: 4px solid var(--accent-rose);">
+                        <div class="card-header">
+                            <span class="card-title">Law 3: Mandatory Human Sign-Off</span>
+                            <span class="badge" style="color: var(--accent-rose); border-color: var(--accent-rose);">GxP Mandate</span>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-secondary);">Autonomous PO placement or line rescheduling is blocked at the schema level. <code>human_approval_required = True</code> is strictly validated.</p>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <span class="card-title">🎙️ The 2-Minute Executive Pitch Script (For Executive Director)</span>
+                        <button class="quick-actions-btn" style="width: auto; padding: 4px 10px;" onclick="copyPitch()">Copy</button>
+                    </div>
+                    <blockquote id="pitch-text" style="background: #090d16; padding: 16px; border-left: 4px solid var(--accent-blue); font-size: 13.5px; line-height: 1.7; border-radius: 0 8px 8px 0; color: #e2e8f0;">
+                        "Over the first five weeks, we have engineered an institutional-grade, compliant AI decision-support system for our pharmaceutical supply chain. 
+                        Rather than deploying a generic, unconstrained AI that hallucinates numbers, we built this on three strict principles: 
+                        First, <strong>Zero LLM Math</strong>—all projections, MRP explosions, and forecasts run deterministically in Python. 
+                        Second, <strong>Relational Evidence Grounding</strong>—every alert points directly to immutable database primary keys via <code>bridge_risk_evidence</code>. 
+                        Third, <strong>Mandatory Human-in-the-Loop Governance</strong>—binding operational actions require authorized planner approval by schema design.<br/><br/>
+                        In Phase 1, we established our 33-entity relational data model and synthetic disruption suite under cGMP and FDA 21 CFR Part 11 standards.<br/>
+                        In Week 4, our deterministic engines proved <strong>0.000000% inventory drift</strong> across 122 network items under lot-level FEFO rules.<br/>
+                        In Week 5, our champion Ridge regression forecaster achieved a <strong>7.76% WAPE</strong> on holdout data, beating our seasonal baseline hurdle by over <strong>52% error reduction</strong>, paired with probabilistic P10/P90 intervals and a statistical anomaly detector.<br/><br/>
+                        Across all 22 test suites, we have <strong>189 passing tests with 100% pass rate in 4 seconds</strong>. We are completely on schedule and ready to activate Week 6."
+                    </blockquote>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title" style="margin-bottom: 10px;">💊 Therapeutic Modeling: Amoxicillin-Clavulanate 500/125mg</div>
+                        <ul style="font-size: 13px; color: var(--text-secondary); padding-left: 20px; line-height: 1.8;">
+                            <li><strong>WHO Essential Medicine:</strong> Critical broad-spectrum antibiotic.</li>
+                            <li><strong>Chemical Sensitivity:</strong> Clavulanate potassium is extremely moisture-sensitive ($<25^\circ\text{C}, <60\%\text{ RH}$) and requires cold-chain or strict dry storage.</li>
+                            <li><strong>SKU Split:</strong>
+                                <ul>
+                                    <li><code>SKU-AUG-500-T10</code>: 10-pack Alu-Alu blister strip for acute retail pharmacies. Fast velocity, volatile weekly spikes.</li>
+                                    <li><code>SKU-AUG-500-T30</code>: 30-pack HDPE induction-sealed bottle for hospital intensive care and tenders. Large volume, strict 90-day MARSL.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title" style="margin-bottom: 10px;">🗺️ Multi-Echelon Network Geography</div>
+                        <ul style="font-size: 13px; color: var(--text-secondary); padding-left: 20px; line-height: 1.8;">
+                            <li><strong>Echelon 1 (Formulation Plants):</strong> Baddi (Himachal Pradesh - Tableting & Blister) & Ankleshwar (Gujarat - Active Synthesis & Backup).</li>
+                            <li><strong>Echelon 2 (Central Buffer DC):</strong> Nagpur Central DC (National hub, temperature-controlled warehouse).</li>
+                            <li><strong>Echelon 3 (Regional DCs):</strong> Bhiwandi (Mumbai/West) & Chennai (South).</li>
+                            <li><strong>Echelon 4 (Metropolitan Markets):</strong> Hyderabad & Pune commercial zones (hospitals, institutional tenders, wholesalers).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: 33-ENTITY DATABASE EXPLORER -->
+            <div id="tab-database" class="tab-content">
+                <div class="page-header">
+                    <h2>33-Entity Relational Data Architecture</h2>
+                    <p>6 Tiers, 33 Schemas, 30 Populated Baseline Tables (691 Records) in SQLite, Parquet, and CSV.</p>
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" id="db-search" placeholder="Search tables (e.g., inventory_lot, bom, capacity)..." oninput="filterDatabase()">
+                    <div class="filter-chip active" onclick="filterDbTier('ALL', this)">All (33)</div>
+                    <div class="filter-chip" onclick="filterDbTier('T1', this)">Tier 1: Master (8)</div>
+                    <div class="filter-chip" onclick="filterDbTier('T2', this)">Tier 2: Bridges (4)</div>
+                    <div class="filter-chip" onclick="filterDbTier('T3', this)">Tier 3: Facts (9)</div>
+                    <div class="filter-chip" onclick="filterDbTier('T4', this)">Tier 4: Mfg (3)</div>
+                    <div class="filter-chip" onclick="filterDbTier('T5', this)">Tier 5: Logistics (2)</div>
+                    <div class="filter-chip" onclick="filterDbTier('T6', this)">Tier 6: Control Tower (7)</div>
+                </div>
+
+                <div class="split-view">
+                    <div class="item-list" id="db-list"></div>
+                    <div class="item-detail" id="db-detail">
+                        <div style="color: var(--text-muted); text-align: center; margin-top: 100px;">Select a table from the left to view technical specification, columns, and why we chose it.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: 27 CODE FILES WALKTHROUGH -->
+            <div id="tab-code" class="tab-content">
+                <div class="page-header">
+                    <h2>27 Code Files Deep Dive Walkthrough</h2>
+                    <p>Line-by-line engineering details for every schema, generator, engine, and forecasting module.</p>
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" id="code-search" placeholder="Search files (e.g., inventory.py, mrp.py, ridge)..." oninput="filterCode()">
+                    <div class="filter-chip active" onclick="filterCodeCategory('ALL', this)">All (27)</div>
+                    <div class="filter-chip" onclick="filterCodeCategory('MODELS', this)">Schemas (8)</div>
+                    <div class="filter-chip" onclick="filterCodeCategory('AGENT', this)">Agent Contracts (1)</div>
+                    <div class="filter-chip" onclick="filterCodeCategory('GENERATOR', this)">Generators (6)</div>
+                    <div class="filter-chip" onclick="filterCodeCategory('ENGINE', this)">Core Engines (6)</div>
+                    <div class="filter-chip" onclick="filterCodeCategory('FORECASTING', this)">Forecasting (5)</div>
+                    <div class="filter-chip" onclick="filterCodeCategory('SCHEDULE', this)">Schedule (1)</div>
+                </div>
+
+                <div class="split-view">
+                    <div class="item-list" id="code-list"></div>
+                    <div class="item-detail" id="code-detail">
+                        <div style="color: var(--text-muted); text-align: center; margin-top: 100px;">Select a code file from the left to view classes, methods, inputs/outputs, and operational logic.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: 18 FORMULAS & MATH LAB -->
+            <div id="tab-math" class="tab-content">
+                <div class="page-header">
+                    <h2>Master Mathematical Catalog & Interactive Formula Lab</h2>
+                    <p>All 18 deterministic mathematical formulas implemented with zero LLM calculations.</p>
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" id="math-search" placeholder="Search formulas (e.g., WAPE, OTIF, FEFO, Ridge, Z-score)..." oninput="filterMath()">
+                    <div class="filter-chip active" onclick="filterMathGroup('ALL', this)">All (18)</div>
+                    <div class="filter-chip" onclick="filterMathGroup('INVENTORY', this)">Inventory & MRP (8)</div>
+                    <div class="filter-chip" onclick="filterMathGroup('FORECASTING', this)">Forecasting & ML (6)</div>
+                    <div class="filter-chip" onclick="filterMathGroup('ANOMALY', this)">Anomaly Detection (4)</div>
+                </div>
+
+                <div class="split-view">
+                    <div class="item-list" id="math-list"></div>
+                    <div class="item-detail" id="math-detail">
+                        <div style="color: var(--text-muted); text-align: center; margin-top: 100px;">Select a formula from the left to view equation, variable glossary, edge case safety, and code location.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: SCENARIOS A TO E STRESS TESTS -->
+            <div id="tab-disruptions" class="tab-content">
+                <div class="page-header">
+                    <h2>Benchmark Disruption Stress Tests (Scenarios A through E)</h2>
+                    <p>Synthetic disruption manifests injected into the network to benchmark analytical detection and mitigation.</p>
+                </div>
+
+                <div class="grid-2" style="margin-bottom: 20px;">
+                    <div class="card" style="border-left: 4px solid var(--accent-rose);">
+                        <div class="card-header">
+                            <span class="card-title">🚨 Scenario A: API Supplier Delivery Delay</span>
+                            <span class="badge" style="color: var(--accent-rose);">SCN-A</span>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;"><strong>Mechanism:</strong> Aurobindo Pharma (SUP-API-001) delays delivery of Amoxicillin Trihydrate by +14 days on purchase order <code>PO-API-001</code>.</p>
+                        <p style="font-size: 12px; color: var(--text-muted);"><strong>Impact:</strong> Starves formulation cleanroom Line-01 at Baddi, threatening downstream delivery to Nagpur DC.</p>
+                        <div style="margin-top: 10px; font-size: 12px; background: #090d16; padding: 8px; border-radius: 6px;">
+                            <strong>Physical Evidence:</strong> <code>fact_purchase_order.purchase_order_id = 'PO-API-001'</code>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid var(--accent-amber);">
+                        <div class="card-header">
+                            <span class="card-title">🧪 Scenario B: Batch QA Sterility Retest Hold</span>
+                            <span class="badge amber">SCN-B</span>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;"><strong>Mechanism:</strong> Sterility incubator deviation triggers mandatory 14-day retest, delaying Certificate of Analysis (CoA) release by +10 days on <code>BATCH-AUG-2026-01</code>.</p>
+                        <p style="font-size: 12px; color: var(--text-muted);"><strong>Impact:</strong> Finished stock sits physically in Baddi warehouse with <code>quality_status = 'Quarantine'</code>; FEFO engine blocks dispatch.</p>
+                        <div style="margin-top: 10px; font-size: 12px; background: #090d16; padding: 8px; border-radius: 6px;">
+                            <strong>Physical Evidence:</strong> <code>fact_batch.batch_id = 'BATCH-AUG-2026-01'</code>, <code>fact_quality_event.quality_event_id = 'QEV-2026-001'</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card" style="border-left: 4px solid var(--accent-purple);">
+                        <div class="card-header">
+                            <span class="card-title">📦 Scenario C: Shared Packaging Shortage</span>
+                            <span class="badge purple">SCN-C</span>
+                        </div>
+                        <p style="font-size: 12.5px; color: var(--text-secondary);">Secondary outer carton supplier experiences plant flood. Stockout on <code>MAT-PKG-CART</code> halts packaging of both T10 blister strips and T30 bottles.</p>
+                        <div style="margin-top: 10px; font-size: 11px; background: #090d16; padding: 6px; border-radius: 4px;">
+                            <strong>Citation:</strong> <code>fact_material_requirement.material_id = 'MAT-PKG-CART'</code>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid var(--accent-blue);">
+                        <div class="card-header">
+                            <span class="card-title">⏳ Scenario D: FEFO Expiry Exposure</span>
+                            <span class="badge">SCN-D</span>
+                        </div>
+                        <p style="font-size: 12.5px; color: var(--text-secondary);">Pallet lot <code>LOT-AUG-EXP-01</code> in Chennai DC has 72 days shelf life remaining. Chennai hospital MARSL is 90 days. FEFO engine bars shipment; lot is stranded.</p>
+                        <div style="margin-top: 10px; font-size: 11px; background: #090d16; padding: 6px; border-radius: 4px;">
+                            <strong>Citation:</strong> <code>fact_inventory_lot.lot_id = 'LOT-AUG-EXP-01'</code>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid var(--accent-green);">
+                        <div class="card-header">
+                            <span class="card-title">⚙️ Scenario E: Maintenance Capacity Conflict</span>
+                            <span class="badge green">SCN-E</span>
+                        </div>
+                        <p style="font-size: 12.5px; color: var(--text-secondary);">Supply planner attempts to expedite batch on <code>LINE-BADDI-01</code>, but line is scheduled for mandatory annual overhaul (120 maintenance hours). Simulation flags conflict.</p>
+                        <div style="margin-top: 10px; font-size: 11px; background: #090d16; padding: 6px; border-radius: 4px;">
+                            <strong>Citation:</strong> <code>fact_capacity.production_line_id = 'LINE-BADDI-01'</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: MEETING DEFENSE & LIVE DEMO SCRIPT -->
+            <div id="tab-demo" class="tab-content">
+                <div class="page-header">
+                    <h2>Executive Meeting Defense & Live Code Demo Script</h2>
+                    <p>Step-by-step presentation roadmap, live demo sequence, and bulletproof answers to tough leadership questions.</p>
+                </div>
+
+                <div class="card" style="margin-bottom: 24px; border-left: 4px solid var(--accent-green);">
+                    <div class="card-title" style="margin-bottom: 10px;">🎯 Step-by-Step Live Demo Sequence (If Managers Ask to See Code)</div>
+                    <ol style="font-size: 13px; color: var(--text-secondary); padding-left: 20px; line-height: 1.8;">
+                        <li><strong>Step 1: Prove Stock Conservation:</strong> Open <code>src/engine/reconciliation.py</code> lines 100–180. Run <code>python -m pytest tests/test_engine_reconciliation.py -v</code> in the terminal. Point to the terminal output showing <strong>0.000000% inventory drift</strong> across all 122 items.</li>
+                        <li><strong>Step 2: Prove ML Forecaster Rigor:</strong> Open <code>src/forecasting/ml_models.py</code> lines 130–180. Show the <code>RidgeDemandForecaster</code> class and explain how the closed-form convex formula $w = (X^T X + \alpha I)^{-1} X^T y$ guarantees zero stochastic variance, and show expanding prediction intervals ($P_{10}, P_{50}, P_{90}$).</li>
+                        <li><strong>Step 3: Prove GxP Governance:</strong> Open <code>src/models/control_tower.py</code> lines 190–210. Show the <code>@field_validator("human_approval_required")</code> to prove that automated rogue PO releases are strictly blocked at the schema level.</li>
+                    </ol>
+                </div>
+
+                <h3 style="font-size: 16px; margin-bottom: 14px; color: #fff;">Top Tough Meeting Questions & Bulletproof Answers</h3>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q1: Why shouldn't we just use ChatGPT or an LLM to generate our demand forecasts directly?</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>The Bulletproof Answer:</strong><br/>
+                        "In pharmaceutical manufacturing, an ungrounded hallucination leads directly to antibiotic stockouts or multimillion-dollar lot write-offs. LLMs are non-deterministic next-token predictors; they cannot guarantee convex loss optimization or mathematical consistency over recursive 26-week rollouts. In our architecture, generative AI serves strictly as an evidence-grounded briefing copilot citing database IDs. The numbers themselves are computed by convex, closed-form L2-regularized Ridge regression, achieving 7.76% WAPE with zero stochastic variation."
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q2: How do you mathematically guarantee that your machine learning model didn't cheat via data leakage?</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>The Bulletproof Answer:</strong><br/>
+                        "We enforce strict chronological time-series splitting: 78 weeks of training (2024-10-28 to 2026-04-20), 13 weeks of validation, and 13 weeks of completely unseen holdout testing with zero date overlap ($\Delta t \ge 7\text{ days}$). All 31 engineered features use strictly backward-looking data ($t-1$ or earlier). Furthermore, our automated leakage audit engine (<code>src/forecasting/prep.py</code>) programmatically audits correlations against future targets before training, confirming a correlation of exactly 0.0000."
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q3: How does the system handle sudden pandemic surges or product recall plunges?</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>The Bulletproof Answer:</strong><br/>
+                        "That is precisely what our Day 24 Demand Anomaly Detector (<code>src/forecasting/anomaly.py</code>) accomplishes. It continuously monitors rolling volatility-adjusted Z-scores ($Z \ge 3.0$) and non-parametric Tukey's IQR fences. If demand surges beyond $3\sigma$, it calculates the exact safety stock depletion percentage and days of forward supply consumed, alerting planners with an expedited packaging directive. If demand collapses, it flags inventory aging and excess holding costs, advising planners to throttle batch release."
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q4: Can this AI system place purchase orders or reschedule lines without human knowledge?</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>The Bulletproof Answer:</strong><br/>
+                        "No. By design, our Pydantic schemas enforce <code>human_approval_required = True</code>. Any recommendation generated by the system is structurally blocked from automated execution without authorized planner sign-off. If a script or user attempts to set <code>human_approval_required = False</code>, the Pydantic validator raises an immediate validation exception."
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q5: How does FEFO allocation work when a hospital has strict shelf-life requirements?</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <strong>The Bulletproof Answer:</strong><br/>
+                        "Our FEFO engine (<code>src/engine/inventory.py</code>) checks lot quality release status, regulatory recall flags, and destination market MARSL (Minimum Acceptable Remaining Shelf Life) thresholds from <code>bridge_sku_market</code>. Lots with less than 90 days of shelf life upon anticipated arrival cannot be dispatched to hospital customers, preventing regulatory rejection at the receiving dock."
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Embedded Master Data & Code Database -->
+    <script>
+        // Database Tables Metadata
+        const DB_TABLES = [
+            // Tier 1: Master
+            { id: "dim_product", tier: "T1", name: "dim_product", title: "Product Brand Family", pk: "product_id", records: 1, cols: ["product_id (PK)", "product_name", "product_family", "therapy_area", "critical_medicine_flag", "synthetic_data_flag"], desc: "Groups sellable presentations under PRD-AUG (Augmentin 500/125mg Anti-Infective). Essential for brand-level S&OP aggregation." },
+            { id: "dim_finished_sku", tier: "T1", name: "dim_finished_sku", title: "Sellable Finished SKUs", pk: "finished_sku_id", records: 2, cols: ["finished_sku_id (PK)", "product_id (FK)", "sku_description", "dosage_form", "strength", "pack_configuration", "shelf_life_days (730)", "storage_condition", "status"], desc: "Models the physical presentation split: SKU-AUG-500-T10 (10-blister retail) vs SKU-AUG-500-T30 (30-bottle hospital). Dictates packaging line assignments and shelf life." },
+            { id: "dim_material", tier: "T1", name: "dim_material", title: "Raw & Packaging Materials", pk: "material_id", records: 6, cols: ["material_id (PK)", "material_name", "material_type (Active_API, Excipient, Primary_Pkg, Secondary_Pkg)", "unit_of_measure", "storage_temperature", "controlled_substance_flag"], desc: "Raw materials for BOM explosion: Amoxicillin Trihydrate, Clavulanate Potassium, Microcrystalline Cellulose, Alu-Alu foil, HDPE bottles, cartons." },
+            { id: "dim_supplier", tier: "T1", name: "dim_supplier", title: "Qualified cGMP Vendors", pk: "supplier_id", records: 4, cols: ["supplier_id (PK)", "supplier_name", "supplier_country", "qualification_status", "target_otif_pct (95%)", "lead_time_days"], desc: "Synthetic qualified pharmaceutical vendors (Aurobindo, Divi's, Bilcare, Uflex). In pharma, buying from unapproved suppliers is a compliance violation." },
+            { id: "dim_location", tier: "T1", name: "dim_location", title: "Nodes in Network Topology", pk: "location_id", records: 5, cols: ["location_id (PK)", "location_name", "location_type (Manufacturing_Plant, Central_DC, Regional_DC)", "state", "storage_capacity_pallets", "cold_chain_capable"], desc: "Physical facilities: Baddi & Ankleshwar Plants, Nagpur Central DC, Bhiwandi West DC, Chennai South DC. Defines multi-echelon stock topology." },
+            { id: "dim_customer", tier: "T1", name: "dim_customer", title: "Commercial Ordering Entities", pk: "customer_id", records: 8, cols: ["customer_id (PK)", "customer_name", "customer_type (Hospital_Network, Wholesaler, Retail)", "credit_status"], desc: "Commercial purchasing accounts. Enables prioritization: Hospital ICU orders receive priority over wholesalers during inventory deficit." },
+            { id: "dim_market", tier: "T1", name: "dim_market", title: "Commercial Demand Planning Zones", pk: "market_id", records: 2, cols: ["market_id (PK)", "market_name", "region", "regulatory_jurisdiction (DCGI India)", "currency"], desc: "Hyderabad and Pune metropolitan commercial markets where commercial demand is forecasted." },
+            { id: "dim_production_line", tier: "T1", name: "dim_production_line", title: "Manufacturing & Packaging Lines", pk: "production_line_id", records: 4, cols: ["production_line_id (PK)", "plant_location_id (FK)", "line_name", "line_type (Tableting_Blister, Bottle_Packaging)", "rated_speed_units_per_hour", "cleanroom_classification"], desc: "Cleanroom assets. Line-01 runs blister strips; Line-02 runs HDPE bottles. Enforces real-world physical packaging constraints." },
+
+            // Tier 2: Bridges
+            { id: "bridge_bill_of_material", tier: "T2", name: "bridge_bill_of_material", title: "Chemical BOM Recipe & Scrap", pk: "finished_sku_id + material_id", records: 12, cols: ["finished_sku_id (PK, FK)", "material_id (PK, FK)", "quantity_per_sku", "scrap_factor_pct (1.0% to 3.5%)", "effective_start_date", "effective_end_date"], desc: "Multi-level BOM recipes. Incorporates chemical loss and packaging startup scrap factors (1.0% to 3.5%) into gross requirements." },
+            { id: "bridge_supplier_material", tier: "T2", name: "bridge_supplier_material", title: "Supplier Sourcing & Lead Times", pk: "supplier_id + material_id", records: 8, cols: ["supplier_id (PK, FK)", "material_id (PK, FK)", "contracted_lead_time_days", "minimum_order_quantity", "unit_price_inr", "is_primary_supplier"], desc: "Approved supplier sourcing matrix. Powers MRP backward scheduling of planned purchase orders." },
+            { id: "bridge_sku_market", tier: "T2", name: "bridge_sku_market", title: "Market MARSL Shelf Life Gates", pk: "finished_sku_id + market_id", records: 4, cols: ["finished_sku_id (PK, FK)", "market_id (PK, FK)", "marketing_authorization_number", "marsl_days (90d)", "service_level_target_pct (98%)"], desc: "Minimum Acceptable Remaining Shelf Life (MARSL) thresholds. FEFO engine blocks dispatch if stock has <90 days shelf life upon delivery." },
+            { id: "bridge_location_route", tier: "T2", name: "bridge_location_route", title: "Transportation Lanes & Transit SLAs", pk: "origin + destination", records: 10, cols: ["origin_location_id (PK, FK)", "destination_location_id (PK, FK)", "transit_time_days", "transport_mode (Road_Reefer)", "cold_chain_required", "freight_cost_per_pallet"], desc: "Physical transportation lanes with transit durations. Feeds multi-echelon stock projection lead-time offsets." },
+
+            // Tier 3: Facts
+            { id: "fact_demand_history", tier: "T3", name: "fact_demand_history", title: "104-Week Demand Baseline", pk: "date + sku + market + scenario", records: 416, cols: ["week_start_date (PK)", "finished_sku_id (PK, FK)", "market_id (PK, FK)", "demand_quantity", "fulfilled_quantity", "lost_sales_quantity", "event_type", "scenario_id"], desc: "2 full years (104 weeks) of historical weekly demand. Used for training statistical and ML forecasting models." },
+            { id: "fact_customer_order", tier: "T3", name: "fact_customer_order", title: "Customer Sales Orders", pk: "customer_order_id", records: 48, cols: ["customer_order_id (PK)", "customer_id", "market_id", "finished_sku_id", "order_date", "requested_delivery_date", "promised_delivery_date", "ordered_quantity", "fulfilled_quantity", "order_status"], desc: "Live commercial customer orders consumed by the FEFO allocation engine." },
+            { id: "fact_demand_forecast", tier: "T3", name: "fact_demand_forecast", title: "26-Week Forward Forecasts", pk: "version + week + sku + market", records: 104, cols: ["forecast_version_id", "forecast_run_date", "target_week_start_date", "finished_sku_id", "market_id", "p10_quantity", "p50_quantity", "p90_quantity"], desc: "Forward commercial projections with P10/P50/P90 prediction intervals from the Ridge champion forecaster." },
+            { id: "fact_supply_plan", tier: "T3", name: "fact_supply_plan", title: "Master Replenishment Schedule", pk: "supply_plan_id", records: 26, cols: ["supply_plan_id (PK)", "week_start_date", "finished_sku_id", "origin_location_id", "destination_location_id", "planned_quantity", "approval_status"], desc: "Planned replenishment dispatches between formulation plants and central/regional distribution centers." },
+            { id: "fact_material_requirement", tier: "T3", name: "fact_material_requirement", title: "MRP Component Netting", pk: "mrp_run_id + po_id + material_id", records: 36, cols: ["mrp_run_id", "production_order_id", "material_id", "required_date", "gross_requirement_qty", "net_requirement_qty", "shortage_qty"], desc: "Component requirements generated by the MRP explosion engine showing exact chemical deficits." },
+            { id: "fact_inventory_projection", tier: "T3", name: "fact_inventory_projection", title: "26-Week Forward Stock Trajectory", pk: "run_id + week + sku + location", records: 130, cols: ["projection_run_id", "week_start_date", "finished_sku_id", "location_id", "starting_inventory", "scheduled_receipts", "planned_production", "projected_demand", "ending_inventory", "safety_stock_threshold", "stockout_flag"], desc: "Forward stock trajectory table computed by src/engine/projections.py showing week-by-week balances." },
+            { id: "fact_purchase_order", tier: "T3", name: "fact_purchase_order", title: "Supplier Procurement Orders & OTIF", pk: "purchase_order_id", records: 32, cols: ["purchase_order_id (PK)", "supplier_id", "material_id", "destination_location_id", "order_date", "promised_delivery_date", "actual_delivery_date", "ordered_qty", "delivered_qty", "otif_status"], desc: "Inbound vendor purchase orders. Ground truth citation for Scenario A (API Supplier Delivery Delay)." },
+            { id: "fact_inventory_lot", tier: "T3", name: "fact_inventory_lot", title: "Physical Lots & Shelf Life", pk: "lot_id", records: 40, cols: ["lot_id (PK)", "item_type", "item_id", "location_id", "batch_id", "manufacture_date", "expiry_date", "quantity_on_hand", "reserved_quantity", "blocked_quantity", "quality_status", "recall_status"], desc: "Physical lot repository. Evaluated by FEFO engine for expiry exposure and release gating." },
+            { id: "fact_material_consumption", tier: "T3", name: "fact_material_consumption", title: "Plant Chemical Dispensing", pk: "consumption_id", records: 24, cols: ["consumption_id (PK)", "batch_id", "material_id", "theoretical_quantity", "actual_dispensed_quantity", "variance_pct"], desc: "Compares physical dispensing against theoretical BOM recipes to detect chemical yield loss." },
+
+            // Tier 4: Manufacturing
+            { id: "fact_production_order", tier: "T4", name: "fact_production_order", title: "Plant Production Orders", pk: "production_order_id", records: 18, cols: ["production_order_id (PK)", "plant_location_id", "production_line_id", "finished_sku_id", "planned_start_date", "planned_end_date", "planned_quantity", "status"], desc: "Work orders booking plant capacity to manufacture finished batches." },
+            { id: "fact_batch", tier: "T4", name: "fact_batch", title: "Batch Genealogy & QA Release", pk: "batch_id", records: 18, cols: ["batch_id (PK)", "production_order_id", "bulk_tablet_lot_id", "manufacture_date", "qa_release_date", "sterility_test_pass", "assay_potency_pct"], desc: "Batch genealogy and Certificate of Analysis (CoA) release milestones. Ground truth for Scenario B." },
+            { id: "fact_quality_event", tier: "T4", name: "fact_quality_event", title: "Deviations & Quarantine Holds", pk: "quality_event_id", records: 6, cols: ["quality_event_id (PK)", "batch_id", "event_type", "severity", "hold_start_date", "hold_resolved_date"], desc: "Microbial deviations and sterility retests creating quarantine holds." },
+
+            // Tier 5: Capacity & Logistics
+            { id: "fact_capacity", tier: "T5", name: "fact_capacity", title: "Line Operating Hours & Downtime", pk: "capacity_record_id", records: 48, cols: ["capacity_record_id (PK)", "production_line_id", "week_start_date", "total_calendar_hours (168h)", "planned_maintenance_hours", "net_available_hours", "committed_production_hours", "overload_flag"], desc: "Weekly line capacity. Ground truth for Scenario E (Line Maintenance Overhaul Conflict)." },
+            { id: "fact_shipment", tier: "T5", name: "fact_shipment", title: "Inter-Node Reefer Logistics", pk: "shipment_id", records: 28, cols: ["shipment_id (PK)", "origin_location_id", "destination_location_id", "shipped_date", "expected_delivery_date", "actual_delivery_date", "cold_chain_breach_flag"], desc: "Monitors transit SLAs and cold-chain integrity across road consignments." },
+
+            // Tier 6: Control Tower & Governance
+            { id: "dim_scenario", tier: "T6", name: "dim_scenario", title: "Disruption Scenario Catalog", pk: "scenario_id", records: 6, cols: ["scenario_id (PK)", "scenario_name", "disruption_description", "injection_date"], desc: "Catalog of benchmark disruptions: SCN-BASE, SCN-A, SCN-B, SCN-C, SCN-D, SCN-E." },
+            { id: "fact_risk_event", tier: "T6", name: "fact_risk_event", title: "Composite 0-100 Risk Registry", pk: "risk_event_id", records: 14, cols: ["risk_event_id (PK)", "scenario_id", "risk_category", "severity_score (0-100)", "days_to_impact", "detected_timestamp"], desc: "Central registry for alerts detected by rule-based risk engines." },
+            { id: "bridge_risk_evidence", tier: "T6", name: "bridge_risk_evidence", title: "Anti-Hallucination Evidence Linker", pk: "evidence_id", records: 24, cols: ["evidence_id (PK)", "risk_event_id", "table_name", "record_id (e.g. PO-API-001)", "field_name", "observed_value"], desc: "Links every alert directly to physical database records, eliminating AI hallucinations." },
+            { id: "fact_root_cause", tier: "T6", name: "fact_root_cause", title: "Backward Causal Dependency Graph", pk: "root_cause_id", records: 0, cols: ["root_cause_id (PK)", "risk_event_id", "causal_node", "causal_role", "confidence_pct"], desc: "Populated dynamically at runtime during backward causal tracing." },
+            { id: "fact_mitigation_simulation", tier: "T6", name: "fact_mitigation_simulation", title: "What-If Sandbox Simulation", pk: "simulation_id", records: 0, cols: ["simulation_id (PK)", "risk_event_id", "action_type", "projected_stockout_avoided_qty", "expedite_cost_inr", "feasibility_passed"], desc: "Populated dynamically by the non-destructive mitigation simulator." },
+            { id: "fact_recommendation", tier: "T6", name: "fact_recommendation", title: "Action Proposals & Human Mandate", pk: "recommendation_id", records: 0, cols: ["recommendation_id (PK)", "simulation_id", "rank_priority", "action_summary", "human_approval_required (STRICTLY TRUE)", "approved_by"], desc: "User-facing recommendation table enforcing mandatory human planner approval." },
+            { id: "dataset_manifest", tier: "T6", name: "dataset_manifest", title: "Seed 20261014 Reproducibility Audit", pk: "manifest_id", records: 1, cols: ["manifest_id (PK)", "generation_timestamp", "random_seed (20261014)", "total_records (691)", "sha256_hash"], desc: "Cryptographic electronic audit log proving seed reproducibility under GxP rules." }
+        ];
+
+        // Code Files Metadata
+        const CODE_FILES = [
+            { id: "models_master", cat: "MODELS", name: "src/models/master.py", title: "Master Dimension Schemas", desc: "Pydantic v2 schemas for all 8 master dimensions. Enforces string regex patterns (PRD-, SKU-, LOC-), non-negative bounds (ge=0.0), and valid pharmaceutical temperature categories." },
+            { id: "models_bridges", cat: "MODELS", name: "src/models/bridges.py", title: "Network Bridge Schemas", desc: "Pydantic schemas for BOM recipes and transportation lanes. Validates scrap factor percentage bounds (0.0% to 10.0%), date ordering, and enforces Road_Reefer transport mode when cold chain is required." },
+            { id: "models_demand", cat: "MODELS", name: "src/models/demand.py", title: "Demand Facts Schemas", desc: "Schemas for fact_demand_history and fact_customer_order. Validates demand conservation: demand_quantity = fulfilled_quantity + lost_sales_quantity, and enforces Monday weekly start dates." },
+            { id: "models_planning", cat: "MODELS", name: "src/models/planning.py", title: "Planning Facts Schemas", desc: "Schemas for fact_demand_forecast and fact_inventory_projection. Enforces probabilistic prediction interval ordering: p10 <= p50 <= p90 and validates inventory projection mass conservation identities." },
+            { id: "models_procurement", cat: "MODELS", name: "src/models/procurement_inventory.py", title: "Procurement & Lot Schemas", desc: "Schemas for fact_purchase_order and fact_inventory_lot. Enforces that manufacture_date < expiry_date, and validates that quantity_on_hand >= reserved + blocked." },
+            { id: "models_manufacturing", cat: "MODELS", name: "src/models/manufacturing_quality.py", title: "Manufacturing & Quality Schemas", desc: "Schemas for fact_production_order, fact_batch, and fact_quality_event. Enforces chronological milestone progression and checks sterility test pass gates before QA lot release." },
+            { id: "models_capacity", cat: "MODELS", name: "src/models/capacity_logistics.py", title: "Capacity & Shipment Schemas", desc: "Schemas for fact_capacity and fact_shipment. Validates 168-hour weekly calendar boundaries, computes net available hours, and tracks cold-chain transit delivery milestones." },
+            { id: "models_control_tower", cat: "MODELS", name: "src/models/control_tower.py", title: "Control Tower & Governance Schemas", desc: "Schemas for Tier 6 governance tables. Enforces mandatory human-in-the-loop validation: raises ValidationError if human_approval_required is set to False." },
+            
+            { id: "agent_contracts", cat: "AGENT", name: "src/agent/contracts.py", title: "AI Agent Typed Tool Contracts", desc: "Rigid Pydantic contracts governing tool inputs and outputs. Guarantees that the AI agent receives structured responses containing physical database record IDs and explicit confidence fields." },
+            
+            { id: "gen_config", cat: "GENERATOR", name: "src/generator/config.py", title: "Generator Configuration", desc: "Centralized configuration defining network parameters, export directory paths, date horizons (2024-10-28 to 2026-10-19), and fixed baseline seed 20261014." },
+            { id: "gen_master", cat: "GENERATOR", name: "src/generator/master_data.py", title: "Master Data Synthesizer", desc: "Deterministic synthesizer creating 8 master dimensions and 4 bridges with 100% referential integrity, calibrated shelf lives, and BOM scrap factors." },
+            { id: "gen_demand", cat: "GENERATOR", name: "src/generator/demand_data.py", title: "Demand History Synthesizer", desc: "Generates 104 weeks of commercial demand across SKUs and markets. Models base trends, annual sinusoids, and injects Indian Monsoon surges (+35%) and Diwali adjustments." },
+            { id: "gen_supply", cat: "GENERATOR", name: "src/generator/supply_data.py", title: "Supply Operations Synthesizer", desc: "Synthesizes operational supply chain activity: purchase orders, plant batches, QC release dates, line operating hours, and physical inventory lots." },
+            { id: "gen_disruptions", cat: "GENERATOR", name: "src/generator/disruption_injector.py", title: "Disruption Scenarios Injector", desc: "Controlled injection engine for benchmark disruption Scenarios A through E (API delay, sterility retest, carton shortage, expiry exposure, line maintenance overhaul)." },
+            { id: "gen_runner", cat: "GENERATOR", name: "src/generator/runner.py", title: "Master Export Orchestrator", desc: "Orchestrates end-to-end data generation and executes tri-format export: SQLite (control_tower.db), 30 Apache Parquet files, 30 CSV files, and multi-tab Excel." },
+            
+            { id: "eng_fefo_rules", cat: "ENGINE", name: "src/engine/fefo_rules.py", title: "Foundational FEFO Rules", desc: "Baseline FEFO sorting and shelf-life eligibility filter module built in Day 05." },
+            { id: "eng_inventory", cat: "ENGINE", name: "src/engine/inventory.py", title: "Lot-Level FEFO Allocation Engine", desc: "Institutional-grade FEFO engine. Filters lots by quality status ('Released') and recall status ('None'), evaluates market MARSL thresholds (RSL >= 90d), and sequentially depletes stock in ascending expiry order." },
+            { id: "eng_projections", cat: "ENGINE", name: "src/engine/projections.py", title: "26-Week Inventory Projection Engine", desc: "Computes recursive forward stock trajectories: I_t = I_{t-1} + R_t + P_t - D_t. Incorporates lead-time offsets, scheduled PO receipts, planned production, and dynamic forward expiry decrementing." },
+            { id: "eng_mrp", cat: "ENGINE", name: "src/engine/mrp.py", title: "BOM Explosion & Netting Engine", desc: "Recursively explodes finished batches into raw APIs and packaging materials with chemical scrap factors (Gross = Order * Ratio * (1 + Scrap%)). Nets requirements against qualified stock and back-schedules PO release dates." },
+            { id: "eng_analytics", cat: "ENGINE", name: "src/engine/analytics.py", title: "Supplier OTIF & Capacity Analytics", desc: "Evaluates Purchase Order OTIF (delivered on-time AND >=98% quantity). Computes line capacity utilization against net available hours (168h - maintenance - cleaning) and detects bottleneck overloads." },
+            { id: "eng_reconciliation", cat: "ENGINE", name: "src/engine/reconciliation.py", title: "Mathematical Stock Reconciliation", desc: "Complete mathematical conservation auditor across all 122 network items over 26 weeks. Formally proved 0.000000% inventory drift across all echelons." },
+            
+            { id: "fst_prep", cat: "FORECASTING", name: "src/forecasting/prep.py", title: "Time-Series Preprocessing & Leakage", desc: "Chronologically splits 104 weeks into 78w train / 13w validation / 13w holdout test (0 date overlap). Synthesizes 31 causal features (12 lags, 12 rolling stats on y.shift(1), Fourier seasonality). Automated leakage audit verifies 0.0000 target correlation." },
+            { id: "fst_baseline", cat: "FORECASTING", name: "src/forecasting/baseline.py", title: "Statistical Baseline Suite & Hurdle", desc: "Implements Seasonal Naive (m=52), Moving Averages (4, 12), and Holt-Winters Additive Seasonality. Establishes official executive hurdle rate: Seasonal Naive 52 at 16.23% WAPE." },
+            { id: "fst_ml", cat: "FORECASTING", name: "src/forecasting/ml_models.py", title: "Ridge Champion & Prediction Intervals", desc: "L2-Regularized Ridge Regression Champion (alpha=10.0) achieving 7.76% WAPE on holdout data (+52.2% error reduction over baseline). Implements expanding horizon prediction intervals: sigma_h = sigma_0 * sqrt(1 + 0.05*(h-1)) for P10/P50/P90." },
+            { id: "fst_eval", cat: "FORECASTING", name: "src/forecasting/evaluation.py", title: "Slice Evaluation & Version Registry", desc: "Multi-dimensional slice analytics (SKU T10: 9.05%, T30: 7.07%; Hyd: 7.85%, Pun: 9.00%; W01-W04: 9.87%, W05-W12: 6.25%). Tracking signal drift monitoring (|TS| > 4.0 alarms) and ForecastRegistry for SQLite persistence." },
+            { id: "fst_anomaly", cat: "FORECASTING", name: "src/forecasting/anomaly.py", title: "Demand Anomaly & Impact Engine", desc: "Dual-algorithm anomaly detection: Rolling Volatility Z-Score (Z >= 3.0) and Tukey's IQR Fences. Detects structural step-changes and regional channel distortions. Propagates downstream impacts: days of supply delta, safety stock burn %, and financial exposure." },
+            
+            { id: "sch_builder", cat: "SCHEDULE", name: "build_refined_3tab_schedule.py", title: "Master 3-Tab Schedule Generator", desc: "Programmatically generates the 3-tab executive roadmap spreadsheet: 12_Week_Executive_Summary, Weekly_Implementation_Plan, and Daily_Sprint_Backlog." }
+        ];
+
+        // Math Formulas Metadata
+        const MATH_FORMULAS = [
+            { id: "f1", group: "INVENTORY", name: "Inventory Balance Identity", formula: "I_t = I_{t-1} + R_t + P_t - D_t", file: "src/engine/projections.py", desc: "Governs multi-echelon discrete-time stock trajectories. Ending inventory equals starting carryover plus inbound PO receipts plus production receipts minus commercial demand.", vars: "I_t: Ending stock at week t; R_t: Inbound PO receipts; P_t: Plant production output; D_t: Consumed commercial demand." },
+            { id: "f2", group: "INVENTORY", name: "MARSL Remaining Shelf Life", formula: "RSL_{days} = Expiry\\_Date - (Dispatch\\_Date + Transit\\_Days) \\ge MARSL", file: "src/engine/inventory.py", desc: "Calculates physical shelf life remaining upon anticipated delivery to customer. If RSL < MARSL (e.g. 90 days for hospital tenders), lot dispatch is strictly blocked.", vars: "Expiry_Date: Physical lot expiration; Transit_Days: Road reefer lead time; MARSL: Contractual shelf life threshold." },
+            { id: "f3", group: "INVENTORY", name: "BOM Gross Requirements with Scrap", formula: "Gross_m = Order\\_Qty \\times Ratio_m \\times \\left(1 + \\frac{Scrap\\_Pct_m}{100}\\right)", file: "src/engine/mrp.py", desc: "Calculates total chemical and packaging requirement including chemical reaction losses and startup line scrap (1.0% to 3.5%).", vars: "Order_Qty: Finished packs to produce; Ratio_m: Recipe kg/pack; Scrap_Pct: Yield loss allowance." },
+            { id: "f4", group: "INVENTORY", name: "MRP Component Netting", formula: "Net_m = \\max\\left(0, \\; Gross_m - (Qualified\\_Stock_m + Scheduled\\_PO_m)\\right)", file: "src/engine/mrp.py", desc: "Subtracts available released stock and scheduled purchase orders from gross requirements to determine true procurement deficit.", vars: "Qualified_Stock: Released unexpired inventory; Scheduled_PO: Inbound orders arriving before production date." },
+            { id: "f5", group: "INVENTORY", name: "PO Release Backward Scheduling", formula: "T_{PO\\_Release} = T_{Required} - Lead\\_Time_{supplier}", file: "src/engine/mrp.py", desc: "Determines the exact calendar date a purchase order must be issued so material arrives prior to production start.", vars: "T_Required: Plant batch start date; Lead_Time: Contracted vendor delivery duration in days." },
+            { id: "f6", group: "INVENTORY", name: "Purchase Order OTIF Metric", formula: "OTIF = \\mathbb{I}(Actual \\le Promised) \\times \\mathbb{I}\\left(\\frac{Delivered}{Ordered} \\ge 0.98\\right)", file: "src/engine/analytics.py", desc: "Binary supplier SLA scorecard. Passes if and only if delivery was on-time AND delivered at least 98% of ordered volume.", vars: "Actual: Actual receipt date; Promised: Contractual SLA date; Delivered/Ordered: Fill rate." },
+            { id: "f7", group: "INVENTORY", name: "Line Capacity Utilization", formula: "Util\\% = \\frac{Committed\\_Hours}{168.0 - Maintenance\\_Hours - Sanitization\\_Hours} \\times 100", file: "src/engine/analytics.py", desc: "Computes production loading percentage against physical 168-hour calendar limits. Flags overloads (>95%) and maintenance conflicts.", vars: "Committed_Hours: Scheduled batch run hours; 168.0: Total weekly hours." },
+            { id: "f8", group: "INVENTORY", name: "Physical Stock Conservation", formula: "Drift\\% = \\frac{|Inflows - Outflows - \\Delta Stock|}{Initial\\_Stock} \\times 100 = 0.000000\\%", file: "src/engine/reconciliation.py", desc: "Audits that the simulation engine does not create or destroy physical inventory. Verified across 122 network items over 26 weeks.", vars: "Inflows: Receipts/production; Outflows: Dispatches/consumption/scrap; Delta Stock: Inventory change." },
+            
+            { id: "f9", group: "FORECASTING", name: "Weighted Absolute % Error (WAPE)", formula: "WAPE = \\frac{\\sum_{t=1}^N |y_t - \\hat{y}_t|}{\\sum_{t=1}^N y_t} \\times 100\\%", file: "src/forecasting/baseline.py", desc: "Standard volume-weighted error metric. Avoids division-by-zero distortion common in classical MAPE when demand is near zero.", vars: "y_t: Actual demand; \\hat{y}_t: Forecasted demand." },
+            { id: "f10", group: "FORECASTING", name: "Forecast Bias Percentage", formula: "Bias\\% = \\frac{\\sum_{t=1}^N (\\hat{y}_t - y_t)}{\\sum_{t=1}^N y_t} \\times 100\\%", file: "src/forecasting/baseline.py", desc: "Identifies systemic over-forecasting (positive bias -> excess inventory/expiry) or under-forecasting (negative bias -> stockouts).", vars: "\\hat{y}_t - y_t: Forecast error sum." },
+            { id: "f11", group: "FORECASTING", name: "Tracking Signal (TS)", formula: "TS_t = \\frac{\\sum_{i=1}^t (\\hat{y}_i - y_i)}{MAD_t}, \\quad MAD_t = \\frac{1}{t}\\sum_{i=1}^t |y_i - \\hat{y}_i|", file: "src/forecasting/evaluation.py", desc: "Statistical process control. Triggers automated retraining alarm when |TS| > 4.0, indicating persistent model drift.", vars: "MAD: Mean Absolute Deviation; TS: Tracking Signal." },
+            { id: "f12", group: "FORECASTING", name: "Fourier Annual Seasonality", formula: "Season_{sin} = \\sin\\left(\\frac{2\\pi \\cdot w}{52.1775}\\right), \\quad Season_{cos} = \\cos\\left(\\frac{2\\pi \\cdot w}{52.1775}\\right)", file: "src/forecasting/prep.py", desc: "Transforms calendar weeks into continuous circular trigonometric coordinates, eliminating artificial boundaries between week 52 and week 1.", vars: "w: Calendar week of year (1 to 52)." },
+            { id: "f13", group: "FORECASTING", name: "L2-Regularized Ridge Objective", formula: "\\min_w \\|Xw - y\\|_2^2 + \\alpha \\|w\\|_2^2 \\quad (\\alpha = 10.0)", file: "src/forecasting/ml_models.py", desc: "Champion forecasting model. Solved via closed-form convex formula w = (X^T X + \\alpha I)^{-1} X^T y. Guarantees deterministic weights and shrinks collinear lag features.", vars: "X: 31 causal features matrix; y: Commercial demand target; \\alpha: L2 penalty parameter." },
+            { id: "f14", group: "FORECASTING", name: "Expanding Horizon Bounds (P10/P90)", formula: "\\sigma_h = \\sigma_0 \\sqrt{1 + 0.05(h-1)}, \\quad P_{10/90} = \\hat{y}_h \\mp 1.282\\sigma_h", file: "src/forecasting/ml_models.py", desc: "Expands uncertainty as forecast horizon extends from week 1 to week 26. P90 sizes safety stocks; P10 evaluates inventory holding risk.", vars: "\\sigma_0: In-sample residual standard deviation; h: Horizon week (1 to 26); 1.282: 80% coverage z-score." },
+            
+            { id: "f15", group: "ANOMALY", name: "Rolling Volatility Z-Score", formula: "Z_t = \\frac{y_t - \\mu_{t-1, W}}{\\sigma_{t-1, W}} \\quad (W = 12\\text{ weeks}, \\; |Z| \\ge 3.0)", file: "src/forecasting/anomaly.py", desc: "Normalizes demand spikes relative to historical moving volatility. Handles constant historical series (sigma=0) with relative difference fallback.", vars: "\\mu: 12-week backward mean; \\sigma: 12-week sample standard deviation." },
+            { id: "f16", group: "ANOMALY", name: "Non-Parametric Tukey's IQR Fences", formula: "IQR = Q_3 - Q_1, \\quad [Lower, Upper] = [Q_1 - 1.5\\cdot IQR, \\; Q_3 + 1.5\\cdot IQR]", file: "src/forecasting/anomaly.py", desc: "Distribution-free outlier detector resistant to existing extreme historical spikes.", vars: "Q_1: 25th percentile; Q_3: 75th percentile; IQR: Interquartile Range." },
+            { id: "f17", group: "ANOMALY", name: "Structural Step-Change Drift", formula: "\\Delta_{shift} = \\frac{\\mu_{4wk} - \\mu_{12wk}}{\\mu_{12wk}} \\quad (|\\Delta| \\ge 35\\%)", file: "src/forecasting/anomaly.py", desc: "Differentiates between a single-week seasonal spike and a permanent step-change in base commercial velocity.", vars: "\\mu_{4wk}: Short-term moving mean; \\mu_{12wk}: Baseline long-term mean." },
+            { id: "f18", group: "ANOMALY", name: "Downstream Supply Chain Impact", formula: "\\Delta DoS = -\\frac{y_t - \\hat{y}_t}{\\hat{y}_t / 7}, \\quad SS\\_Burn\\% = \\min\\left(100.0, \\; \\frac{Surge}{SS} \\times 100\\right)", file: "src/forecasting/anomaly.py", desc: "Deterministically translates statistical anomalies into operational impacts: forward days of supply consumed, safety stock burn, and financial exposure ($).", vars: "DoS: Days of Supply; SS: Safety Stock buffer." }
+        ];
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (tabId === 'database') initDatabaseView();
+            if (tabId === 'code') initCodeView();
+            if (tabId === 'math') initMathView();
+        }
+
+        // Initialize Database Explorer
+        function initDatabaseView() {
+            renderDbList(DB_TABLES);
+            selectDbTable(DB_TABLES[0].id);
+        }
+
+        function renderDbList(tables) {
+            const listEl = document.getElementById('db-list');
+            listEl.innerHTML = '';
+            tables.forEach(t => {
+                const row = document.createElement('div');
+                row.className = 'list-row';
+                row.id = 'db-row-' + t.id;
+                row.onclick = () => selectDbTable(t.id);
+                row.innerHTML = `
+                    <div class="list-row-title">${t.name}</div>
+                    <div class="list-row-sub">${t.title} • <span class="badge" style="padding:1px 5px; font-size:10px;">${t.tier}</span></div>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        function selectDbTable(tableId) {
+            document.querySelectorAll('#db-list .list-row').forEach(el => el.classList.remove('active'));
+            const row = document.getElementById('db-row-' + tableId);
+            if (row) row.classList.add('active');
+
+            const t = DB_TABLES.find(x => x.id === tableId);
+            if (!t) return;
+
+            const detailEl = document.getElementById('db-detail');
+            detailEl.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+                    <div>
+                        <h3 style="font-size:20px; font-weight:700; color:#fff;">${t.name}</h3>
+                        <p style="font-size:13px; color:var(--accent-blue);">${t.title}</p>
+                    </div>
+                    <span class="badge green">${t.tier} • ${t.records} Records Populated</span>
+                </div>
+
+                <div class="card" style="background:#111827; margin-bottom:16px;">
+                    <div style="font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Why We Chose This Table & Domain Purpose</div>
+                    <p style="font-size:13.5px; color:#e2e8f0; line-height:1.6;">${t.desc}</p>
+                </div>
+
+                <div style="margin-bottom:14px;">
+                    <div style="font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Primary Key & Grain</div>
+                    <code class="inline" style="font-size:13px;">${t.pk}</code>
+                </div>
+
+                <div>
+                    <div style="font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px;">Columns & Foreign Keys</div>
+                    <pre><code>${t.cols.join('\n')}</code></pre>
+                </div>
+            `;
+        }
+
+        function filterDatabase() {
+            const query = document.getElementById('db-search').value.toLowerCase();
+            const filtered = DB_TABLES.filter(t => t.name.toLowerCase().includes(query) || t.title.toLowerCase().includes(query) || t.desc.toLowerCase().includes(query));
+            renderDbList(filtered);
+            if (filtered.length > 0) selectDbTable(filtered[0].id);
+        }
+
+        function filterDbTier(tier, btn) {
+            document.querySelectorAll('#tab-database .filter-chip').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            if (tier === 'ALL') {
+                renderDbList(DB_TABLES);
+                selectDbTable(DB_TABLES[0].id);
+            } else {
+                const filtered = DB_TABLES.filter(t => t.tier === tier);
+                renderDbList(filtered);
+                if (filtered.length > 0) selectDbTable(filtered[0].id);
+            }
+        }
+
+        // Initialize Code Files Explorer
+        function initCodeView() {
+            renderCodeList(CODE_FILES);
+            selectCodeFile(CODE_FILES[0].id);
+        }
+
+        function renderCodeList(files) {
+            const listEl = document.getElementById('code-list');
+            listEl.innerHTML = '';
+            files.forEach(f => {
+                const row = document.createElement('div');
+                row.className = 'list-row';
+                row.id = 'code-row-' + f.id;
+                row.onclick = () => selectCodeFile(f.id);
+                row.innerHTML = `
+                    <div class="list-row-title">${f.name.split('/').pop()}</div>
+                    <div class="list-row-sub">${f.title} • <span class="badge" style="padding:1px 5px; font-size:10px;">${f.cat}</span></div>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        function selectCodeFile(fileId) {
+            document.querySelectorAll('#code-list .list-row').forEach(el => el.classList.remove('active'));
+            const row = document.getElementById('code-row-' + fileId);
+            if (row) row.classList.add('active');
+
+            const f = CODE_FILES.find(x => x.id === fileId);
+            if (!f) return;
+
+            const detailEl = document.getElementById('code-detail');
+            detailEl.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+                    <div>
+                        <h3 style="font-size:18px; font-weight:700; color:#fff;">${f.name}</h3>
+                        <p style="font-size:13px; color:var(--accent-blue);">${f.title}</p>
+                    </div>
+                    <span class="badge purple">${f.cat}</span>
+                </div>
+
+                <div class="card" style="background:#111827; margin-bottom:16px;">
+                    <div style="font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Operational Role & Implementation Details</div>
+                    <p style="font-size:13.5px; color:#e2e8f0; line-height:1.6;">${f.desc}</p>
+                </div>
+
+                <div class="card" style="background:#090d16; border:1px solid var(--border-color);">
+                    <div style="font-size:12px; font-weight:600; color:var(--accent-green); margin-bottom:6px;">✓ Verified in Automated Test Suite</div>
+                    <p style="font-size:12px; color:var(--text-secondary);">Covered under 189 passing unit tests with 100% pass rate in 4.03s.</p>
+                </div>
+            `;
+        }
+
+        function filterCode() {
+            const query = document.getElementById('code-search').value.toLowerCase();
+            const filtered = CODE_FILES.filter(f => f.name.toLowerCase().includes(query) || f.title.toLowerCase().includes(query) || f.desc.toLowerCase().includes(query));
+            renderCodeList(filtered);
+            if (filtered.length > 0) selectCodeFile(filtered[0].id);
+        }
+
+        function filterCodeCategory(cat, btn) {
+            document.querySelectorAll('#tab-code .filter-chip').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            if (cat === 'ALL') {
+                renderCodeList(CODE_FILES);
+                selectCodeFile(CODE_FILES[0].id);
+            } else {
+                const filtered = CODE_FILES.filter(f => f.cat === cat);
+                renderCodeList(filtered);
+                if (filtered.length > 0) selectCodeFile(filtered[0].id);
+            }
+        }
+
+        // Initialize Math Lab
+        function initMathView() {
+            renderMathList(MATH_FORMULAS);
+            selectMathFormula(MATH_FORMULAS[0].id);
+        }
+
+        function renderMathList(formulas) {
+            const listEl = document.getElementById('math-list');
+            listEl.innerHTML = '';
+            formulas.forEach(m => {
+                const row = document.createElement('div');
+                row.className = 'list-row';
+                row.id = 'math-row-' + m.id;
+                row.onclick = () => selectMathFormula(m.id);
+                row.innerHTML = `
+                    <div class="list-row-title">${m.name}</div>
+                    <div class="list-row-sub">${m.file.split('/').pop()} • <span class="badge" style="padding:1px 5px; font-size:10px;">${m.group}</span></div>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        function selectMathFormula(formulaId) {
+            document.querySelectorAll('#math-list .list-row').forEach(el => el.classList.remove('active'));
+            const row = document.getElementById('math-row-' + formulaId);
+            if (row) row.classList.add('active');
+
+            const m = MATH_FORMULAS.find(x => x.id === formulaId);
+            if (!m) return;
+
+            const detailEl = document.getElementById('math-detail');
+            detailEl.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                    <div>
+                        <h3 style="font-size:18px; font-weight:700; color:#fff;">${m.name}</h3>
+                        <p style="font-size:13px; color:var(--accent-purple);">Implemented in: <code>${m.file}</code></p>
+                    </div>
+                    <span class="badge purple">${m.group}</span>
+                </div>
+
+                <div class="formula-box">
+                    ${m.formula}
+                </div>
+
+                <div class="card" style="background:#111827; margin-bottom:16px;">
+                    <div style="font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Why This Formula Was Chosen & Supply Chain Reality</div>
+                    <p style="font-size:13.5px; color:#e2e8f0; line-height:1.6;">${m.desc}</p>
+                </div>
+
+                <div class="card" style="background:#0f172a; margin-bottom:16px;">
+                    <div style="font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Variable Glossary & Dimensions</div>
+                    <p style="font-size:13px; color:#cbd5e1; line-height:1.6;">${m.vars}</p>
+                </div>
+
+                ${renderInteractiveWidget(m.id)}
+            `;
+        }
+
+        function renderInteractiveWidget(formulaId) {
+            if (formulaId === 'f9') {
+                return `
+                    <div class="calc-widget">
+                        <div style="font-size:13px; font-weight:600; color:#fff; margin-bottom:8px;">⚡ Live WAPE Interactive Calculator</div>
+                        <div class="calc-row">
+                            <label>Sum |Actual - Forecast|:</label>
+                            <input type="number" id="wape-err" value="236.2" oninput="runWapeCalc()">
+                        </div>
+                        <div class="calc-row">
+                            <label>Sum Actual Demand:</label>
+                            <input type="number" id="wape-act" value="3043.8" oninput="runWapeCalc()">
+                        </div>
+                        <div class="calc-result" id="wape-res">Calculated WAPE: 7.76% (Clears 16.23% Hurdle!)</div>
+                    </div>
+                `;
+            }
+            if (formulaId === 'f1') {
+                return `
+                    <div class="calc-widget">
+                        <div style="font-size:13px; font-weight:600; color:#fff; margin-bottom:8px;">⚡ Live Stock Balance Calculator (I_t = I_{t-1} + R + P - D)</div>
+                        <div class="calc-row">
+                            <label>Starting Stock (I_{t-1}):</label>
+                            <input type="number" id="sb-prev" value="12000" oninput="runStockCalc()">
+                        </div>
+                        <div class="calc-row">
+                            <label>PO Receipts (R_t):</label>
+                            <input type="number" id="sb-rcpt" value="5000" oninput="runStockCalc()">
+                        </div>
+                        <div class="calc-row">
+                            <label>Production Receipts (P_t):</label>
+                            <input type="number" id="sb-prod" value="4000" oninput="runStockCalc()">
+                        </div>
+                        <div class="calc-row">
+                            <label>Commercial Demand (D_t):</label>
+                            <input type="number" id="sb-dmd" value="6500" oninput="runStockCalc()">
+                        </div>
+                        <div class="calc-result" id="sb-res">Ending Available Stock: 14,500 packs (Healthy)</div>
+                    </div>
+                `;
+            }
+            return '';
+        }
+
+        function runWapeCalc() {
+            const err = parseFloat(document.getElementById('wape-err').value) || 0;
+            const act = parseFloat(document.getElementById('wape-act').value) || 1;
+            const wape = ((err / act) * 100).toFixed(2);
+            const status = wape < 16.23 ? "Clears 16.23% Hurdle!" : "Exceeds Baseline Hurdle";
+            document.getElementById('wape-res').innerText = `Calculated WAPE: ${wape}% (${status})`;
+        }
+
+        function runStockCalc() {
+            const prev = parseFloat(document.getElementById('sb-prev').value) || 0;
+            const rcpt = parseFloat(document.getElementById('sb-rcpt').value) || 0;
+            const prod = parseFloat(document.getElementById('sb-prod').value) || 0;
+            const dmd = parseFloat(document.getElementById('sb-dmd').value) || 0;
+            const end = prev + rcpt + prod - dmd;
+            const status = end < 0 ? "STOCKOUT WARNING!" : (end < 3000 ? "Safety Stock Breach" : "Healthy Buffer");
+            document.getElementById('sb-res').innerText = `Ending Available Stock: ${end.toLocaleString()} packs (${status})`;
+        }
+
+        function filterMath() {
+            const query = document.getElementById('math-search').value.toLowerCase();
+            const filtered = MATH_FORMULAS.filter(m => m.name.toLowerCase().includes(query) || m.formula.toLowerCase().includes(query) || m.desc.toLowerCase().includes(query));
+            renderMathList(filtered);
+            if (filtered.length > 0) selectMathFormula(filtered[0].id);
+        }
+
+        function filterMathGroup(group, btn) {
+            document.querySelectorAll('#tab-math .filter-chip').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            if (group === 'ALL') {
+                renderMathList(MATH_FORMULAS);
+                selectMathFormula(MATH_FORMULAS[0].id);
+            } else {
+                const filtered = MATH_FORMULAS.filter(m => m.group === group);
+                renderMathList(filtered);
+                if (filtered.length > 0) selectMathFormula(filtered[0].id);
+            }
+        }
+
+        // Accordion Toggle
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            item.classList.toggle('open');
+            const arrow = header.querySelector('span:last-child');
+            arrow.innerText = item.classList.contains('open') ? '▲' : '▼';
+        }
+
+        // Copy Pitch Script
+        function copyPitch() {
+            const text = document.getElementById('pitch-text').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Executive Pitch copied to clipboard! You can paste it into your speaking notes.");
+            });
+        }
+
+        // Auto-run on load
+        window.onload = function() {
+            initDatabaseView();
+        };
+    </script>
+</body>
+</html>
