@@ -576,12 +576,12 @@
         <nav>
             <div class="nav-header">Navigation Hub</div>
             <ul class="nav-menu">
-                <li class="nav-item active" onclick="switchTab('erd')"><span class="icon">🗄️</span> 1. 33-Entity Data Model</li>
-                <li class="nav-item" onclick="switchTab('code')"><span class="icon">💻</span> 2. Code & Functions (26)</li>
-                <li class="nav-item" onclick="switchTab('tests')"><span class="icon">🧪</span> 3. Test Suites & Verifications</li>
-                <li class="nav-item" onclick="switchTab('metrics')"><span class="icon">📐</span> 4. Metrics & Formulas Lab</li>
-                <li class="nav-item" onclick="switchTab('stress')"><span class="icon">⚠️</span> 5. Disruption Stress Tests</li>
-                <li class="nav-item" onclick="switchTab(\'glossary\')"><span class="icon">📖</span> 6. Acronyms & Full Forms</li>
+                <li class="nav-item active" data-tab="erd" onclick="switchTab('erd', this)"><span class="icon">🗄️</span> 1. 33-Entity Data Model</li>
+                <li class="nav-item" data-tab="code" onclick="switchTab('code', this)"><span class="icon">💻</span> 2. Code & Functions (26)</li>
+                <li class="nav-item" data-tab="tests" onclick="switchTab('tests', this)"><span class="icon">🧪</span> 3. Test Suites & Verifications</li>
+                <li class="nav-item" data-tab="metrics" onclick="switchTab('metrics', this)"><span class="icon">📐</span> 4. Metrics & Formulas Lab</li>
+                <li class="nav-item" data-tab="stress" onclick="switchTab('stress', this)"><span class="icon">⚠️</span> 5. Disruption Stress Tests</li>
+                <li class="nav-item" data-tab="glossary" onclick="switchTab('glossary', this)"><span class="icon">📖</span> 6. Acronyms & Full Forms</li>
             </ul>
 
             <div class="nav-footer">
@@ -790,17 +790,33 @@
         const METRICS_DATA = [{"id": "drift", "name": "Inventory Reconciliation Drift (0.000000%)", "category": "INVENTORY & RECONCILIATION", "badge": "0.000000% DRIFT", "formula": "\\Delta = I_t - (I_{t-1} + R_t + P_t - D_t) = 0", "summary": "Mathematical conservation of physical mass across multi-echelon network nodes.", "why": "In pharmaceutical supply chains, rounding errors, unrecorded shrinkage, or uncoordinated batch receipts create phantom inventory in ERP systems. If an AI makes decisions based on ghost stock, critical antibiotic orders go unfulfilled, resulting in hospital shortages or unexpected stockouts. Our multi-echelon reconciliation engine tests all 122 network items across 26 weeks, proving exactly 0.000000% inventory drift.", "variables": "I_t: Ending Inventory at week t | I_{t-1}: Beginning Inventory | R_t: Scheduled Replenishment Receipts | P_t: Net Plant Production | D_t: Consumed Customer Demand."}, {"id": "wape", "name": "Weighted Absolute Percentage Error (WAPE)", "category": "FORECASTING & ACCURACY", "badge": "7.76% WAPE (Hurdle: 16.23%)", "formula": "\\text{WAPE} = \\frac{\\sum |y_t - \\hat{y}_t|}{\\sum y_t} \\times 100\\%", "summary": "Volume-weighted accuracy metric proving superiority over baseline hurdles.", "why": "Why WAPE instead of MAPE? In pharma, retail markets often have weeks with zero or near-zero sales. Standard MAPE (Mean Absolute Percentage Error) divides by actual sales (y_t); when y_t = 0, MAPE explodes to infinity or produces absurd 1,000%+ errors. WAPE sums absolute errors across all time periods and divides by total volume, ensuring high-volume hospital packs are weighted appropriately. Our Ridge champion achieved 7.76% WAPE, beating the 16.23% Seasonal Naive hurdle by 52.2% error reduction.", "variables": "y_t: Actual demand in week t | \\hat{y}_t: Predicted demand forecast | N: Number of evaluation weeks."}, {"id": "bias", "name": "Forecast Bias Percentage (Tracking Signal)", "category": "FORECASTING & ACCURACY", "badge": "TARGET: \u00b13.0%", "formula": "\\text{Bias \\%} = \\frac{\\sum (\\hat{y}_t - y_t)}{\\sum y_t} \\times 100\\%", "summary": "Directional tendency to systematically over-forecast or under-forecast.", "why": "A forecaster can have low WAPE but dangerous directional bias. If Bias is positive (+15%), the system consistently over-estimates demand, leading to excess warehouse stock, bloated holding costs, and expired drugs written off. If Bias is negative (-15%), the system systematically under-forecasts, starving lines and causing stockouts. Our champion model achieved near-zero bias (-0.8%).", "variables": "\\hat{y}_t: Forecast | y_t: Actual Demand | Positive Bias = Over-forecasting | Negative Bias = Under-forecasting."}, {"id": "rmse_mae", "name": "RMSE vs MAE (Outlier Severity Penalty)", "category": "FORECASTING & ACCURACY", "badge": "RMSE: 265 packs | MAE: 201 packs", "formula": "\\text{RMSE} = \\sqrt{\\frac{1}{N} \\sum (y_t - \\hat{y}_t)^2}, \\quad \\text{MAE} = \\frac{1}{N} \\sum |y_t - \\hat{y}_t|", "summary": "Quadratic error penalty (RMSE) versus linear average deviation (MAE).", "why": "RMSE squares individual residuals before averaging, which severely penalizes large, catastrophic forecasting misses (e.g. missing a 5,000-pack pandemic surge). MAE gives uniform linear weighting to all errors. In pharmaceutical manufacturing, a single massive forecasting miss is far more destructive than several small 50-pack variances because it causes sudden factory line stoppages.", "variables": "y_t: Actual demand | \\hat{y}_t: Predicted demand | N: Total weeks."}, {"id": "otif", "name": "On-Time In-Full (OTIF) Supplier Compliance", "category": "SUPPLY & SOURCING", "badge": "TARGET: >= 95.0%", "formula": "\\text{OTIF \\%} = \\frac{\\text{Orders Delivered on or before Promised Date with 100\\% Qty}}{\\text{Total Orders Placed}} \\times 100\\%", "summary": "Gold-standard KPI measuring supplier delivery reliability and contract SLA adherence.", "why": "In pharmaceutical manufacturing, active ingredients and packaging must arrive in tandem. If an API supplier delivers on time but only provides 60% of the volume, the cleanroom cannot run a full batch, leaving expensive cleanroom assets idle. Our system tracks supplier OTIF against the 95.0% threshold (Scenario A models a supplier OTIF breach where Aurobindo delays delivery by +14 days).", "variables": "On-Time: Delivery Date <= Promised Date | In-Full: Delivered Quantity >= Ordered Quantity."}, {"id": "marsl", "name": "Minimum Acceptable Remaining Shelf Life (MARSL)", "category": "QUALITY & FEFO", "badge": "HOSPITAL GATE: 90 DAYS", "formula": "\\text{RSL}_{\\text{delivery}} = \\text{Expiry Date} - (\\text{Dispatch Date} + \\text{Transit Days}) \\ge \\text{MARSL}", "summary": "Strict regulatory shelf life gating barring the dispatch of aging medicines.", "why": "Unlike consumer electronics or apparel, pharmaceuticals have fixed chemical expiration dates governed by stability testing. Hospitals refuse to accept antibiotic batches with fewer than 90 days of shelf life remaining, while export markets often require 180 days. Our FEFO allocation engine automatically gates batches against bridge_sku_market, blocking dispatch and flagging lot write-off risks (Scenario D).", "variables": "RSL: Remaining Shelf Life | MARSL: Minimum Acceptable Remaining Shelf Life threshold per customer/market."}, {"id": "line_util", "name": "Cleanroom Capacity Utilization Percentage", "category": "MANUFACTURING & BOTTLENECKS", "badge": "WARNING GATE: > 95.0%", "formula": "\\text{Utilization \\%} = \\frac{\\sum \\text{Committed Run Hours}}{\\text{Gross Available Hours} - \\text{Preventive Maintenance Hours}} \\times 100\\%", "summary": "Detects packaging bottlenecks, line starvation, and maintenance scheduling conflicts.", "why": "Cleanroom lines require scheduled HEPA filter sanitization, tooling changeovers, and preventive maintenance. If committed hours exceed 95% of net available hours, the line has zero buffer for unplanned breakdowns. Our capacity engine alerts planners when maintenance windows (e.g. 120-hour overhaul in Scenario E) clash with expedited batch orders.", "variables": "Committed Run Hours = Batch Qty / Standard Run Rate | Net Hours = 168h - Maintenance - Changeover."}, {"id": "zscore", "name": "Volatility-Adjusted Demand Anomaly Z-Score", "category": "ANOMALY DETECTION", "badge": "TRIGGER: Z >= 3.0", "formula": "Z_t = \\frac{|x_t - \\mu_{4w}|}{\\max(\\sigma_{4w}, \\epsilon)}, \\quad \\epsilon = 1.0", "summary": "Statistical detection of sudden demand surges, product recalls, or pandemic spikes.", "why": "A sudden surge in antibiotic orders could represent a genuine regional outbreak or an erroneous double-entry order. Our Day 24 anomaly engine computes rolling 4-week mean and standard deviation with a zero-variance epsilon guard. If Z >= 3.0, it triggers an expedited packaging alert and calculates forward days of supply consumed.", "variables": "x_t: Current week demand | \\mu_{4w}: Rolling 4-week mean | \\sigma_{4w}: Rolling 4-week std dev | \\epsilon: Zero-variance guard."}, {"id": "tukey_iqr", "name": "Tukey's Non-Parametric IQR Fences", "category": "ANOMALY DETECTION", "badge": "FENCE: [Q1 - 1.5*IQR, Q3 + 1.5*IQR]", "formula": "\\text{IQR} = Q_3 - Q_1, \\quad \\text{Lower Fence} = Q_1 - 1.5 \\times \\text{IQR}, \\quad \\text{Upper Fence} = Q_3 + 1.5 \\times \\text{IQR}", "summary": "Distribution-agnostic outlier fence robust against highly skewed pharmaceutical demand.", "why": "Z-scores assume normal (Gaussian) distribution, which fails during seasonal flu epidemics or post-monsoon dengue outbreaks where demand is heavily skewed. Tukey's fences rely on medians and interquartile ranges, identifying true epidemiological anomalies without parametric distribution assumptions.", "variables": "Q_1: 25th percentile | Q_3: 75th percentile | IQR: Interquartile Range | Factor: 1.5."}, {"id": "step_drift", "name": "Structural Step-Change Drift Delta", "category": "ANOMALY DETECTION", "badge": "DRIFT TRIGGER: |\\Delta| >= 35.0%", "formula": "\\Delta_{\\text{drift}} = \\frac{\\text{SMA}_{4w} - \\text{Baseline}_{12w}}{\\text{Baseline}_{12w}} \\times 100\\%", "summary": "Identifies permanent regime changes, such as hospital contract wins or competitor stockouts.", "why": "Transitory spikes last 1-2 weeks; structural drift represents a permanent shift in market demand. If the 4-week short-term moving average diverges from the 12-week baseline by >= 35%, our engine warns planners that baseline forecasting models must be retrained on the new run-rate.", "variables": "SMA_{4w}: 4-week short moving average | Baseline_{12w}: 12-week medium baseline."}];
 
         // Tab Switching
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+                function switchTab(tabId, el) {
+            try {
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+                
+                const targetPanel = document.getElementById('tab-' + tabId);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                } else {
+                    console.error("Tab panel not found: tab-" + tabId);
+                }
+                
+                if (el) {
+                    el.classList.add('active');
+                } else {
+                    const navItem = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
+                    if (navItem) navItem.classList.add('active');
+                }
 
-            if (tabId === 'erd' && !document.getElementById('erd-list-container').innerHTML) initErd();
-            if (tabId === 'code' && !document.getElementById('code-list-container').innerHTML) initCode();
-            if (tabId === 'tests' && !document.getElementById('test-list-container').innerHTML) initTests();
-            if (tabId === 'metrics' && !document.getElementById('metrics-list-container').innerHTML) initMetrics();
-            if (tabId === 'glossary') initGlossary();
+                if (tabId === 'erd') initErd();
+                if (tabId === 'code') initCode();
+                if (tabId === 'tests') initTests();
+                if (tabId === 'metrics') initMetrics();
+                if (tabId === 'glossary') initGlossary();
+            } catch (err) {
+                console.error("Error in switchTab:", err);
+            }
         }
 
         // --- TAB 1: ERD & DATA MODEL ---
@@ -1308,7 +1324,7 @@
         }
 
         
-        // --- TAB 6: GLOSSARY FUNCTIONS ---
+                // --- TAB 6: GLOSSARY FUNCTIONS ---
         function initGlossary() {
             renderGlossaryGrid(GLOSSARY_DATA);
         }
@@ -1318,7 +1334,7 @@
             if (!container) return;
             container.innerHTML = '';
             
-            if (items.length === 0) {
+            if (!items || items.length === 0) {
                 container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:var(--text-dim); padding:40px;">No acronyms matching your search.</div>';
                 return;
             }
@@ -1331,27 +1347,61 @@
                 card.style.flexDirection = 'column';
                 card.style.justifyContent = 'space-between';
 
-                card.innerHTML = `
-                    <div>
-                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-                            <span style="font-family:ui-monospace, monospace; font-size:17px; font-weight:800; color:#38bdf8; background:#08101e; border:1px solid #1c2e4a; padding:3px 10px; border-radius:6px; letter-spacing:0.02em;">
-                                ${item.abbr}
-                            </span>
-                            <span class="badge ${item.badge}">${item.cat}</span>
-                        </div>
-                        <div style="font-size:14px; font-weight:700; color:#ffffff; margin-bottom:8px; line-height:1.4;">
-                            ${item.full}
-                        </div>
-                        <p style="font-size:12.5px; color:#cbd5e1; line-height:1.55; margin-bottom:12px;">
-                            ${item.def}
-                        </p>
-                    </div>
-                    <div style="background:#04070e; border:1px solid #141c2c; padding:6px 10px; border-radius:5px; font-size:11px; color:#94a3b8; display:flex; justify-content:space-between; align-items:center;">
-                        <span>Usage: Weeks 01–05</span>
-                        <button class="copy-code-btn" onclick="navigator.clipboard.writeText('${item.abbr}: ${item.full} — ${item.def.replace(/'/g, "\\'")}'); alert('Copied ${item.abbr} definition to clipboard!');">Copy</button>
-                    </div>
-                `;
+                const topDiv = document.createElement('div');
+                
+                const headDiv = document.createElement('div');
+                headDiv.style.cssText = 'display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;';
+                
+                const abbrSpan = document.createElement('span');
+                abbrSpan.style.cssText = 'font-family:ui-monospace, monospace; font-size:17px; font-weight:800; color:#38bdf8; background:#08101e; border:1px solid #1c2e4a; padding:3px 10px; border-radius:6px; letter-spacing:0.02em;';
+                abbrSpan.textContent = item.abbr;
+                
+                const badgeSpan = document.createElement('span');
+                badgeSpan.className = 'badge ' + item.badge;
+                badgeSpan.textContent = item.cat;
+                
+                headDiv.appendChild(abbrSpan);
+                headDiv.appendChild(badgeSpan);
+                
+                const fullDiv = document.createElement('div');
+                fullDiv.style.cssText = 'font-size:14px; font-weight:700; color:#ffffff; margin-bottom:8px; line-height:1.4;';
+                fullDiv.textContent = item.full;
+                
+                const defP = document.createElement('p');
+                defP.style.cssText = 'font-size:12.5px; color:#cbd5e1; line-height:1.55; margin-bottom:12px;';
+                defP.textContent = item.def;
+                
+                topDiv.appendChild(headDiv);
+                topDiv.appendChild(fullDiv);
+                topDiv.appendChild(defP);
+                
+                const footDiv = document.createElement('div');
+                footDiv.style.cssText = 'background:#04070e; border:1px solid #141c2c; padding:6px 10px; border-radius:5px; font-size:11px; color:#94a3b8; display:flex; justify-content:space-between; align-items:center;';
+                
+                const usageSpan = document.createElement('span');
+                usageSpan.textContent = 'Usage: Weeks 01–05';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-code-btn';
+                copyBtn.textContent = 'Copy';
+                copyBtn.onclick = () => copyGlossaryItem(item.abbr);
+                
+                footDiv.appendChild(usageSpan);
+                footDiv.appendChild(copyBtn);
+                
+                card.appendChild(topDiv);
+                card.appendChild(footDiv);
+                
                 container.appendChild(card);
+            });
+        }
+
+        function copyGlossaryItem(abbr) {
+            const item = GLOSSARY_DATA.find(x => x.abbr === abbr);
+            if (!item) return;
+            const text = `${item.abbr}: ${item.full} — ${item.def}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`Copied ${item.abbr} definition to clipboard!`);
             });
         }
 
@@ -1392,15 +1442,15 @@
         }
 
         function copyGlossaryCheatSheet() {
-            let text = "=== PHARMACEUTICAL SUPPLY CHAIN CONTROL TOWER — MASTER ACRONYMS CHEAT SHEET ===\n\n";
+            const nl = String.fromCharCode(10);
+            let text = "=== PHARMACEUTICAL SUPPLY CHAIN CONTROL TOWER - MASTER ACRONYMS CHEAT SHEET ===" + nl + nl;
             GLOSSARY_DATA.forEach(item => {
-                text += `[${item.abbr}] ${item.full}\nCategory: ${item.cat}\nDefinition: ${item.def}\n\n`;
+                text += "[" + item.abbr + "] " + item.full + nl + "Category: " + item.cat + nl + "Definition: " + item.def + nl + nl;
             });
             navigator.clipboard.writeText(text).then(() => {
-                alert("All 84 acronyms & full forms copied to clipboard!");
+                alert("All 86 acronyms & full forms copied to clipboard!");
             });
         }
-
         window.onload = function() {
             initErd();
         };
