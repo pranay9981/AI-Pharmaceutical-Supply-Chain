@@ -206,31 +206,15 @@ AI-Pharmaceutical-Supply-Chain/
 │   │   ├── csv/                            # 30 individual CSV table exports
 │   │   └── parquet/                        # 30 compressed Parquet exports
 ├── docs/
-│   ├── architecture_blueprint.md           # 5-tier enterprise system architecture
-│   ├── baseline_forecasting_specification.md # Statistical baselines & hurdle benchmarks
-│   ├── database_viewer.html                # Standalone HTML/JS explorer for SQLite database
-│   ├── data_dictionary.md                  # Master technical dictionary for all 33 entities
-│   ├── demand_data_generator_specification.md # 104-week historical demand generator spec
-│   ├── demand_forecasting_preprocessing_specification.md # Causal features & leakage audit spec
-│   ├── disruption_injector_specification.md # Scenarios A through E injection mechanics
-│   ├── domain_glossary.md                  # FEFO formulas, lead-time taxonomy, BOM structures
-│   ├── erd_diagram.md                      # Comprehensive Mermaid ERD with cardinalities
-│   ├── forecast_evaluation_and_versioning_specification.md # Slice evaluation & registry spec
-│   ├── forecast_model_card.md              # Official GxP Forecast Model Card (Week 05 sign-off)
+│   ├── control_tower_interactive_guide.html # Standalone executive code studio, data model & math lab
+│   ├── weeks_01_to_05_executive_briefing_and_technical_deep_dive.md # Master executive briefing & S&OP review
+│   ├── master_code_database_and_math_explanation.md # Complete technical reference (27 code files, 33 entities, 18 formulas)
+│   ├── architecture_blueprint.md           # 5-tier enterprise system architecture & data pipelines
+│   ├── data_dictionary.md                  # Master technical dictionary for all 33 entities & GxP fields
+│   ├── domain_glossary.md                  # FEFO formulas, lead-time taxonomy, BOM structures, pharma terms
+│   ├── forecast_model_card.md              # Official GxP Forecast Model Card (Week 05 Champion sign-off)
 │   ├── gate_1_executive_sign_off.md        # Formal Phase 1 Gate 1 Executive Sign-Off Dossier
-│   ├── gate_1_review_preparation.md        # Gate 1 audit preparation & check-sheet
-│   ├── generator_architecture_master_synthesizer.md # Master data generator spec
-│   ├── inventory_engine_specification.md   # FEFO allocation & lot-level rules spec
-│   ├── inventory_projection_engine_specification.md # 26-week multi-echelon projection spec
-│   ├── manufacturing_risk_specification.md # Technical spec for 12 mfg, quality & risk entities
-│   ├── master_data_specification.md        # Technical spec for 8 master entities
-│   ├── ml_forecasting_specification.md     # Ridge/GBM ML models & P10/P90 intervals spec
-│   ├── mrp_engine_specification.md         # Multi-level BOM explosion & netting spec
-│   ├── network_bridge_specification.md     # Technical spec for 4 bridge entities
-│   ├── supplier_and_capacity_analytics_specification.md # OTIF & line capacity spec
-│   ├── supply_transactions_generator_specification.md # Orders, lots, batches generator spec
-│   ├── transactional_fact_specification.md # Technical spec for 9 transactional facts
-│   └── week_04_reconciliation_report.md    # Multi-echelon inventory conservation audit report
+│   └── week_04_reconciliation_report.md    # Multi-echelon inventory conservation audit report (0.000000% drift)
 ├── src/
 │   ├── agent/
 │   │   └── contracts.py                    # Rigid Pydantic tool response contracts
