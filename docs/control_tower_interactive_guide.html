@@ -283,11 +283,13 @@
         }
 
         /* Split-screen Studio Layout */
+        
         .split-studio {
             display: grid;
-            grid-template-columns: 320px 1fr;
+            grid-template-columns: 320px minmax(0, 1fr);
             gap: 20px;
             height: calc(100vh - 210px);
+            min-width: 0;
         }
 
         .studio-sidebar {
@@ -299,6 +301,7 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+            min-width: 0;
         }
 
         .studio-content {
@@ -306,10 +309,140 @@
             border: 1px solid var(--border-subtle);
             border-radius: 10px;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 24px;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
-        /* Entity & Code Cards in Sidebar */
+        /* Responsive Calculator Inputs */
+        .calc-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+        .calc-field label {
+            font-size: 11.5px;
+            color: #94a3b8;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .calc-field input {
+            width: 100%;
+            box-sizing: border-box;
+            background: #111a2d;
+            border: 1px solid var(--border-subtle);
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 13px;
+            font-family: ui-monospace, monospace;
+        }
+        .calc-field input:focus {
+            border-color: var(--accent-cyan);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        /* ER Diagram Showcase Card & Lightbox Modal */
+        .erd-showcase-card {
+            background: linear-gradient(135deg, rgba(8, 14, 28, 0.95), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+        }
+        .erd-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(3, 7, 18, 0.96);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+        .erd-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: #080d1a;
+            border-bottom: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .erd-modal-body {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            cursor: grab;
+            background: #03060c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .erd-modal-body.grabbing {
+            cursor: grabbing;
+        }
+        .erd-img-wrapper {
+            position: absolute;
+            transform-origin: center center;
+            user-select: none;
+            transition: transform 0.05s ease-out;
+        }
+        .erd-img-wrapper img {
+            display: block;
+            max-width: none;
+            pointer-events: none;
+        }
+        .erd-modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 20px;
+            background: #080d1a;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 11.5px;
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+        .zoom-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+        .zoom-btn:hover {
+            background: #334155;
+            border-color: #38bdf8;
+            color: #fff;
+        }
+        .zoom-btn.close-btn {
+            background: #be123c;
+            border-color: #f43f5e;
+        }
+        .zoom-btn.close-btn:hover {
+            background: #e11d48;
+        }
+/* Entity & Code Cards in Sidebar */
         .card-item {
             padding: 10px 14px;
             border-radius: 7px;
@@ -705,9 +838,7 @@
                 <li class="nav-item" data-tab="glossary" onclick="switchTab('glossary', this)"><span class="icon">📖</span> 6. Acronyms & Full Forms</li>
             </ul>
 
-            <div class="nav-footer">
-                <button class="btn-pitch" onclick="copyGlossaryCheatSheet()">📋 Copy Acronyms Cheat-Sheet</button>
-            </div>
+            
         </nav>
 
         <!-- Main Content Area -->
@@ -718,6 +849,41 @@
                 <div class="page-header">
                     <h2>Complete Relational Data Model (33 Tables Across 6 Tiers)</h2>
                     <p>Designed under strict cGMP and FDA 21 CFR Part 11 principles. Click any entity to inspect columns, operational purpose, relationships, and live SQLite sample records.</p>
+                </div>
+
+                
+                <!-- ER Diagram Architectural Banner & Showcase -->
+                <div class="erd-showcase-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 8px; width: 44px; height: 44px; display:flex; align-items:center; justify-content:center; font-size: 22px;">
+                                🗺️
+                            </div>
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0;">Architectural Entity-Relationship Diagram (Complete 33-Table System)</h3>
+                                    <span class="badge cyan" style="font-size: 10px; padding: 2px 8px;">8K ULTRA-HD SCHEMA MAP</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0 0;">
+                                    High-resolution visual blueprint covering all 33 relational entities across 6 tiers, complete with primary keys, foreign key constraints, and cGMP audit trails.
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap: 8px;">
+                            <button class="filter-btn active" style="padding: 7px 16px; font-size: 12px; display:flex; align-items:center; gap:6px;" onclick="openErdModal()">🔍 <span>Open Full-Screen 8K Interactive Viewer</span></button>
+                            <button class="filter-btn" style="padding: 7px 14px; font-size: 12px;" id="toggle-erd-preview-btn" onclick="toggleErdPreview()">▼ Expand In-Page</button>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible in-page preview -->
+                    <div id="erd-inpage-preview" style="display: none; margin-top: 14px; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
+                        <div style="position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-bright); background: #050811;">
+                            <img src="data_model_erd.png" alt="Pharmaceutical Supply Chain 33-Table ER Diagram" style="width: 100%; height: auto; max-height: 440px; object-fit: contain; cursor: zoom-in; display: block;" onclick="openErdModal()">
+                            <div style="position: absolute; bottom: 10px; right: 10px; background: rgba(15, 23, 42, 0.85); padding: 5px 12px; border-radius: 4px; font-size: 11px; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); pointer-events: none;">
+                                🔍 Click image to open 8K Zoom & Pan Presentation Mode
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="filter-bar">
@@ -1381,6 +1547,7 @@
             if (!m) return;
 
             const container = document.getElementById('metrics-detail-container');
+            container.scrollLeft = 0; // Ensure detail container stays scrolled to the left
 
             // Interactive Calculators
             let calcHtml = '';
@@ -1393,12 +1560,12 @@
                             </h4>
                             <span class="badge emerald" style="font-size:11px;">Hurdle: 16.23%</span>
                         </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-                            <div class="calc-row">
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:12px;">
+                            <div class="calc-field">
                                 <label>Sum of Absolute Errors (∑ |y − ŷ|):</label>
                                 <input type="number" id="wape-err" value="4820" oninput="calcWape()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>Sum of Actual Demand (∑ y):</label>
                                 <input type="number" id="wape-act" value="62100" oninput="calcWape()">
                             </div>
@@ -1415,16 +1582,16 @@
                             </h4>
                             <span class="badge emerald" style="font-size:11px;">Target: 0.000000%</span>
                         </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
-                            <div class="calc-row">
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:12px; margin-bottom:12px;">
+                            <div class="calc-field">
                                 <label>Beginning Stock (I_{t-1}):</label>
                                 <input type="number" id="drift-prev" value="25000" oninput="calcDrift()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>Inflows (Receipts R_t + Prod P_t):</label>
                                 <input type="number" id="drift-in" value="12000" oninput="calcDrift()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>Demand Outflow (D_t):</label>
                                 <input type="number" id="drift-out" value="9500" oninput="calcDrift()">
                             </div>
@@ -1441,12 +1608,12 @@
                             </h4>
                             <span class="badge cyan" style="font-size:11px;">Target: ±3.0%</span>
                         </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-                            <div class="calc-row">
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:12px;">
+                            <div class="calc-field">
                                 <label>Sum of Predicted Forecasts (∑ ŷ):</label>
                                 <input type="number" id="bias-fc" value="61603" oninput="calcBias()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>Sum of Actual Demand (∑ y):</label>
                                 <input type="number" id="bias-act" value="62100" oninput="calcBias()">
                             </div>
@@ -1463,16 +1630,16 @@
                             </h4>
                             <span class="badge rose" style="font-size:11px;">Trigger: |Z| ≥ 3.0</span>
                         </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
-                            <div class="calc-row">
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:12px; margin-bottom:12px;">
+                            <div class="calc-field">
                                 <label>Observed Demand (x_t):</label>
                                 <input type="number" id="z-x" value="4800" oninput="calcZ()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>4-Week Mean (μ_4w):</label>
                                 <input type="number" id="z-mu" value="2300" oninput="calcZ()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>4-Week Std Dev (σ_4w):</label>
                                 <input type="number" id="z-sigma" value="450" oninput="calcZ()">
                             </div>
@@ -1489,16 +1656,16 @@
                             </h4>
                             <span class="badge rose" style="font-size:11px;">Gate: 90 Days</span>
                         </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
-                            <div class="calc-row">
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:12px; margin-bottom:12px;">
+                            <div class="calc-field">
                                 <label>Total Batch Shelf Life (Days):</label>
                                 <input type="number" id="marsl-total" value="730" oninput="calcMarsl()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>Storage Age at Dispatch (Days):</label>
                                 <input type="number" id="marsl-age" value="580" oninput="calcMarsl()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>Transit Lead Time (Days):</label>
                                 <input type="number" id="marsl-transit" value="14" oninput="calcMarsl()">
                             </div>
@@ -1515,12 +1682,12 @@
                             </h4>
                             <span class="badge emerald" style="font-size:11px;">Target: ≥ 95.0%</span>
                         </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-                            <div class="calc-row">
-                                <label>Orders Delivered On-Time with 100% Qty:</label>
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:12px;">
+                            <div class="calc-field">
+                                <label>Orders Delivered On-Time (100% Qty):</label>
                                 <input type="number" id="otif-good" value="38" oninput="calcOtif()">
                             </div>
-                            <div class="calc-row">
+                            <div class="calc-field">
                                 <label>Total Purchase Orders Placed:</label>
                                 <input type="number" id="otif-total" value="40" oninput="calcOtif()">
                             </div>
@@ -1534,12 +1701,12 @@
             let varsHtml = '';
             m.variables.forEach(v => {
                 varsHtml += `
-                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 6px; padding: 10px 14px;">
+                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 6px; padding: 10px 14px; min-width: 0;">
                         <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
                             <span style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-family: ui-monospace, monospace; font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.3);">${v.symbol}</span>
                             <strong style="color: #f1f5f9; font-size: 13px;">${v.name}</strong>
                         </div>
-                        <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; margin: 0;">${v.desc}</p>
+                        <p style="color: #94a3b8; font-size: 12px; line-height: 1.5; margin: 0; word-break: break-word;">${v.desc}</p>
                     </div>
                 `;
             });
@@ -1568,7 +1735,7 @@
 
                 <div style="margin-bottom:16px;">
                     <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; letter-spacing:0.05em;">Mathematical Variables, Dimensions & Units</div>
-                    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px;">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;">
                         ${varsHtml}
                     </div>
                 </div>
@@ -1578,7 +1745,7 @@
                         <strong style="color: #10b981; font-size: 13px;">Institutional Benchmark & Hurdle Verification</strong>
                         <span class="badge emerald" style="font-size: 11px;">${m.benchmark.status}</span>
                     </div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; font-size: 12.5px;">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 8px; font-size: 12.5px;">
                         <div><span style="color:#94a3b8;">Target / Hurdle:</span> <strong style="color:#f8fafc;">${m.benchmark.target}</strong></div>
                         <div><span style="color:#94a3b8;">Achieved:</span> <strong style="color:#38bdf8;">${m.benchmark.achieved}</strong></div>
                     </div>
@@ -1802,19 +1969,151 @@
             renderGlossaryGrid(filtered);
         }
 
-        function copyGlossaryCheatSheet() {
-            const nl = String.fromCharCode(10);
-            let text = "=== PHARMACEUTICAL SUPPLY CHAIN CONTROL TOWER - MASTER ACRONYMS CHEAT SHEET ===" + nl + nl;
-            GLOSSARY_DATA.forEach(item => {
-                text += "[" + item.abbr + "] " + item.full + nl + "Category: " + item.cat + nl + "Definition: " + item.def + nl + nl;
+        
+        // --- ARCHITECTURAL ER DIAGRAM MODAL & ZOOM/PAN ENGINE ---
+        let erdScale = 1.0;
+        let erdPanX = 0;
+        let erdPanY = 0;
+        let isErdDragging = false;
+        let erdStartX = 0;
+        let erdStartY = 0;
+
+        function toggleErdPreview() {
+            const preview = document.getElementById('erd-inpage-preview');
+            const btn = document.getElementById('toggle-erd-preview-btn');
+            if (preview.style.display === 'none') {
+                preview.style.display = 'block';
+                btn.innerText = '▲ Collapse Preview';
+            } else {
+                preview.style.display = 'none';
+                btn.innerText = '▼ Expand In-Page';
+            }
+        }
+
+        function openErdModal() {
+            const modal = document.getElementById('erd-modal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            fitErdToScreen();
+            initErdDrag();
+        }
+
+        function closeErdModal() {
+            const modal = document.getElementById('erd-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateErdTransform() {
+            const wrapper = document.getElementById('erd-img-wrapper');
+            if (wrapper) {
+                wrapper.style.transform = `translate(${erdPanX}px, ${erdPanY}px) scale(${erdScale})`;
+            }
+            const label = document.getElementById('erd-zoom-level');
+            if (label) {
+                label.innerText = `Zoom: ${Math.round(erdScale * 100)}%`;
+            }
+        }
+
+        function zoomErd(delta) {
+            const oldScale = erdScale;
+            erdScale = Math.min(Math.max(0.15, erdScale + delta), 4.0);
+            updateErdTransform();
+        }
+
+        function resetErdZoom() {
+            erdScale = 1.0;
+            erdPanX = 0;
+            erdPanY = 0;
+            updateErdTransform();
+        }
+
+        function fitErdToScreen() {
+            const body = document.getElementById('erd-modal-body');
+            const img = document.getElementById('erd-modal-img');
+            if (!body || !img) return;
+
+            // Wait for image dimensions if not loaded yet
+            const imgW = img.naturalWidth || 8191;
+            const imgH = img.naturalHeight || 4613;
+            const bodyW = body.clientWidth - 40;
+            const bodyH = body.clientHeight - 40;
+
+            const scaleW = bodyW / imgW;
+            const scaleH = bodyH / imgH;
+            erdScale = Math.min(scaleW, scaleH, 1.0);
+            erdPanX = 0;
+            erdPanY = 0;
+            updateErdTransform();
+        }
+
+        function initErdDrag() {
+            const body = document.getElementById('erd-modal-body');
+            if (!body || body._erdDragInitialized) return;
+            body._erdDragInitialized = true;
+
+            body.addEventListener('mousedown', (e) => {
+                if (e.button !== 0) return;
+                isErdDragging = true;
+                erdStartX = e.clientX - erdPanX;
+                erdStartY = e.clientY - erdPanY;
+                body.classList.add('grabbing');
             });
-            navigator.clipboard.writeText(text).then(() => {
-                alert("All 86 acronyms & full forms copied to clipboard!");
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isErdDragging) return;
+                erdPanX = e.clientX - erdStartX;
+                erdPanY = e.clientY - erdStartY;
+                updateErdTransform();
+            });
+
+            window.addEventListener('mouseup', () => {
+                isErdDragging = false;
+                body.classList.remove('grabbing');
+            });
+
+            body.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY < 0 ? 0.15 : -0.15;
+                zoomErd(delta);
+            }, { passive: false });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeErdModal();
             });
         }
-        window.onload = function() {
-            initErd();
-        };
+
     </script>
+
+    <!-- Fullscreen ER Diagram Modal with Interactive Zoom & Pan -->
+    <div id="erd-modal" class="erd-modal" style="display:none;">
+        <div class="erd-modal-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:20px;">🗺️</span>
+                <div>
+                    <h3 style="font-size:15px; font-weight:700; color:#fff; margin:0;">Complete Pharmaceutical Supply Chain 33-Entity Relational Data Model</h3>
+                    <span style="font-size:11.5px; color:#94a3b8;">High-Definition Architectural Schema Map (8191 × 4613 px) • cGMP & FDA 21 CFR Part 11 Compliant Architecture</span>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <button class="zoom-btn" onclick="zoomErd(0.25)" title="Zoom In">➕ Zoom In</button>
+                <button class="zoom-btn" onclick="zoomErd(-0.25)" title="Zoom Out">➖ Zoom Out</button>
+                <button class="zoom-btn" onclick="resetErdZoom()" title="Reset Zoom">⟲ Reset (100%)</button>
+                <button class="zoom-btn" onclick="fitErdToScreen()" title="Fit to Screen">⛶ Fit View</button>
+                <a href="data_model_erd.png" download="Pharmaceutical_Supply_Chain_33_Entity_Data_Model.png" class="zoom-btn" style="text-decoration:none;" title="Download High-Res PNG">💾 Download 8K PNG</a>
+                <button class="zoom-btn close-btn" onclick="closeErdModal()" title="Close Viewer (Esc)">✕ Close</button>
+            </div>
+        </div>
+        <div class="erd-modal-body" id="erd-modal-body">
+            <div class="erd-img-wrapper" id="erd-img-wrapper">
+                <img id="erd-modal-img" src="data_model_erd.png" alt="33-Entity ER Diagram" style="max-width:none;">
+            </div>
+        </div>
+        <div class="erd-modal-footer">
+            <span>💡 <strong>Navigation Tips:</strong> Drag with mouse to pan • Use mouse scroll wheel to zoom in/out • Click <strong>Fit View</strong> for executive presentation mode • Press <strong>Esc</strong> to close</span>
+            <span id="erd-zoom-level" style="font-family:ui-monospace, monospace; color:#38bdf8; font-weight:600;">Zoom: 100%</span>
+        </div>
+    </div>
+
 </body>
 </html>
