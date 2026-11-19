@@ -932,9 +932,28 @@
         }
 
         /* ==========================================================================
-           COMPREHENSIVE RESPONSIVENESS (< 900px)
+           RESPONSIVE ARCHITECTURE & VIEWPORT ADAPTATION
            ========================================================================== */
-        @media (max-width: 900px) {
+
+        .stress-grid-two {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .stress-grid-three {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        /* 1. Medium Screens / Laptops / Half-Screen Snapped PC (<= 1024px) */
+        @media (max-width: 1024px) {
             body {
                 height: auto !important;
                 min-height: 100vh;
@@ -944,22 +963,17 @@
             header {
                 flex-direction: column !important;
                 align-items: stretch !important;
-                gap: 12px !important;
-                padding: 12px 14px !important;
+                gap: 10px !important;
+                padding: 12px 16px !important;
             }
-            .header-stats {
+            .kpi-row {
                 display: flex !important;
-                overflow-x: auto !important;
+                flex-wrap: wrap !important;
                 gap: 8px !important;
-                padding-bottom: 4px !important;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
             }
-            .header-stats::-webkit-scrollbar { display: none; }
-            .stat-chip {
-                flex-shrink: 0 !important;
+            .kpi-chip {
                 font-size: 11px !important;
-                padding: 4px 8px !important;
+                padding: 4px 10px !important;
             }
             .app-body {
                 flex-direction: column !important;
@@ -974,48 +988,61 @@
                 top: 0 !important;
                 z-index: 999 !important;
                 background: #070b14 !important;
-                overflow-x: auto !important;
+                padding: 8px 12px !important;
+                box-sizing: border-box !important;
+                overflow: visible !important;
                 flex-shrink: 0 !important;
             }
             .nav-header { display: none !important; }
             .nav-menu {
-                display: flex !important;
-                flex-direction: row !important;
-                gap: 6px !important;
-                padding: 8px 12px !important;
-                overflow-x: auto !important;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                list-style: none !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
-            .nav-menu::-webkit-scrollbar { display: none; }
             .nav-item {
-                flex-shrink: 0 !important;
-                white-space: nowrap !important;
-                padding: 8px 12px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 6px !important;
+                padding: 9px 10px !important;
                 font-size: 12px !important;
-                border-radius: 6px !important;
+                font-weight: 600 !important;
+                text-align: center !important;
+                white-space: normal !important;
+                line-height: 1.3 !important;
+                border-radius: 8px !important;
+                box-sizing: border-box !important;
+                min-width: 0 !important;
             }
             main {
-                padding: 16px 12px !important;
+                padding: 16px 14px !important;
                 overflow: visible !important;
                 height: auto !important;
             }
             .split-studio {
-                display: flex !important;
-                flex-direction: column !important;
-                height: auto !important;
+                display: grid !important;
+                grid-template-columns: 280px minmax(0, 1fr) !important;
                 gap: 16px !important;
+                height: calc(100vh - 290px) !important;
+                min-height: 540px !important;
             }
             .studio-sidebar {
                 width: 100% !important;
-                max-height: 250px !important;
+                max-height: 100% !important;
                 overflow-y: auto !important;
                 flex-shrink: 0 !important;
             }
             .studio-content {
                 width: 100% !important;
-                overflow-x: auto !important;
-                padding: 16px 12px !important;
+                height: 100% !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                padding: 18px 16px !important;
             }
             .filter-bar {
                 flex-direction: column !important;
@@ -1024,22 +1051,73 @@
             }
             .filter-search-box { width: 100% !important; }
             .filter-btn-group {
-                overflow-x: auto !important;
                 display: flex !important;
-                flex-wrap: nowrap !important;
-                padding-bottom: 6px !important;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
+                flex-wrap: wrap !important;
+                gap: 6px !important;
             }
-            .filter-btn-group::-webkit-scrollbar { display: none; }
             .filter-btn {
-                flex-shrink: 0 !important;
                 white-space: nowrap !important;
             }
-            .schema-table { min-width: 580px !important; }
+        }
+
+        /* 2. Narrower Screens & Tablets Portrait (<= 768px) */
+        @media (max-width: 768px) {
+            .split-studio {
+                display: flex !important;
+                flex-direction: column !important;
+                height: auto !important;
+                min-height: unset !important;
+                gap: 14px !important;
+            }
+            .studio-sidebar {
+                width: 100% !important;
+                max-height: 200px !important;
+                overflow-y: auto !important;
+                flex-shrink: 0 !important;
+            }
+            .studio-content {
+                width: 100% !important;
+                height: auto !important;
+                overflow-y: visible !important;
+                overflow-x: auto !important;
+                padding: 16px 12px !important;
+            }
+            .schema-table { min-width: 540px !important; }
             .math-card {
+                font-size: 14px !important;
+                padding: 10px 12px !important;
+            }
+            .erd-tab-header {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            .erd-view-pills {
+                width: 100% !important;
+            }
+            .erd-pill-btn {
+                flex: 1 !important;
+                justify-content: center !important;
+            }
+        }
+
+        /* 3. Mobile Phones (<= 640px) */
+        @media (max-width: 640px) {
+            .nav-menu {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 6px !important;
+            }
+            .nav-item {
+                font-size: 11px !important;
+                padding: 8px 6px !important;
+                justify-content: center !important;
+            }
+            .brand-badge {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 14px !important;
+            }
+            .header-title h1 {
                 font-size: 15px !important;
-                padding: 12px 14px !important;
             }
             .erd-tier-grid {
                 grid-template-columns: 1fr !important;
@@ -1236,7 +1314,7 @@
                     <p>Stress-testing analytical detection and simulation engines against real-world pharmaceutical supply chain failure modes.</p>
                 </div>
 
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div class="stress-grid-two">
                     <div class="formula-card" style="border-left: 4px solid var(--accent-rose);">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                             <h3 style="color:#fff; font-size:16px;">🚨 Scenario A: API Supplier Delivery Delay</h3>
@@ -1270,7 +1348,7 @@
                     </div>
                 </div>
 
-                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                <div class="stress-grid-three">
                     <div class="formula-card" style="border-left: 4px solid var(--accent-indigo);">
                         <h4 style="color:#fff; font-size:14px; margin-bottom:6px;">📦 Scenario C: Packaging Shortage</h4>
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Supplier carton stockout halts packaging lines for both T10 strips and T30 bottles.</p>
@@ -1312,7 +1390,7 @@
                     </div>
                 </div>
 
-                <div id="glossary-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px;">
+                <div id="glossary-grid" class="glossary-grid">
                     <!-- Dynamically populated by JavaScript -->
                 </div>
             </div>
@@ -1327,8 +1405,20 @@
         const GLOSSARY_DATA = [{"abbr": "API", "full": "Active Pharmaceutical Ingredient", "cat": "Pharma & Regulatory", "badge": "rose", "def": "The biologically active chemical substance in a pharmaceutical drug that produces the intended therapeutic effect (e.g., Amoxicillin Trihydrate / Clavulanate Potassium blend in Augmentin)."}, {"abbr": "cGMP", "full": "Current Good Manufacturing Practice", "cat": "Pharma & Regulatory", "badge": "rose", "def": "Legally enforceable quality standards regulated by global health authorities (US FDA, CDSCO) ensuring pharmaceutical products are consistently produced and controlled to quality standards."}, {"abbr": "GxP", "full": "Good [Practice] Quality Guidelines", "cat": "Pharma & Regulatory", "badge": "rose", "def": "Collective umbrella term for life sciences quality guidelines including GMP (Manufacturing), GLP (Laboratory), GCP (Clinical), GDP (Distribution), and GAMP (Automated Systems)."}, {"abbr": "FDA", "full": "Food and Drug Administration (United States)", "cat": "Pharma & Regulatory", "badge": "rose", "def": "The federal regulatory authority in the United States responsible for protecting public health through the regulation and supervision of prescription pharmaceuticals and medical devices."}, {"abbr": "21 CFR Part 11", "full": "Title 21 of the Code of Federal Regulations, Part 11", "cat": "Pharma & Regulatory", "badge": "rose", "def": "US FDA regulation that establishes criteria under which electronic records and electronic signatures are considered trustworthy, reliable, and equivalent to paper records."}, {"abbr": "MARSL", "full": "Minimum Acceptable Remaining Shelf Life", "cat": "Pharma & Regulatory", "badge": "rose", "def": "The mandatory threshold of remaining chemical stability life upon delivery (e.g., 90 days for hospitals, 180 days for export) required for a shipment to be accepted at the customer's receiving dock."}, {"abbr": "RSL", "full": "Remaining Shelf Life", "cat": "Pharma & Regulatory", "badge": "rose", "def": "The number of days between the scheduled delivery arrival date and the chemical expiration date stamped on the batch container: RSL = Expiry Date - Delivery Date."}, {"abbr": "CoA", "full": "Certificate of Analysis", "cat": "Pharma & Regulatory", "badge": "rose", "def": "An authenticated document issued by Quality Assurance detailing the analytical test results (purity, assay, dissolution, sterility) verifying that a released batch meets approved monograph specifications."}, {"abbr": "BMR", "full": "Batch Manufacturing Record", "cat": "Pharma & Regulatory", "badge": "rose", "def": "The complete, auditable legal documentation of the formulation and packaging of a specific batch, recording operator sign-offs, step durations, in-process testing, and yields."}, {"abbr": "OOS", "full": "Out of Specification", "cat": "Pharma & Regulatory", "badge": "rose", "def": "Laboratory test results that fall outside pre-established regulatory acceptance criteria, triggering an immediate cGMP investigation and placing affected lots into Quarantine."}, {"abbr": "CAPA", "full": "Corrective and Preventive Action", "cat": "Pharma & Regulatory", "badge": "rose", "def": "A systematic regulatory investigation process aimed at identifying root causes of manufacturing or quality deviations and implementing permanent systemic fixes."}, {"abbr": "CIP", "full": "Clean-in-Place", "cat": "Pharma & Regulatory", "badge": "rose", "def": "Automated mechanical and chemical cleaning and sanitization of formulation tanks, fluid-bed granulators, and pipework without dismantling the machinery."}, {"abbr": "HEPA", "full": "High-Efficiency Particulate Air (Filter)", "cat": "Pharma & Regulatory", "badge": "rose", "def": "Air filtration units capable of trapping 99.97% of airborne particles 0.3 microns or larger, essential for maintaining sterile Grade A/B cleanroom air standards."}, {"abbr": "HVAC", "full": "Heating, Ventilation, and Air Conditioning", "cat": "Pharma & Regulatory", "badge": "rose", "def": "Specialized cleanroom air handling system controlling temperature, relative humidity, air change velocity, and positive pressure cascades to prevent cross-contamination."}, {"abbr": "CDMO", "full": "Contract Development and Manufacturing Organization", "cat": "Pharma & Regulatory", "badge": "rose", "def": "A third-party licensed manufacturing company that provides comprehensive formulation, filling, and packaging services under contracted commercial agreements."}, {"abbr": "DCGI", "full": "Drugs Controller General of India", "cat": "Pharma & Regulatory", "badge": "rose", "def": "The head of the Central Drugs Standard Control Organisation (CDSCO), responsible for approval of drug licenses, clinical trials, and standards in India."}, {"abbr": "CDSCO", "full": "Central Drugs Standard Control Organisation", "cat": "Pharma & Regulatory", "badge": "rose", "def": "India's national pharmaceutical regulatory authority (equivalent to the US FDA or EMA), governing drug safety, import licenses, and GMP plant certifications."}, {"abbr": "WHO-GMP", "full": "World Health Organization Good Manufacturing Practices", "cat": "Pharma & Regulatory", "badge": "rose", "def": "Internationally harmonized manufacturing guidelines published by the WHO, required for qualifying medicines for UN tenders and global exports."}, {"abbr": "QA", "full": "Quality Assurance", "cat": "Pharma & Regulatory", "badge": "rose", "def": "The independent organizational function responsible for overall quality governance, auditing, deviation sign-offs, and batch market authorization release."}, {"abbr": "QC", "full": "Quality Control", "cat": "Pharma & Regulatory", "badge": "rose", "def": "The analytical testing laboratory executing HPLC assays, microbiological bioburden testing, and dissolution tests on incoming raw materials and finished drug lots."}, {"abbr": "SCM", "full": "Supply Chain Management", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The end-to-end strategic coordination and operational execution of procurement, chemical synthesis, formulation, packaging, storage, and customer distribution."}, {"abbr": "S&OP", "full": "Sales and Operations Planning", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A monthly executive governance cycle aligning commercial sales demand forecasts with plant capacity, inventory levels, and financial procurement budgets."}, {"abbr": "IBP", "full": "Integrated Business Planning", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "An advanced, enterprise-wide evolution of S&OP that tightly integrates demand/supply projections with corporate P&L balance sheets and capital allocation."}, {"abbr": "MRP", "full": "Material Requirements Planning", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A deterministic computational logic engine that explodes finished drug schedules into component requirements, nets on-hand qualified stock, and backward-schedules purchase orders."}, {"abbr": "BOM", "full": "Bill of Materials", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The master formulation recipe detailing the exact chemical quantities of APIs, excipients, foil, and cartons required per unit, including technical scrap allowances."}, {"abbr": "FEFO", "full": "First-Expired, First-Out", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The mandatory pharmaceutical inventory allocation discipline ensuring pallet lots with the closest chemical expiry dates are picked and shipped first, subject to MARSL gates."}, {"abbr": "FIFO", "full": "First-In, First-Out", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "Inventory rotation based on receipt arrival date; in regulated life sciences, FEFO always supersedes FIFO to prevent expired batch quarantine write-offs."}, {"abbr": "LIFO", "full": "Last-In, First-Out", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "Inventory dispatch method where the most recent receipts are shipped first; strictly prohibited in pharmaceutical warehousing due to expiry risk."}, {"abbr": "OTIF", "full": "On-Time In-Full", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The supply chain KPI measuring the percentage of purchase orders or customer dispatches delivered on or before the promised date with 100% ordered quantity."}, {"abbr": "OTD", "full": "On-Time Delivery", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "Fulfillment milestone metric tracking whether goods arrived on or before the contractual SLA date, regardless of quantity shortages."}, {"abbr": "MOQ", "full": "Minimum Order Quantity", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The minimum threshold quantity of a raw material or finished SKU that a supplier or manufacturing plant will accept for production and delivery."}, {"abbr": "PO", "full": "Purchase Order", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A legally binding commercial commitment issued by a procurement organization to a qualified supplier authorizing shipment of specified quantities at contracted prices."}, {"abbr": "SO", "full": "Sales Order", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A commercial order placed by an external customer (hospital network, government tender authority, retail pharmacy) requesting delivery of finished SKUs."}, {"abbr": "DO", "full": "Delivery Order", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A warehouse picking and dispatch document authorizing transport carriers to release specified pallet lots to a customer destination."}, {"abbr": "DC", "full": "Distribution Centre", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A multi-echelon warehousing hub designed for receiving finished lots from manufacturing plants, maintaining temperature-controlled storage, and dispatching orders."}, {"abbr": "CDC", "full": "Central Distribution Centre", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The primary national multi-echelon warehouse node (e.g. Nagpur CDC) receiving bulk production from formulation plants and replenishing regional facilities."}, {"abbr": "RDC", "full": "Regional Distribution Centre", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A secondary distribution facility positioned close to regional consumption markets (e.g. Bhiwandi DC, Chennai DC) to guarantee rapid replenishment to hospitals."}, {"abbr": "DoS / DOS", "full": "Days of Supply", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The estimated number of future calendar days that current available warehouse stock will sustain based on the projected average daily demand run-rate."}, {"abbr": "ROP", "full": "Reorder Point", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The predetermined inventory level that triggers an automated purchase order replenishment: ROP = (Average Daily Demand x Lead Time) + Safety Stock."}, {"abbr": "SS", "full": "Safety Stock", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A calculated buffer inventory held across network nodes to absorb unexpected demand volatility and supplier lead-time transport disruptions."}, {"abbr": "LT", "full": "Lead Time", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "The total elapsed transit duration between order placement and receipt of qualified, QC-released inventory ready for cleanroom use or commercial dispatch."}, {"abbr": "SKU", "full": "Stock Keeping Unit", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A distinct, machine-readable alphanumeric code assigned to each unique commercial drug presentation (e.g. SKU-AUG-500-T10 vs SKU-AUG-500-T30)."}, {"abbr": "WIP", "full": "Work in Progress / Work in Process", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "Unfinished pharmaceutical batches currently in formulation, granulation, compression, or blister sealing awaiting final packaging and QA release."}, {"abbr": "RPN", "full": "Risk Priority Number", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A quantitative risk assessment score computed in FMEA methodologies: RPN = Severity (S) x Probability (P) x Detection (D), ranging from 1 to 1000."}, {"abbr": "SLA", "full": "Service Level Agreement", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A formal commitment between supply chain parties defining service expectations (e.g. 98.0% order fill rate within 48 hours)."}, {"abbr": "FMEA", "full": "Failure Mode and Effects Analysis", "cat": "Supply Chain & MRP", "badge": "cyan", "def": "A systematic engineering procedure for identifying and prioritizing potential failure modes in pharmaceutical formulation and transport."}, {"abbr": "WAPE", "full": "Weighted Absolute Percentage Error", "cat": "Forecasting & ML", "badge": "emerald", "def": "The volume-weighted forecasting accuracy metric: Sum(|y - \u0177|) / Sum(y) * 100%. Eliminates division-by-zero crashes on zero-sales weeks in pharma."}, {"abbr": "MAPE", "full": "Mean Absolute Percentage Error", "cat": "Forecasting & ML", "badge": "emerald", "def": "Average of unweighted percentage errors; heavily distorted by low or zero-volume sales weeks, making it unsuitable for pharmaceutical regional demand."}, {"abbr": "MAE", "full": "Mean Absolute Error", "cat": "Forecasting & ML", "badge": "emerald", "def": "The linear average magnitude of forecast errors in physical units: (1/N) * Sum(|y - \u0177|), providing an unweighted baseline error scale."}, {"abbr": "RMSE", "full": "Root Mean Squared Error", "cat": "Forecasting & ML", "badge": "emerald", "def": "The square root of mean squared prediction residuals: sqrt((1/N) * Sum((y - \u0177)^2)). Penalizes large catastrophic forecasting misses quadratically."}, {"abbr": "MSE", "full": "Mean Squared Error", "cat": "Forecasting & ML", "badge": "emerald", "def": "The average squared difference between predicted forecasts and actual sales values, forming the convex loss function optimized in OLS regression."}, {"abbr": "TS", "full": "Tracking Signal", "cat": "Forecasting & ML", "badge": "emerald", "def": "A statistical ratio monitoring persistent directional forecast bias: Cumulative Forecast Error / MAD. Values outside [-4.0, +4.0] indicate systematic model drift."}, {"abbr": "MAD", "full": "Mean Absolute Deviation", "cat": "Forecasting & ML", "badge": "emerald", "def": "The average absolute distance between forecasted quantities and their actual realizations, used as the denominator in calculating the Tracking Signal."}, {"abbr": "IQR", "full": "Interquartile Range", "cat": "Forecasting & ML", "badge": "emerald", "def": "The spread between the 75th percentile (Q3) and 25th percentile (Q1): IQR = Q3 - Q1. Foundation of Tukey's non-parametric anomaly detection fences."}, {"abbr": "SMA", "full": "Simple Moving Average", "cat": "Forecasting & ML", "badge": "emerald", "def": "An unweighted rolling average of demand across the preceding N weeks (e.g. SMA-4W), used as an operational benchmark for trend smoothing."}, {"abbr": "EMA", "full": "Exponential Moving Average", "cat": "Forecasting & ML", "badge": "emerald", "def": "A moving average that assigns exponentially decreasing weights to older observations, reacting faster to recent demand shifts than an SMA."}, {"abbr": "OLS", "full": "Ordinary Least Squares", "cat": "Forecasting & ML", "badge": "emerald", "def": "The standard linear regression estimation method that solves for model weights by minimizing the sum of squared differences between actual and predicted values."}, {"abbr": "L2 Norm", "full": "Ridge Regularization (L2 Penalty)", "cat": "Forecasting & ML", "badge": "emerald", "def": "A regularization method that adds a squared coefficient penalty (alpha * ||w||_2^2) to the loss function, solving multicollinearity via closed-form normal equations."}, {"abbr": "L1 Norm", "full": "Lasso Regularization (L1 Penalty)", "cat": "Forecasting & ML", "badge": "emerald", "def": "A regularization penalty (lambda * ||w||_1) that drives non-informative feature weights to exactly zero, performing automated sparse feature selection."}, {"abbr": "ML", "full": "Machine Learning", "cat": "Forecasting & ML", "badge": "emerald", "def": "Algorithms that learn predictive representations and seasonal patterns from historical training datasets without relying on hardcoded heuristics."}, {"abbr": "LLM", "full": "Large Language Model", "cat": "Forecasting & ML", "badge": "emerald", "def": "Transformer neural networks (e.g. Gemini, GPT) utilized in the Control Tower strictly as evidence-grounded briefing assistants citing verified database primary keys."}, {"abbr": "P10", "full": "10th Percentile Demand Forecast", "cat": "Forecasting & ML", "badge": "emerald", "def": "Conservative lower forecast bound: there is a 90% statistical probability that actual demand will meet or exceed this level; used for downside cash planning."}, {"abbr": "P50", "full": "50th Percentile Demand Forecast (Median)", "cat": "Forecasting & ML", "badge": "emerald", "def": "The median expected forecast: 50% probability of actual demand being higher or lower; represents the primary target for master production scheduling."}, {"abbr": "P90", "full": "90th Percentile Demand Forecast", "cat": "Forecasting & ML", "badge": "emerald", "def": "Aggressive upper forecast bound: only a 10% statistical probability that demand will exceed this level; used for sizing peak safety stock and surge capacity."}, {"abbr": "Z-Score", "full": "Standardized Normal Deviate", "cat": "Forecasting & ML", "badge": "emerald", "def": "The number of standard deviations a data point lies from the rolling mean: Z = (x - mu) / sigma. Used in statistical anomaly detection with a trigger threshold of Z >= 3.0."}, {"abbr": "OSD", "full": "Oral Solid Dosage", "cat": "Materials & Packaging", "badge": "indigo", "def": "The dominant pharmaceutical dosage format swallowed orally, including compressed tablets, capsules, and extended-release caplets."}, {"abbr": "HDPE", "full": "High-Density Polyethylene", "cat": "Materials & Packaging", "badge": "indigo", "def": "A rigid, chemical-resistant thermoplastic resin used for blow-molding pharmaceutical bottles (e.g. T30 hospital bulk packs) providing high moisture barrier properties."}, {"abbr": "Alu-Alu", "full": "Aluminum-Aluminum Blister Foil", "cat": "Materials & Packaging", "badge": "indigo", "def": "Cold-formable packaging comprising a bottom aluminum cavity and top aluminum lidding foil, offering a 100% barrier against moisture, light, and oxygen."}, {"abbr": "PVDC", "full": "Polyvinylidene Chloride", "cat": "Materials & Packaging", "badge": "indigo", "def": "A clear thermoplastic polymer coating applied to blister packaging films providing superior water vapor and oxygen barrier protection."}, {"abbr": "PVC", "full": "Polyvinyl Chloride", "cat": "Materials & Packaging", "badge": "indigo", "def": "The standard thermoformable plastic film widely used as blister cavities for solid oral pharmaceuticals with low moisture sensitivity."}, {"abbr": "T10", "full": "10-Tablet Commercial Presentation", "cat": "Materials & Packaging", "badge": "indigo", "def": "A blister strip presentation containing 10 tablets designed for primary care physician prescription dispensing through retail pharmacy chains."}, {"abbr": "T30", "full": "30-Tablet Commercial Presentation", "cat": "Materials & Packaging", "badge": "indigo", "def": "An HDPE bottle presentation containing 30 tablets packaged for institutional hospital tenders and chronic extended antibiotic treatment courses."}, {"abbr": "ERD", "full": "Entity-Relationship Diagram", "cat": "Database & Architecture", "badge": "amber", "def": "A visual data architectural model showing database entities, primary key attributes, column data types, and foreign key cardinality relationships."}, {"abbr": "PK", "full": "Primary Key", "cat": "Database & Architecture", "badge": "amber", "def": "A unique relational column or combination of columns that uniquely identifies every single record in a database table without duplicates or nulls."}, {"abbr": "FK", "full": "Foreign Key", "cat": "Database & Architecture", "badge": "amber", "def": "A column in a relational table that references the primary key of another table, strictly enforcing referential integrity across the data model."}, {"abbr": "DDL", "full": "Data Definition Language", "cat": "Database & Architecture", "badge": "amber", "def": "SQL syntax commands used to define database structures, tables, schemas, and column constraints (e.g. CREATE TABLE, ALTER TABLE, DROP TABLE)."}, {"abbr": "DML", "full": "Data Manipulation Language", "cat": "Database & Architecture", "badge": "amber", "def": "SQL syntax commands used to manipulate and query persistent data stored inside relational tables (e.g. SELECT, INSERT, UPDATE, DELETE)."}, {"abbr": "ACID", "full": "Atomicity, Consistency, Isolation, Durability", "cat": "Database & Architecture", "badge": "amber", "def": "The core set of four transactional guarantees in relational databases ensuring multi-table operations execute reliably without partial state corruption."}, {"abbr": "CRUD", "full": "Create, Read, Update, Delete", "cat": "Database & Architecture", "badge": "amber", "def": "The four foundational persistent storage operations implemented across enterprise transactional applications and RESTful data APIs."}, {"abbr": "Parquet", "full": "Apache Parquet (Columnar Storage)", "cat": "Database & Architecture", "badge": "amber", "def": "An open-source, columnar data storage format optimized for high-performance analytical queries and efficient dictionary compression."}, {"abbr": "CSV", "full": "Comma-Separated Values", "cat": "Database & Architecture", "badge": "amber", "def": "A standard plain-text file format for representing tabular data, widely supported across enterprise spreadsheets and data pipelines."}, {"abbr": "JSON", "full": "JavaScript Object Notation", "cat": "Database & Architecture", "badge": "amber", "def": "A lightweight, human-readable data interchange format consisting of key-value attribute pairs and ordered list arrays."}, {"abbr": "UI", "full": "User Interface", "cat": "Database & Architecture", "badge": "amber", "def": "The front-end visual screen layout, cards, navigation menus, and interactive widgets through which a human user interacts with software."}, {"abbr": "CLI", "full": "Command Line Interface", "cat": "Database & Architecture", "badge": "amber", "def": "A text-based console interface used by engineers to execute scripts, run automated test suites, and manage database pipelines."}, {"abbr": "API (Software)", "full": "Application Programming Interface", "cat": "Database & Architecture", "badge": "amber", "def": "A documented software interface and protocol enabling distinct programs, engines, and databases to communicate and exchange data programmatically."}, {"abbr": "AST", "full": "Abstract Syntax Tree", "cat": "Database & Architecture", "badge": "amber", "def": "A tree representation of the abstract syntactic structure of Python source code, used to parse, inspect, and extract function signatures and docstrings."}];
         const METRICS_DATA = [{"id": "drift", "name": "Inventory Reconciliation Drift (0.000000%)", "category": "INVENTORY & RECONCILIATION", "badge": "0.000000% DRIFT (PERFECT)", "badgeClass": "emerald", "summary": "Mathematical conservation of physical mass across all multi-echelon network nodes.", "why": "In pharmaceutical supply chains, rounding errors, unrecorded shrinkage, or uncoordinated batch receipts create phantom inventory in ERP systems. If an AI makes decisions based on ghost stock, critical antibiotic orders go unfulfilled, resulting in hospital shortages or unexpected stockouts. Our multi-echelon reconciliation engine tests all 122 network items across 26 weeks, proving exactly 0.000000% inventory drift.", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-sym\">Δ</span>\n                <span class=\"math-op\">=</span>\n                <span class=\"math-term\">I<sub>t</sub></span>\n                <span class=\"math-op\">−</span>\n                <span class=\"math-group\">(</span>\n                <span class=\"math-term\">I<sub>t−1</sub></span>\n                <span class=\"math-op\">+</span>\n                <span class=\"math-term\">R<sub>t</sub></span>\n                <span class=\"math-op\">+</span>\n                <span class=\"math-term\">P<sub>t</sub></span>\n                <span class=\"math-op\">−</span>\n                <span class=\"math-term\">D<sub>t</sub></span>\n                <span class=\"math-group\">)</span>\n                <span class=\"math-op\">=</span>\n                <span class=\"math-num\">0</span>\n            </div>\n        ", "formulaPlain": "Δ = I_t − (I_{t−1} + R_t + P_t − D_t) = 0", "variables": [{"symbol": "I_t", "name": "Ending Inventory", "desc": "Physical closing stock level at node at end of planning week t (packs)."}, {"symbol": "I_{t−1}", "name": "Beginning Inventory", "desc": "Closing stock carryover from previous week t−1 (packs)."}, {"symbol": "R_t", "name": "Replenishment Receipts", "desc": "Scheduled purchase order arrivals or inter-site transfer receipts (packs)."}, {"symbol": "P_t", "name": "Net Production", "desc": "Good manufactured release packs from packaging line into finished goods storage."}, {"symbol": "D_t", "name": "Demand Outflow", "desc": "Customer sales order shipments fulfilled and dispatched during week t."}], "benchmark": {"target": "Exactly 0.000000% Drift", "achieved": "0.000000% across 122 network items over 26 weeks", "status": "PASSED (100% Mass-Balance Conserved)", "rationale": "cGMP compliance mandates complete batch mass balance. Any drift represents unaccounted pharmaceutical inventory."}, "calcType": "drift"}, {"id": "wape", "name": "Weighted Absolute Percentage Error (WAPE)", "category": "FORECASTING & ACCURACY", "badge": "7.76% WAPE (HURDLE: 16.23%)", "badgeClass": "emerald", "summary": "Volume-weighted accuracy metric proving superiority over baseline hurdles.", "why": "Why WAPE instead of MAPE? In pharma, retail markets often have weeks with zero or near-zero sales. Standard MAPE (Mean Absolute Percentage Error) divides by actual sales (y_t); when y_t = 0, MAPE explodes to infinity or produces absurd 1,000%+ errors. WAPE sums absolute errors across all time periods and divides by total volume, ensuring high-volume hospital packs are weighted appropriately. Our Ridge champion achieved 7.76% WAPE, beating the 16.23% Seasonal Naive hurdle by 52.2% error reduction.", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-bold\">WAPE</span>\n                <span class=\"math-op\">=</span>\n                <div class=\"math-frac\">\n                    <div class=\"math-num-row\">∑ | y<sub>t</sub> − ŷ<sub>t</sub> |</div>\n                    <div class=\"math-den-row\">∑ y<sub>t</sub></div>\n                </div>\n                <span class=\"math-op\">×</span>\n                <span class=\"math-num\">100%</span>\n            </div>\n        ", "formulaPlain": "WAPE = [ ∑ | y_t − ŷ_t | / ∑ y_t ] × 100%", "variables": [{"symbol": "y_t", "name": "Actual Demand", "desc": "Observed commercial order demand in week t (packs)."}, {"symbol": "ŷ_t", "name": "Forecast Demand", "desc": "Predicted demand forecast generated by champion Ridge ML model."}, {"symbol": "| y_t − ŷ_t |", "name": "Absolute Error", "desc": "Magnitude of forecast deviation regardless of direction."}, {"symbol": "∑ y_t", "name": "Total Volume", "desc": "Total network volume over the evaluation horizon (acts as volume weight)."}, {"symbol": "Hurdle", "name": "Baseline Hurdle", "desc": "Seasonal Naive benchmark (16.23% WAPE). Champion beat hurdle by 52.2%."}], "benchmark": {"target": "< 16.23% (Seasonal Naive Benchmark)", "achieved": "7.76% WAPE on 26-week holdout data", "status": "PASSED (52.2% Error Reduction)", "rationale": "High-volume hospital packs carry significant stockout risk; volume weighting prevents low-volume noise from skewing accuracy."}, "calcType": "wape"}, {"id": "bias", "name": "Forecast Bias Percentage (Tracking Signal)", "category": "FORECASTING & ACCURACY", "badge": "TARGET: ±3.0% (ACHIEVED: -0.8%)", "badgeClass": "cyan", "summary": "Directional tendency to systematically over-forecast or under-forecast.", "why": "A forecaster can have low WAPE but dangerous directional bias. If Bias is positive (+15%), the system consistently over-estimates demand, leading to excess warehouse stock, bloated holding costs, and expired drugs written off. If Bias is negative (-15%), the system systematically under-forecasts, starving lines and causing stockouts. Our champion model achieved near-zero bias (-0.8%).", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-bold\">Forecast Bias %</span>\n                <span class=\"math-op\">=</span>\n                <div class=\"math-frac\">\n                    <div class=\"math-num-row\">∑ (ŷ<sub>t</sub> − y<sub>t</sub>)</div>\n                    <div class=\"math-den-row\">∑ y<sub>t</sub></div>\n                </div>\n                <span class=\"math-op\">×</span>\n                <span class=\"math-num\">100%</span>\n            </div>\n        ", "formulaPlain": "Bias % = [ ∑ (ŷ_t − y_t) / ∑ y_t ] × 100%", "variables": [{"symbol": "ŷ_t", "name": "Forecast Demand", "desc": "Model predicted demand in week t."}, {"symbol": "y_t", "name": "Actual Demand", "desc": "Observed market demand in week t."}, {"symbol": "Bias > 0", "name": "Positive Bias", "desc": "Systematic over-forecasting: leads to working capital bloat and expiry scrap."}, {"symbol": "Bias < 0", "name": "Negative Bias", "desc": "Systematic under-forecasting: leads to cleanroom starvation and market stockouts."}], "benchmark": {"target": "Within ±3.0% Tolerance Window", "achieved": "-0.8% Bias (Minimal under-forecast drift)", "status": "PASSED (High Directional Balance)", "rationale": "Ensures safety stock formulas are not distorted by systematic one-way drift."}, "calcType": "bias"}, {"id": "rmse_mae", "name": "RMSE vs MAE (Outlier Severity Penalty)", "category": "FORECASTING & ACCURACY", "badge": "RMSE: 265 packs | MAE: 201 packs", "badgeClass": "purple", "summary": "Quadratic error penalty assessing vulnerability to extreme shock spikes.", "why": "MAE treats all errors linearly: an error of 1,000 packs is penalized ten times as much as an error of 100 packs. But in pharma, a 1,000-pack error in a single week completely wipes out safety stock, causing immediate hospital stockouts. RMSE squares errors before averaging, penalizing catastrophic spike misses far more severely. An RMSE/MAE ratio close to 1.3 confirms stable performance without wild outlier blowouts.", "formulaHtml": "\n            <div class=\"math-card\">\n                <div style=\"display:flex; align-items:center; gap:8px;\">\n                    <span class=\"math-bold\">RMSE</span>\n                    <span class=\"math-op\">=</span>\n                    <span class=\"math-sym\">√</span>\n                    <span class=\"math-group\">[</span>\n                    <div class=\"math-frac\">\n                        <div class=\"math-num-row\">1</div>\n                        <div class=\"math-den-row\">N</div>\n                    </div>\n                    <span class=\"math-op\">∑</span>\n                    <span class=\"math-term\">(y<sub>t</sub> − ŷ<sub>t</sub>)<sup>2</sup></span>\n                    <span class=\"math-group\">]</span>\n                </div>\n                <div style=\"margin: 0 16px; color:#475569; font-size:18px;\">|</div>\n                <div style=\"display:flex; align-items:center; gap:8px;\">\n                    <span class=\"math-bold\">MAE</span>\n                    <span class=\"math-op\">=</span>\n                    <div class=\"math-frac\">\n                        <div class=\"math-num-row\">1</div>\n                        <div class=\"math-den-row\">N</div>\n                    </div>\n                    <span class=\"math-op\">∑</span>\n                    <span class=\"math-term\">| y<sub>t</sub> − ŷ<sub>t</sub> |</span>\n                </div>\n            </div>\n        ", "formulaPlain": "RMSE = √[ (1/N) ∑ (y_t − ŷ_t)² ]   |   MAE = (1/N) ∑ | y_t − ŷ_t |", "variables": [{"symbol": "y_t", "name": "Actual Demand", "desc": "Observed demand in week t."}, {"symbol": "ŷ_t", "name": "Predicted Demand", "desc": "Forecast demand for week t."}, {"symbol": "N", "name": "Evaluation Weeks", "desc": "Total number of evaluation weeks in the test partition."}, {"symbol": "RMSE / MAE", "name": "Penalty Ratio", "desc": "Ratio = 265 / 201 = 1.32. Values < 1.4 indicate absence of tail blowouts."}], "benchmark": {"target": "RMSE / MAE Ratio < 1.40", "achieved": "RMSE: 265 packs | MAE: 201 packs (Ratio: 1.32)", "status": "PASSED (Well-Behaved Error Distribution)", "rationale": "Prevents large localized stockouts that hidden average errors would obscure."}, "calcType": "rmse_mae"}, {"id": "otif", "name": "On-Time In-Full (OTIF) Supplier Compliance", "category": "SUPPLY & QUALITY", "badge": "TARGET: ≥ 95.0%", "badgeClass": "emerald", "summary": "Gold-standard KPI measuring supplier reliability and delivery discipline.", "why": "In pharmaceutical manufacturing, active pharmaceutical ingredients (APIs) and excipients must arrive exactly when scheduled. A delivery that arrives on time with only 80% quantity starves the cleanroom line. A delivery that arrives with 100% quantity but 10 days late forces line changeovers and emergency rescheduling. OTIF measures orders that meet BOTH criteria: 100% on time AND 100% in full.", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-bold\">OTIF %</span>\n                <span class=\"math-op\">=</span>\n                <div class=\"math-frac\">\n                    <div class=\"math-num-row\">Orders Delivered On-Time WITH 100% Quantity</div>\n                    <div class=\"math-den-row\">Total Purchase Orders Placed</div>\n                </div>\n                <span class=\"math-op\">×</span>\n                <span class=\"math-num\">100%</span>\n            </div>\n        ", "formulaPlain": "OTIF % = [ Orders Delivered On-Time with 100% Qty / Total Orders Placed ] × 100%", "variables": [{"symbol": "On-Time", "name": "Schedule Compliance", "desc": "Actual Delivery Date ≤ Contractual Promised Date."}, {"symbol": "In-Full", "name": "Quantity Compliance", "desc": "Received Good Quantity ≥ Ordered Purchase Order Quantity."}, {"symbol": "Both Required", "name": "Joint Threshold", "desc": "If either on-time OR in-full fails, the entire PO is flagged as an OTIF failure."}], "benchmark": {"target": "≥ 95.0% for Primary Tier 1 API Suppliers", "achieved": "Monitored per PO in fact_purchase_order", "status": "ACTIVE KPI (Triggers Supplier SLA Penalties)", "rationale": "Protects continuous manufacturing lines from raw material starvation."}, "calcType": "otif"}, {"id": "marsl", "name": "Minimum Acceptable Remaining Shelf Life (MARSL)", "category": "SUPPLY & QUALITY", "badge": "HOSPITAL GATE: 90 DAYS", "badgeClass": "rose", "summary": "Strict regulatory shelf-life threshold enforced at hospital and distributor receipt.", "why": "Unlike consumer packaged goods, pharmaceutical products expire by law. Major hospital chains and national health systems mandate that drugs delivered to their docks have at least 90 days (and often 180 days for international markets) of remaining shelf life. If a batch arrives with 89 days, the receiving dock legally rejects the entire shipment, resulting in 100% write-off and contract penalty fines.", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-term\">RSL<sub>delivery</sub></span>\n                <span class=\"math-op\">=</span>\n                <span class=\"math-term\">Expiry Date</span>\n                <span class=\"math-op\">−</span>\n                <span class=\"math-group\">(</span>\n                <span class=\"math-term\">Dispatch Date</span>\n                <span class=\"math-op\">+</span>\n                <span class=\"math-term\">Transit Days</span>\n                <span class=\"math-group\">)</span>\n                <span class=\"math-op\">≥</span>\n                <span class=\"math-term\">MARSL</span>\n            </div>\n        ", "formulaPlain": "RSL_delivery = Expiry Date − (Dispatch Date + Transit Days) ≥ MARSL", "variables": [{"symbol": "RSL_delivery", "name": "Remaining Shelf Life", "desc": "Days between receipt at customer receiving dock and batch expiration."}, {"symbol": "Expiry Date", "name": "Batch Expiration", "desc": "GMP certified shelf life limit printed on pharmaceutical packaging."}, {"symbol": "Dispatch Date", "name": "Shipment Date", "desc": "Calendar date when consignment leaves manufacturer DC."}, {"symbol": "Transit Days", "name": "Transit Lead Time", "desc": "Cold-chain or standard freight transit duration in days."}, {"symbol": "MARSL", "name": "Acceptance Gate", "desc": "90 days (Domestic Hospitals) | 180 days (International Tenders)."}], "benchmark": {"target": "RSL ≥ MARSL Gate (Zero tolerance for dock rejection)", "achieved": "Enforced in bridge_sku_market and allocation engine", "status": "REGULATORY MANDATE (Prevents Customer Rejections)", "rationale": "Guarantees hospital pharmacy patients receive active, potent medication before expiry."}, "calcType": "marsl"}, {"id": "line_util", "name": "Cleanroom Capacity Utilization Percentage", "category": "SUPPLY & QUALITY", "badge": "TARGET CAP: 85.0%", "badgeClass": "amber", "summary": "Line utilization metric balancing throughput against GMP maintenance reserves.", "why": "Running a pharmaceutical cleanroom packaging line at 100% utilization is dangerous. In sterile and oral solid dosage manufacturing, lines require scheduled preventive maintenance, HEPA filter integrity testing, and sanitization between batches. Pushing beyond 85% causes micro-stops, mechanical fatigue, batch contamination risks, and regulatory observation citations.", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-bold\">Utilization %</span>\n                <span class=\"math-op\">=</span>\n                <div class=\"math-frac\">\n                    <div class=\"math-num-row\">∑ Committed Run Hours</div>\n                    <div class=\"math-den-row\">Gross Available Hours − Planned Maintenance Hours</div>\n                </div>\n                <span class=\"math-op\">×</span>\n                <span class=\"math-num\">100%</span>\n            </div>\n        ", "formulaPlain": "Utilization % = [ Total Committed Run Hours / (Gross Available Hours − Planned Maintenance Hours) ] × 100%", "variables": [{"symbol": "Committed Run Hours", "name": "Scheduled Production", "desc": "Batch Quantity divided by Standard Line Rate (e.g., 2,500 packs/hr)."}, {"symbol": "Gross Available Hours", "name": "Total Calendar Time", "desc": "168 hours per week (7 days × 24 hours per day)."}, {"symbol": "Planned Maintenance", "name": "GMP Reserve Time", "desc": "Mandatory sanitization, HEPA filter validation, and line changeovers."}, {"symbol": "Target Cap", "name": "Operational Ceiling", "desc": "85.0% maximum utilization to maintain line reliability buffer."}], "benchmark": {"target": "Optimal Operating Range: 70.0% to 85.0%", "achieved": "Monitored weekly in fact_capacity_utilization", "status": "OPERATIONAL CONTROL (Prevents Mechanical Excursions)", "rationale": "Maintains required buffer for emergency production expedites without missing sanitization."}, "calcType": "util"}, {"id": "zscore", "name": "Volatility-Adjusted Demand Anomaly Z-Score", "category": "ANOMALY DETECTION", "badge": "ANOMALY TRIGGER: |Z| ≥ 3.0", "badgeClass": "rose", "summary": "Statistical detection filter identifying demand surges and plunges.", "why": "Pharmaceutical demand fluctuates with seasonal outbreaks and distributor ordering cycles. A simple moving average triggers false alarms on normal variance. The Volatility-Adjusted Z-Score measures how many standard deviations current demand is away from the recent 4-week mean. A zero-variance guard (ε = 1.0) ensures division by zero never occurs during quiet summer periods.", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-term\">Z<sub>t</sub></span>\n                <span class=\"math-op\">=</span>\n                <div class=\"math-frac\">\n                    <div class=\"math-num-row\">| x<sub>t</sub> − μ<sub>4w</sub> |</div>\n                    <div class=\"math-den-row\">max( σ<sub>4w</sub> , ε )</div>\n                </div>\n                <span class=\"math-op\">,</span>\n                <span class=\"math-term\" style=\"margin-left:12px;\">ε = 1.0</span>\n            </div>\n        ", "formulaPlain": "Z_t = | x_t − μ_4w | / max( σ_4w , ε )   where ε = 1.0   [Trigger: |Z_t| ≥ 3.0]", "variables": [{"symbol": "x_t", "name": "Observed Demand", "desc": "Current week customer demand (packs)."}, {"symbol": "μ_{4w}", "name": "Rolling Mean", "desc": "Rolling 4-week average demand baseline."}, {"symbol": "σ_{4w}", "name": "Rolling Std Dev", "desc": "Rolling 4-week standard deviation of demand."}, {"symbol": "ε = 1.0", "name": "Zero-Variance Guard", "desc": "Prevents division by zero when demand is completely flat across the 4 weeks."}, {"symbol": "|Z| ≥ 3.0", "name": "Anomaly Trigger", "desc": "Statistical outlier threshold (99.7% confidence boundary under normal distribution)."}], "benchmark": {"target": "|Z| < 3.0 for Nominal Operations", "achieved": "|Z| ≥ 3.0 triggers immediate Control Tower investigation", "status": "STATISTICAL FILTER (Catches Demand Outbreaks & Lost Sales)", "rationale": "Flags true epidemics or bulk hospital tender purchases without false alarm fatigue."}, "calcType": "zscore"}, {"id": "tukey_iqr", "name": "Tukey's Non-Parametric IQR Fences", "category": "ANOMALY DETECTION", "badge": "MULTIPLIER: 1.5× IQR", "badgeClass": "purple", "summary": "Distribution-free outlier detector robust against highly skewed demand distributions.", "why": "Parametric Z-Scores assume a normal Gaussian distribution. But pharmaceutical demand is frequently right-skewed with long tails (occasional large institutional hospital tenders). John Tukey's Interquartile Range (IQR) fences calculate boundaries non-parametrically using median and percentiles, completely immune to historical outliers.", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-term\">IQR = Q<sub>3</sub> − Q<sub>1</sub></span>\n                <span style=\"margin: 0 16px; color:#475569;\">|</span>\n                <span class=\"math-term\">Lower Fence = Q<sub>1</sub> − 1.5 × IQR</span>\n                <span style=\"margin: 0 16px; color:#475569;\">|</span>\n                <span class=\"math-term\">Upper Fence = Q<sub>3</sub> + 1.5 × IQR</span>\n            </div>\n        ", "formulaPlain": "IQR = Q3 − Q1   |   Lower Fence = Q1 − 1.5×IQR   |   Upper Fence = Q3 + 1.5×IQR", "variables": [{"symbol": "Q_1", "name": "25th Percentile", "desc": "First quartile boundary: 25% of demand observations fall below this value."}, {"symbol": "Q_3", "name": "75th Percentile", "desc": "Third quartile boundary: 75% of demand observations fall below this value."}, {"symbol": "IQR", "name": "Interquartile Range", "desc": "Spread of the middle 50% of the demand distribution (Q3 − Q1)."}, {"symbol": "1.5× Factor", "name": "Tukey Constant", "desc": "Standard non-parametric multiplier identifying mild-to-severe outliers."}], "benchmark": {"target": "Observations within [Lower Fence, Upper Fence]", "achieved": "Calculated dynamically across 12-week rolling windows", "status": "NON-PARAMETRIC AUDIT (Robust to Skewed Sales)", "rationale": "Ensures hospital bulk tenders do not distort regular pharmacy replenishment plans."}, "calcType": "tukey"}, {"id": "step_drift", "name": "Structural Step-Change Drift Delta", "category": "ANOMALY DETECTION", "badge": "DRIFT TRIGGER: |Δ| ≥ 35.0%", "badgeClass": "amber", "summary": "Dual-window moving average detector identifying structural market shifts.", "why": "Temporary spikes come and go, but when a competitor withdraws from the market, demand experiences a permanent step-change. Single-week outlier tests miss this because individual points seem within historical bounds. By comparing a short 4-week moving average against a 12-week baseline, this metric detects persistent demand shifts, triggering safety stock revisions.", "formulaHtml": "\n            <div class=\"math-card\">\n                <span class=\"math-term\">Δ<sub>drift</sub></span>\n                <span class=\"math-op\">=</span>\n                <div class=\"math-frac\">\n                    <div class=\"math-num-row\">SMA<sub>4w</sub> − Baseline<sub>12w</sub></div>\n                    <div class=\"math-den-row\">Baseline<sub>12w</sub></div>\n                </div>\n                <span class=\"math-op\">×</span>\n                <span class=\"math-num\">100%</span>\n            </div>\n        ", "formulaPlain": "Δ_drift = [ (SMA_4w − Baseline_12w) / Baseline_12w ] × 100%   [Trigger: |Δ| ≥ 35.0%]", "variables": [{"symbol": "SMA_{4w}", "name": "Short-Term Moving Avg", "desc": "Rolling 4-week short-horizon demand average."}, {"symbol": "Baseline_{12w}", "name": "Medium-Term Baseline", "desc": "Rolling 12-week baseline seasonal demand average."}, {"symbol": "|Δ_{drift}| ≥ 35%", "name": "Step-Shift Trigger", "desc": "Persistent 35% departure across 2 consecutive periods triggers structural re-forecasting."}], "benchmark": {"target": "|Δ_drift| < 35.0% (Stable Market Equilibrium)", "achieved": "|Δ_drift| ≥ 35.0% forces Safety Stock and MRP recalibration", "status": "STRUCTURAL MONITOR (Detects Market Share Inflections)", "rationale": "Prevents gradual stockout bleed when a market experiences sustained demand expansion."}, "calcType": "drift_step"}];
 
+        // Responsive auto-scroll helper for mobile views
+        function autoScrollDetailIfMobile(containerId) {
+            if (window.innerWidth <= 768) {
+                const el = document.getElementById(containerId);
+                if (el) {
+                    setTimeout(() => {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 60);
+                }
+            }
+        }
+
         // Tab Switching
-                function switchTab(tabId, el) {
+        function switchTab(tabId, el) {
             try {
                 document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -1352,6 +1442,8 @@
                 if (tabId === 'tests') initTests();
                 if (tabId === 'metrics') initMetrics();
                 if (tabId === 'glossary') initGlossary();
+
+                window.scrollTo({ top: 0, behavior: 'instant' });
             } catch (err) {
                 console.error("Error in switchTab:", err);
             }
@@ -1488,6 +1580,7 @@
 
                 ${samplesHtml}
             `;
+            autoScrollDetailIfMobile('erd-detail-container');
         }
 
         function filterErd() {
@@ -1635,6 +1728,7 @@
                     <div class="code-drawer-content">${safeCode}</div>
                 </div>
             `;
+            autoScrollDetailIfMobile('code-detail-container');
         }
 
         function toggleDrawer(id) {
@@ -1740,6 +1834,7 @@
                 <h4 style="font-size:14px; color:#fff; margin-bottom:12px;">Individual Test Cases (${item.test_count})</h4>
                 ${testsHtml}
             `;
+            autoScrollDetailIfMobile('test-detail-container');
         }
 
         function filterTests() {
@@ -1989,6 +2084,7 @@
 
                 ${calcHtml}
             `;
+            autoScrollDetailIfMobile('metrics-detail-container');
         }
 
         function calcWape() {
