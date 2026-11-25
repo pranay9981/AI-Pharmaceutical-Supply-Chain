@@ -1,3 +1,0 @@
-supply_plan_id,finished_sku_id,location_id,planned_week,planned_quantity,source_type,source_order_id,expected_availability_date,scenario_id,plan_status
-SPL-2026-001,SKU-AUG-500-T10,LOC-DC-01,2026-11-16,20000.0,MANUFACTURING,PROD-2026-001,2026-11-18,SCN-BASE,Committed
-SPL-2026-002,SKU-AUG-500-T30,LOC-DC-01,2026-11-23,10000.0,MANUFACTURING,PROD-2026-002,2026-11-25,SCN-BASE,Committed

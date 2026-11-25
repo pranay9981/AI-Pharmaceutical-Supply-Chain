@@ -1,0 +1,52 @@
+{
+  "disclaimer": "Synthetic data for demonstration only. Not for operational decision making.",
+  "purpose": "Hand-calculated Week 1 benchmark for later engine verification",
+  "inputs": {
+    "purchase_order_id": "DEMO-PO-01",
+    "production_order_id": "DEMO-PROD-01",
+    "finished_sku_id": "DEMO-SKU-10",
+    "market_id": "DEMO-MKT-01",
+    "planning_as_of": "2026-11-01",
+    "baseline_expected_material_receipt": "2026-11-02",
+    "delay_days": 14,
+    "purchase_order_quantity_kg": 150,
+    "eligible_material_on_hand_kg": 80,
+    "material_required_kg": 127.5,
+    "planned_production_start": "2026-11-09",
+    "production_duration_calendar_days": 4,
+    "release_duration_calendar_days": 3,
+    "transit_duration_calendar_days": 2,
+    "usable_finished_receipt_units": 200,
+    "opening_finished_stock_units": 160,
+    "safety_stock_units": 50,
+    "weekly_demand": {
+      "2026-11-09": 100,
+      "2026-11-16": 100,
+      "2026-11-23": 100
+    }
+  },
+  "expected": {
+    "baseline": {
+      "expected_material_receipt": "2026-11-02",
+      "material_shortfall_on_planned_start_kg": 0,
+      "production_start": "2026-11-09",
+      "finished_stock_arrival": "2026-11-18",
+      "ending_stock_units": [60, 160, 60],
+      "unserved_demand_units": [0, 0, 0],
+      "first_safety_stock_breach_week": null,
+      "horizon_service_fraction": 1,
+      "recovery_week": null
+    },
+    "delayed": {
+      "expected_material_receipt": "2026-11-16",
+      "material_shortfall_on_planned_start_kg": 47.5,
+      "production_start": "2026-11-16",
+      "finished_stock_arrival": "2026-11-25",
+      "ending_stock_units": [60, 0, 100],
+      "unserved_demand_units": [0, 40, 0],
+      "first_safety_stock_breach_week": "2026-11-16",
+      "horizon_service_fraction": 0.8666666666666667,
+      "recovery_week": "2026-11-23"
+    }
+  }
+}

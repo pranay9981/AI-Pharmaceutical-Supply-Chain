@@ -1,3 +1,0 @@
-finished_sku_id,product_id,sku_description,dosage_form,strength,pack_configuration,shelf_life_days,storage_condition,launch_date,status,synthetic_data_flag
-SKU-AUG-500-T10,PRD-AUG,Augmentin 500mg/125mg Tablet (Strip Pack of 10),Tablet,500mg/125mg,10-Tablet Alu-Alu Strip,730,Ambient,2023-01-15,Active,True
-SKU-AUG-500-T30,PRD-AUG,Augmentin 500mg/125mg Tablet (Bottle Pack of 30),Tablet,500mg/125mg,30-Tablet HDPE Bottle,730,Ambient,2023-06-01,Active,True

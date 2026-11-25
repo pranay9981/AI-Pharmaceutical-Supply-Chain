@@ -1,2 +1,0 @@
-"""Synthetic data generator modules."""
-

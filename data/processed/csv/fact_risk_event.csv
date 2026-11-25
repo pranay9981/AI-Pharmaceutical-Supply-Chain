@@ -1,3 +1,0 @@
-risk_id,risk_type,entity_type,entity_id,location_id,detection_date,impact_date,severity,risk_score,shortage_quantity,days_to_impact,risk_status,scenario_id
-RISK-2026-001,Material_Shortage,MATERIAL,MAT-API-001,LOC-PLANT-01,2026-10-26,2026-11-09,High,80.25,47.5,14,Active,SCN-A-API-DELAY
-RISK-2026-002,Stockout,SKU,SKU-AUG-500-T10,LOC-DC-01,2026-10-26,2026-11-23,Critical,84.5,2400.0,28,Active,SCN-A-API-DELAY

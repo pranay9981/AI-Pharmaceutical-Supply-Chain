@@ -1,5 +1,0 @@
-purchase_order_id,supplier_id,material_sku_id,order_date,requested_delivery_date,confirmed_delivery_date,actual_receipt_date,ordered_quantity,received_quantity,purchase_order_status,delay_reason,quality_status
-PO-2026-001,SUP-001,MAT-API-001,2026-10-05,2026-11-02,2026-11-02,,150.0,0.0,Open,,Pending_Inspection
-PO-2026-002,SUP-001,MAT-EXC-001,2026-10-15,2026-11-09,2026-11-09,,200.0,0.0,Open,,Pending_Inspection
-PO-2026-003,SUP-002,MAT-PKG-BLIST,2026-10-18,2026-11-05,2026-11-05,,50000.0,0.0,Open,,Pending_Inspection
-PO-2026-004,SUP-002,MAT-PKG-CART,2026-10-18,2026-11-05,2026-11-05,,40000.0,0.0,Open,,Pending_Inspection

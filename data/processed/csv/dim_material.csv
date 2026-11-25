@@ -1,6 +1,0 @@
-material_sku_id,material_name,material_type,unit_of_measure,shelf_life_days,retest_interval_days,release_time_days,critical_material_flag,storage_condition,synthetic_data_flag
-MAT-API-001,Synthetic Amoxicillin / Clavulanate API Blend,API,kg,540,365.0,5,True,Ambient,True
-MAT-EXC-001,Microcrystalline Cellulose & Excipient Granules,Excipient,kg,720,365.0,3,False,Ambient,True
-MAT-PKG-BLIST,Printed Aluminum Blister Foil Strip (T10),Blister Foil,units,1095,,2,False,Ambient,True
-MAT-PKG-BOTT,HDPE Pharmaceutical Bottle & Closure 100cc (T30),Bottle,units,1095,,2,False,Ambient,True
-MAT-PKG-CART,Printed Outer Carton Packaging Box,Carton,units,730,,2,True,Ambient,True

@@ -1,3 +1,0 @@
-production_order_id,finished_sku_id,location_id,production_line_id,planned_start_date,planned_completion_date,actual_start_date,actual_completion_date,planned_quantity,actual_quantity,expected_yield,actual_yield,planned_hours,actual_hours,production_status,delay_reason
-PROD-2026-001,SKU-AUG-500-T10,LOC-PLANT-01,LINE-PLANT1-01,2026-11-09,2026-11-13,,,20000.0,0.0,98.5,,40.0,,Planned,
-PROD-2026-002,SKU-AUG-500-T30,LOC-PLANT-01,LINE-PLANT1-02,2026-11-16,2026-11-20,,,10000.0,0.0,98.0,,30.0,,Planned,

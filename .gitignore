@@ -36,6 +36,10 @@ desktop.ini
 /db_viewer.html
 /traceability_graph.html
 
+# Local rebuild database and dataset exports
+/data/output/
+/data/*.sqlite3
+
 # Local project references
 /AGENTS.md
 /AI_Powered_Supply_Chain_Control_Tower_Agent_Intern_Brief.pdf

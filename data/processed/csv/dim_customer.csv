@@ -1,5 +1,0 @@
-customer_id,customer_name,market_id,customer_type,service_priority,synthetic_data_flag
-CUST-001,Telangana State Health Wholesalers Ltd,MKT-IN-HYD,Wholesaler,Tier-1,True
-CUST-002,Deccan Apex Hospital Network,MKT-IN-HYD,Hospital,Tier-1,True
-CUST-003,Western Medical Logistics Consortium,MKT-IN-PUN,Wholesaler,Tier-1,True
-CUST-004,Sahyadri Care Clinics & Pharmacies,MKT-IN-PUN,Pharmacy Chain,Tier-2,True
