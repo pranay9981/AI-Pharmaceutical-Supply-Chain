@@ -32,3 +32,11 @@ desktop.ini
 ~$*
 *_updated.xlsx
 
+# Generated database and traceability viewers
+/db_viewer.html
+/traceability_graph.html
+
+# Local project references
+/AGENTS.md
+/AI_Powered_Supply_Chain_Control_Tower_Agent_Intern_Brief.pdf
+/PROJECT_REVIEW_MEMORY.md
